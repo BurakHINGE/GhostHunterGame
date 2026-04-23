@@ -1,0 +1,7 @@
+maximum_health 100
+level_1_time 120
+level_2_time 90
+level_3_time 60
+ghost_speed 2.5
+ripper_speed 3.5
+wisp_speed 4.5

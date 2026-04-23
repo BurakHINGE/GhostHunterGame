@@ -30,8 +30,7 @@ public class SceneManager {
 		exitButton.setPrefSize(100, 50);
 		
 		layout.getChildren().addAll(selectLevelButton, exitButton);
-		
-		layout.setAlignment(Pos.CENTER);
+		layout.setAlignment(Pos.CENTER); //Align the buttons in the center
 		
 		
 		selectLevelButton.setOnAction(e -> stage.setScene(selectLevelMenu())); //Open level selection menu
@@ -46,7 +45,7 @@ public class SceneManager {
 		
 		VBox centerLayout = new VBox(10);
 		
-		centerLayout.setAlignment(Pos.CENTER);
+		centerLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
 		
 		Button levelEasyButton = new Button("Easy");
 		Button levelMediumButton = new Button("Medium");
@@ -56,22 +55,21 @@ public class SceneManager {
 		levelMediumButton.setPrefSize(100, 50);
 		levelHardButton.setPrefSize(100, 50);
 		
+		centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);
 		
 		Button returnMainMenuButton = new Button("Main Menu");
 
-		returnMainMenuButton.setPrefSize(100, 50);
+		returnMainMenuButton.setPrefSize(100, 50);	
 		
-		centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);	
+		mainLayout.setCenter(centerLayout); //Align the VBox in the center of border pane
+		mainLayout.setBottom(returnMainMenuButton); //Align the main menu button in the bottom of border pane
 		
-		mainLayout.setCenter(centerLayout);
-		mainLayout.setBottom(returnMainMenuButton);
-		
-		BorderPane.setAlignment(returnMainMenuButton, Pos.CENTER_RIGHT);
-		BorderPane.setMargin(returnMainMenuButton, new Insets(10));
+		BorderPane.setAlignment(returnMainMenuButton, Pos.CENTER_RIGHT); //Align the main menu button in the right (bottom) of border pane
+		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
 		
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from Level Selection Menu
 		
-		return new Scene(mainLayout, 500, 500); //Return button with scene
+		return new Scene(mainLayout, 500, 500); //Return border pane with scene
 	}
 	
 	public Scene winPanel() { //Show this panel if user win the game
