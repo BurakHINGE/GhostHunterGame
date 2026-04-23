@@ -5,3 +5,7 @@ level_3_time 60
 ghost_speed 2.5
 ripper_speed 3.5
 wisp_speed 4.5
+ghost_points 10
+ripper_points 20
+wisp_points 30
+token_spawn_interval 5
