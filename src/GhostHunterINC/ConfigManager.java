@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class ConfigManager {
 	
+	//Create variables for reading values
 	public static int maxHealth;
 	public static int level1Time;
 	public static int level2Time;
@@ -22,10 +23,10 @@ public class ConfigManager {
 	
 	void loadConfig() { //Read configures from config.txt
 		try {
-			File conf = new File("config.txt"); //
+			File conf = new File("config.txt"); //Check file path
 			Scanner output = new Scanner(conf);
 			
-			while (output.hasNext()) {
+			while (output.hasNext()) { //Check is there any sentence
 				String configName = output.next();
 				
 				if (configName.equals("maximum_health")) {
@@ -64,7 +65,7 @@ public class ConfigManager {
 			}
 			
 			output.close();
-			System.out.println("Config.txt has been read successfuly");
+			System.out.println("Config.txt has been read successfuly"); //Debug info
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("Warning: config.txt file cannot find! Please check the file path.");
