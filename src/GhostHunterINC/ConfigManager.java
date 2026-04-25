@@ -63,13 +63,13 @@ public class ConfigManager {
 				else if (configName.equals("maximum_vacuum:")) {
 					maxVacuum = output.nextInt();
 				}
-				else if (configName.equals("entityDamage:")) {
+				else if (configName.equals("entity_damage:")) {
 					entityDamage = output.nextInt();
 				}
-				else if (configName.equals("vacuumDecrease:")) {
+				else if (configName.equals("vacuum_decrease:")) {
 					vacuumDecrease = output.nextInt();
 				}
-				else if (configName.equals("vacuumIncrease:")) {
+				else if (configName.equals("vacuum_increase:")) {
 					vacuumIncrease = output.nextInt();
 				}
 				
