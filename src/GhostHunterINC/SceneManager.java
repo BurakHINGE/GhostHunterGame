@@ -72,6 +72,31 @@ public class SceneManager {
 		return new Scene(mainLayout, 500, 500); //Return border pane with scene
 	}
 	
+	public Scene stopGamePanel() {
+		
+		VBox layout = new VBox(10);
+		
+		layout.setAlignment(Pos.CENTER);
+		
+		Label pauseText = new Label("GAME PAUSED");
+		
+		HBox buttonLayout = new HBox(10);
+		
+		buttonLayout.setAlignment(Pos.CENTER);
+		
+		Button resumeButton = new Button("Resume");
+		Button returnMainMenuButton = new Button("Main Menu");
+		
+		buttonLayout.getChildren().addAll(resumeButton, returnMainMenuButton);
+		
+		layout.getChildren().addAll(pauseText, buttonLayout);
+		
+//		resumeButton.setOnAction(e -> ); Game resume from the same time
+		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu()));
+		
+		return new Scene(layout, 500, 500);
+	}
+	
 	public Scene winPanel() { //Show this panel if user win the game
 		
 		VBox layout = new VBox(10);
