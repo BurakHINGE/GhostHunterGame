@@ -11,9 +11,10 @@ public class EyeToken extends Token {
 	@Override
 	//Make all the entities visible for given time.
 	void applyEffect(Hunter hunter) {
-		//Get the effect time from config
+		int time = config.getEyeTokenDuration();
 		
 		//Make all entities visible for given time
+		
 	}
 
 	@Override

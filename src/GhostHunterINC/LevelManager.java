@@ -7,9 +7,21 @@ public class LevelManager {
 		int ghost,wisp,ripper;
 		
 		//Get the number of entities to load to our current level.
-		ghost = config.getGhostPoints();
-		wisp = config.getWispPoints();
-		ripper = config.getRipperPoints();
+		if (level == 1) {
+			ghost = config.getLevel1Ghosts();
+			wisp = config.getLevel1Wisps();
+			ripper = config.getLevel1Rippers();
+		}
+		else if (level == 2) {
+			ghost = config.getLevel2Ghosts();
+			wisp = config.getLevel2Wisps();
+			ripper = config.getLevel2Rippers();
+		}
+		else if (level == 3) {
+			ghost = config.getLevel3Ghosts();
+			wisp = config.getLevel3Wisps();
+			ripper = config.getLevel3Rippers();
+		}
 		
 		//Load the entities.
 		for(int i = 0; i < ghost ; i++) {
@@ -27,8 +39,19 @@ public class LevelManager {
 		
 	}
 	
-	void spawnToken() {
-		int time = config.getTokenSpawnInterval();
+	void spawnToken(int level) {
+		int time;
+		
+		if (level == 1) {
+			time = config.getLevel1Time();
+		}
+		else if (level == 2) {
+			time = config.getLevel2Time();
+		}
+		else if (level == 3) {
+			time = config.getLevel3Time();
+		}
+		
 		
 		//Check if there is less token than the number of maximum token allowed.
 		//If so check if the interval has passed since the last token spawned.
