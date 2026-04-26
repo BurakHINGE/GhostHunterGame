@@ -72,7 +72,7 @@ public class SceneManager {
 		return new Scene(mainLayout, 500, 500); //Return border pane with scene
 	}
 	
-	public Scene stopGamePanel() {
+	public Scene stopGamePanel() { //Stopped game menu
 		
 		VBox layout = new VBox(10);
 		
@@ -92,7 +92,7 @@ public class SceneManager {
 		layout.getChildren().addAll(pauseText, buttonLayout);
 		
 //		resumeButton.setOnAction(e -> ); Game resume from the same time
-		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu()));
+		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from stopped game menu
 		
 		return new Scene(layout, 500, 500);
 	}
