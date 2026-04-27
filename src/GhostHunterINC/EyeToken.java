@@ -1,7 +1,6 @@
 package GhostHunterINC;
 
 public class EyeToken extends Token {
-	ConfigManager config = new ConfigManager();
 	@Override
 	public boolean checkCollision() {
 		//If collides with hunter call applyEffect method.
@@ -11,7 +10,7 @@ public class EyeToken extends Token {
 	@Override
 	//Make all the entities visible for given time.
 	void applyEffect(Hunter hunter) {
-		int time = config.getEyeTokenDuration();
+		int time = ConfigManager.getEyeTokenDuration();
 		
 		//Make all entities visible for given time
 		

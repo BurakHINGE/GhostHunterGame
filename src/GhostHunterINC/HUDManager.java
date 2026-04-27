@@ -7,7 +7,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class HUDManager {
-	ConfigManager config = new ConfigManager();
+	
 	private final double MAX_HEIGHT = 200.0;
 	private Pane hudPane;
 	private Rectangle healthBar;
@@ -15,9 +15,9 @@ public class HUDManager {
 	private Text scoreText;
 	private Text timeText;
 	
-	public HUDManager() {
+	public HUDManager(int level) {
 		hudPane = new Pane();
-		startUI();
+		startUI(level);
 	}
 	
 	private void startUI(int level) {
@@ -32,17 +32,17 @@ public class HUDManager {
 		//Set the time according to your level and config.txt
 		switch (level){
 			case 1:
-				int time = config.getLevel1Time();
+				int time = ConfigManager.getLevel1Time();
 				int minutes = time / 60;
 				int seconds = time % 60;
 				timeText = new Text(String.format("%d:%02d", minutes, seconds));
 			case 2:
-				time = config.getLevel2Time();
+				time = ConfigManager.getLevel2Time();
 				minutes = time / 60;
 				seconds = time % 60;
 				timeText = new Text(String.format("%d:%02d", minutes, seconds));
 			case 3:
-				time = config.getLevel3Time();
+				time = ConfigManager.getLevel3Time();
 				minutes = time / 60;
 				seconds = time % 60;
 				timeText = new Text(String.format("%d:%02d", minutes, seconds));
