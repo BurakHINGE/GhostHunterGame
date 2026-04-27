@@ -1,27 +1,27 @@
 package GhostHunterINC;
 
+import javafx.scene.text.Text;
+
 public class LevelManager {
-	ConfigManager config = new ConfigManager();
-	
+
 	void loadEntities(int level) {
 		int ghost,wisp,ripper;
 		
 		//Get the number of entities to load to our current level.
-		if (level == 1) {
-			ghost = config.getLevel1Ghosts();
-			wisp = config.getLevel1Wisps();
-			ripper = config.getLevel1Rippers();
-		}
-		else if (level == 2) {
-			ghost = config.getLevel2Ghosts();
-			wisp = config.getLevel2Wisps();
-			ripper = config.getLevel2Rippers();
-		}
-		else if (level == 3) {
-			ghost = config.getLevel3Ghosts();
-			wisp = config.getLevel3Wisps();
-			ripper = config.getLevel3Rippers();
-		}
+		switch (level){
+		case 1:
+			ghost = ConfigManager.getLevel1Ghosts();
+			wisp = ConfigManager.getLevel1Wisps();
+			ripper = ConfigManager.getLevel1Rippers();
+		case 2:
+			ghost = ConfigManager.getLevel2Ghosts();
+			wisp = ConfigManager.getLevel2Wisps();
+			ripper = ConfigManager.getLevel2Rippers();
+		case 3:
+			ghost = ConfigManager.getLevel3Ghosts();
+			wisp = ConfigManager.getLevel3Wisps();
+			ripper = ConfigManager.getLevel3Rippers();
+	}
 		
 		//Load the entities.
 		for(int i = 0; i < ghost ; i++) {
@@ -43,13 +43,13 @@ public class LevelManager {
 		int time;
 		
 		if (level == 1) {
-			time = config.getLevel1Time();
+			time = ConfigManager.getLevel1Time();
 		}
 		else if (level == 2) {
-			time = config.getLevel2Time();
+			time = ConfigManager.getLevel2Time();
 		}
 		else if (level == 3) {
-			time = config.getLevel3Time();
+			time = ConfigManager.getLevel3Time();
 		}
 		
 		
