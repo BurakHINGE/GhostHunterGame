@@ -3,9 +3,10 @@ package GhostHunterINC;
 import javafx.scene.text.Text;
 
 public class LevelManager {
+	
 
 	void loadEntities(int level) {
-		int ghost,wisp,ripper;
+		int ghost = 0,wisp = 0,ripper = 0;
 		
 		//Get the number of entities to load to our current level.
 		switch (level){
