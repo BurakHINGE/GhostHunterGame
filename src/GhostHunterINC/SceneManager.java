@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class SceneManager {
 	
 	private Stage stage;
+	private HUDManager hud = new HUDManager(1);
 	
 	public SceneManager(Stage stage) {
 		this.stage = stage;
@@ -40,7 +41,6 @@ public class SceneManager {
 	}
 	
 	Scene selectLevelMenu() { //Level selection menu
-		
 		BorderPane mainLayout = new BorderPane();
 		
 		VBox centerLayout = new VBox(10);
