@@ -5,13 +5,14 @@ import javafx.scene.layout.Pane;
 
 public class GameEngine {
 	
-	private ArrayList<ParanormalEntity> enemies;
+	private ArrayList<ParanormalEntity> enemies = new ArrayList<>();
 	private Pane gameObjects;
+	private LevelManager levelManager;
 	
 	
-	public GameEngine (Pane gameObjects) {
+	public GameEngine (Pane gameObjects, LevelManager levelManager) {
 		this.gameObjects = gameObjects;
-		enemies = new ArrayList<>();
+		this.levelManager = levelManager;
 	}
 	
 	
