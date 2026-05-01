@@ -178,4 +178,36 @@ public class GameEngine {
 	public void stopGame() { //Stop the game
 		gameLoop.stop();
 	}
+
+	public ArrayList<GameObject> getEnemies() {
+		return enemies;
+	}
+
+	public Pane getGameObjects() {
+		return gameObjects;
+	}
+
+	public Scene getGameScene() {
+		return gameScene;
+	}
+
+	public Timeline getGameLoop() {
+		return gameLoop;
+	}
+
+	public void setEnemies(ArrayList<GameObject> enemies) {
+		this.enemies = enemies;
+	}
+
+	public void setGameObjects(Pane gameObjects) {
+		this.gameObjects = gameObjects;
+	}
+
+	public void setGameScene(Scene gameScene) {
+		this.gameScene = gameScene;
+	}
+
+	public void setGameLoop(Timeline gameLoop) {
+		this.gameLoop = gameLoop;
+	}
 }
