@@ -90,7 +90,7 @@ public class GameEngine {
 			}			
 		});
 		
-		gameScene.setOnKeyReleased(e -> { //Deactivate key when pressed
+		gameScene.setOnKeyReleased(e -> { //Deactivate key when released
 			switch (e.getCode()) {
 				case W: {
 					isWPressed = false;
