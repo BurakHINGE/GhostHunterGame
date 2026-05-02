@@ -11,7 +11,8 @@ import javafx.util.Duration;
 
 public class GameEngine {
 	
-	private ArrayList<GameObject> enemies; //Create list for enemies
+	private Pane enemies; //Create list for enemies
+	private ArrayList<GameObject> allEntities;
 	private Pane gameObjects;
 	private Scene gameScene;
 	private Timeline gameLoop;
@@ -25,19 +26,20 @@ public class GameEngine {
 	private boolean isDPressed = false;
 	
 	
-	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter) {
+	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList allEntities) {
 		this.gameObjects = gameObjects;
 		this.gameScene = gameScene;
-		this.levelManager = levelManager;
 		this.hunter = hunter;
-		enemies = new ArrayList<>();
+		enemies = new Pane();
+		allEntities = new ArrayList<>();
+		levelManager = new LevelManager(enemies, allEntities);
 		
 		handleInput();
 	}
 	
 	public void startGame(int level) {
 		
-		enemies.clear(); //Clear all former enemies 
+		allEntities.clear();; //Clear all former enemies 
 		gameObjects.getChildren().clear(); //Clear all former objects
 		
 		if (level == 1) {
@@ -180,7 +182,7 @@ public class GameEngine {
 	}
 
 	public ArrayList<GameObject> getEnemies() {
-		return enemies;
+		return allEntities;
 	}
 
 	public Pane getGameObjects() {
@@ -195,8 +197,8 @@ public class GameEngine {
 		return gameLoop;
 	}
 
-	public void setEnemies(ArrayList<GameObject> enemies) {
-		this.enemies = enemies;
+	public void setEnemies(ArrayList<GameObject> allEntities) {
+		this.allEntities = allEntities;
 	}
 
 	public void setGameObjects(Pane gameObjects) {
