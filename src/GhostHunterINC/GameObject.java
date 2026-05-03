@@ -3,13 +3,32 @@ package GhostHunterINC;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 
-public abstract class GameObject implements Collidable{
+public abstract class GameObject implements Renderable, Movable{
 	protected double x,y;
 	protected boolean visible;
 	protected Shape shape;
+	protected Pane currentPane;
+	
+	@Override
+	public abstract void move(double dt);
 	
 	abstract void update(double dt);
-	abstract void render(Pane pane);
+	
+	@Override
+	public void render(Pane pane) {
+	    this.currentPane = pane;
+	    if (visible) {
+	        if (!pane.getChildren().contains(shape)) 
+	            pane.getChildren().add(shape);
+	        shape.setLayoutX(x);
+	        shape.setLayoutY(y);
+	    } else 
+	        pane.getChildren().remove(shape);
+	}
+	public void removeFromPane() {
+	    if (currentPane != null) 
+	        currentPane.getChildren().remove(shape);
+	}
 	
 	Shape getShape() {
 		return shape;
