@@ -12,7 +12,6 @@ import javafx.util.Duration;
 
 public class GameEngine {
 	
-	private Pane enemies; //Create list for enemies
 	private ArrayList<GameObject> allEntities;
 	private Pane gameObjects;
 	private Scene gameScene;
@@ -35,9 +34,9 @@ public class GameEngine {
 		this.gameObjects = gameObjects;
 		this.gameScene = gameScene;
 		this.hunter = hunter;
-		enemies = new Pane();
+		gameObjects = new Pane();
 		allEntities = new ArrayList<>();
-		levelManager = new LevelManager(enemies, allEntities);
+		levelManager = new LevelManager(gameObjects, allEntities);
 		
 		handleInput();
 	}
@@ -55,22 +54,9 @@ public class GameEngine {
 		hunter = new Hunter();
 		//gameObjects.getChildren().add(hunter.getShape());
 		
-		levelManager.loadEntities()
-		
-		
-		if (level == 1) {
-			
-		}
-		else if (level == 2) {
-			//Load level2
-		}
-		else if (level == 3) {
-			//Load level3
-		}
+		levelManager.loadEntities(level);
 		
 		gameLoop.play();
- 		
-		
 	}
 	
 	public void gameLoop() {
