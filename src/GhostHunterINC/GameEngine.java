@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameEngine {
@@ -18,6 +19,7 @@ public class GameEngine {
 	private Timeline gameLoop;
 	private LevelManager levelManager;
 	private Hunter hunter;
+	private int currentLevel;
 	
 	//Direction keys
 	private boolean isWPressed = false;
@@ -25,6 +27,9 @@ public class GameEngine {
 	private boolean isSPressed = false;
 	private boolean isDPressed = false;
 	
+	public GameEngine() {
+		
+	}
 	
 	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList allEntities) {
 		this.gameObjects = gameObjects;
@@ -37,13 +42,24 @@ public class GameEngine {
 		handleInput();
 	}
 	
-	public void startGame(int level) {
+	public void startGame(int level, Stage stage) {
+		this.currentLevel = currentLevel;
 		
 		allEntities.clear();; //Clear all former enemies 
 		gameObjects.getChildren().clear(); //Clear all former objects
 		
+		gameObjects = new Pane();
+		
+		LevelManager levelManager = new LevelManager(gameObjects, allEntities);
+		
+		hunter = new Hunter();
+		//gameObjects.getChildren().add(hunter.getShape());
+		
+		levelManager.loadEntities()
+		
+		
 		if (level == 1) {
-			//Load level1
+			
 		}
 		else if (level == 2) {
 			//Load level2
