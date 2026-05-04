@@ -17,9 +17,12 @@ public class SceneManager {
 	
 	private Stage stage;
 	private HUDManager hud = new HUDManager(1);
+	private GameEngine gameEngine;
+
 	
-	public SceneManager(Stage stage) {
+	public SceneManager(Stage stage, GameEngine gameEngine) {
 		this.stage = stage;
+		this.gameEngine = gameEngine;
 	}
 	
 	public Scene mainMenu() { //Main menu UI
@@ -90,6 +93,9 @@ public class SceneManager {
 		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
 		
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from Level Selection Menu
+		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage));
+		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage));
+		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage));
 		
 		return new Scene(mainLayout, 500, 500); //Return border pane with scene
 	}
