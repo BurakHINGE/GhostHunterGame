@@ -25,28 +25,33 @@ public class Hunter extends GameObject {
         this.score = 0;
         this.speed = 200; 
         this.visible = true;
-
-        buildHunter();
         this.scanner = new Scanner(this);
+        createHunter();
     }
 
-    private void buildHunter() {
-        body = new Circle(20, Color.ORANGE);
-        hunterShape = new Pane();
-        hunterShape.getChildren().add(body);
+    private void createHunter() {
+        body = new Circle(20, 20, 20, Color.ORANGE);
+        hunterShape = new Pane(body);
+        hunterShape.setPrefSize(40, 40);
         this.shape = body;
     }
 
     @Override
     public void update(double dt) {
-        
+		// TODO Auto-generated method stub
     }
 
     @Override
     public void render(Pane pane) {
-        
+		// TODO Auto-generated method stub
     }
 
+    @Override
+	public void move(double dt) {
+		// TODO Auto-generated method stub
+		
+	}
+    
     public void takeDamage(int amount) {
        
     }
@@ -63,12 +68,6 @@ public class Hunter extends GameObject {
         score += points;
     }
     
-	@Override
-	public void move(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public int getHealth() {
 		return health;
 	}
@@ -101,11 +100,11 @@ public class Hunter extends GameObject {
 		this.scanner = scanner;
 	}
 
-	public Group getHunterShape() {
+	public Pane getHunterShape() {
 		return hunterShape;
 	}
 
-	public void setHunterShape(Group hunterShape) {
+	public void setHunterShape(Pane hunterShape) {
 		this.hunterShape = hunterShape;
 	}
 

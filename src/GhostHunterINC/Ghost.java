@@ -22,19 +22,21 @@ public class Ghost extends ParanormalEntity {
     }
 
     private void createGhost() {
-    	ghostShape = new Pane();
-        Circle head = new Circle(20, Color.WHITE);
-        Circle leftEye  = new Circle(-7, -5, 4, Color.BLACK);
-        Circle rightEye = new Circle( 7, -5, 4, Color.BLACK);
-        Polygon bottom = new Polygon(-20, 0,-20, 20,-10, 10,0, 20,10, 10,20, 20,20, 0);
-        
+    	Circle head = new Circle(20, Color.WHITE);
         head.setOpacity(0.75);
+        head.setCenterX(20);
+        head.setCenterY(20);
+
+        Polygon bottom = new Polygon(0.0, 20.0,0.0, 40.0,10.0, 30.0,20.0, 40.0,30.0, 30.0,40.0, 40.0,40.0, 20.0);
         bottom.setFill(Color.WHITE);
         bottom.setOpacity(0.75);
-        bottom.setLayoutY(10);
         
-        ghostShape.getChildren().addAll(head, bottom, leftEye, rightEye);
-        this.shape = head; 
+        Circle leftEye  = new Circle(13, 15, 4, Color.BLACK);
+        Circle rightEye = new Circle(27, 15, 4, Color.BLACK);
+
+        ghostShape = new Pane(head, bottom, leftEye, rightEye);
+        ghostShape.setPrefSize(40, 50);
+        this.shape = head;
     }
     
     @Override
