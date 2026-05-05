@@ -49,7 +49,7 @@ public class SceneManager {
 		selectLevelButton.setOnAction(e -> stage.setScene(selectLevelMenu())); //Open level selection menu
 		exitButton.setOnAction(e -> System.exit(0)); //Exit to program
 		
-		return new Scene(hud.getHudPane(), 500, 500);	//Return buttons with scene
+		return new Scene(layout, 500, 500);	//Return buttons with scene
 	}
 	
 	Scene selectLevelMenu() { //Level selection menu
