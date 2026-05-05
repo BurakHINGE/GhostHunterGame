@@ -9,14 +9,20 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class SceneManager {
 	
 	private Stage stage;
+	private HUDManager hud = new HUDManager(1);
+	private GameEngine gameEngine;
+
 	
-	public SceneManager(Stage stage) {
+	public SceneManager(Stage stage, GameEngine gameEngine) {
 		this.stage = stage;
+		this.gameEngine = gameEngine;
 	}
 	
 	public Scene mainMenu() { //Main menu UI
@@ -26,8 +32,15 @@ public class SceneManager {
 		Button selectLevelButton = new Button("Select Level");
 		Button exitButton = new Button("Exit");
 		
-		selectLevelButton.setPrefSize(100, 50);
-		exitButton.setPrefSize(100, 50);
+		layout.setStyle("-fx-background-color: lightgray;");
+		selectLevelButton.setStyle("-fx-background-color: magenta;");
+		selectLevelButton.setTextFill(Color.WHITE);
+		selectLevelButton.setFont(new Font(17));
+		selectLevelButton.setPrefSize(120, 50);
+		exitButton.setStyle("-fx-background-color: magenta");
+		exitButton.setTextFill(Color.WHITE);
+		exitButton.setFont(new Font(17));
+		exitButton.setPrefSize(120, 50);
 		
 		layout.getChildren().addAll(selectLevelButton, exitButton);
 		layout.setAlignment(Pos.CENTER); //Align the buttons in the center
@@ -40,7 +53,6 @@ public class SceneManager {
 	}
 	
 	Scene selectLevelMenu() { //Level selection menu
-		
 		BorderPane mainLayout = new BorderPane();
 		
 		VBox centerLayout = new VBox(10);
@@ -51,15 +63,28 @@ public class SceneManager {
 		Button levelMediumButton = new Button("Medium");
 		Button levelHardButton = new Button("Hard");
 		
+		mainLayout.setStyle("-fx-background-color: lightgray");
+		levelEasyButton.setStyle("-fx-background-color: lightgreen");
+		levelEasyButton.setTextFill(Color.WHITE);
+		levelEasyButton.setFont(new Font(18));
 		levelEasyButton.setPrefSize(100, 50);
+		levelMediumButton.setStyle("-fx-background-color: gold");
+		levelMediumButton.setTextFill(Color.WHITE);
+		levelMediumButton.setFont(new Font(15));
 		levelMediumButton.setPrefSize(100, 50);
+		levelHardButton.setStyle("-fx-background-color: darkred");
+		levelHardButton.setTextFill(Color.WHITE);
+		levelHardButton.setFont(new Font(15));
 		levelHardButton.setPrefSize(100, 50);
 		
 		centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);
 		
 		Button returnMainMenuButton = new Button("Main Menu");
 
-		returnMainMenuButton.setPrefSize(100, 50);	
+		returnMainMenuButton.setStyle("-fx-background-color: silver");
+		returnMainMenuButton.setTextFill(Color.WHITE);
+		returnMainMenuButton.setFont(new Font(18));
+		returnMainMenuButton.setPrefSize(120, 50);	
 		
 		mainLayout.setCenter(centerLayout); //Align the VBox in the center of border pane
 		mainLayout.setBottom(returnMainMenuButton); //Align the main menu button in the bottom of border pane
@@ -68,6 +93,9 @@ public class SceneManager {
 		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
 		
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from Level Selection Menu
+		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage));
+		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage));
+		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage));
 		
 		return new Scene(mainLayout, 500, 500); //Return border pane with scene
 	}

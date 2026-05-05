@@ -14,4 +14,10 @@ public class HealthToken extends Token {
 		
 		hunter.heal(heal_amount);
 	}
+
+	@Override
+	void update() {
+		// TODO Auto-generated method stub
+		
+	}
 }

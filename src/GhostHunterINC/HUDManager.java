@@ -20,10 +20,10 @@ public class HUDManager {
 		startUI(level);
 	}
 	
-	private void startUI(int level) {
+	public void startUI(int level) {
 		//Set score and time
 		scoreText = new Text("SCORE : 0");
-		scoreText.setFill(Color.WHITE);
+		scoreText.setFill(Color.BLACK);
 		//score.setFont(Font.loadFont()); Choose a spooky font and set it 
 		//Change the x and y coordinates of score text as you like
 		scoreText.setX(300);
@@ -48,10 +48,10 @@ public class HUDManager {
 				timeText = new Text(String.format("%d:%02d", minutes, seconds));
 		}
 		
-		timeText.setFill(Color.WHITE);
+		timeText.setFill(Color.BLACK);
 		//Change the x and y coordinates of time text as you like
 		timeText.setX(400);
-		timeText.setY(500);
+		timeText.setY(300);
 		
 		//Set health bar
 		Rectangle healthBarOuter = new Rectangle(750,50,40,MAX_HEIGHT);
@@ -104,5 +104,13 @@ public class HUDManager {
 		int second = remainingSeconds % 60;
 		
 		timeText.setText(String.format("%d:%02d", minute, second));
+	}
+	
+	public Pane getHudPane() {
+		return hudPane;
+	}
+
+	public void setHudPane(Pane hudPane) {
+		this.hudPane = hudPane;
 	}
 }
