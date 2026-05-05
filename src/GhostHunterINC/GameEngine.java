@@ -54,7 +54,7 @@ public class GameEngine {
 		hudManager = new HUDManager(level);
 		
 		hunter = new Hunter();
-		//gameObjects.getChildren().add(hunter.getShape());
+		gameObjects.getChildren().add(hunter.getHunterShape());
 		
 		levelManager.loadEntities(level);
 		
