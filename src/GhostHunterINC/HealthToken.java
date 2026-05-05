@@ -1,7 +1,15 @@
 package GhostHunterINC;
 
-public class HealthToken extends Token {
+import javafx.scene.shape.Shape;
 
+public class HealthToken extends Token {
+	double x,y;
+	Shape shape;
+	
+	public HealthToken(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
 	
 	public boolean checkCollision() {
 		//If collides with hunter call applyEffect method.
@@ -19,5 +27,9 @@ public class HealthToken extends Token {
 	void update() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	Shape getShape() {
+		return shape;
 	}
 }
