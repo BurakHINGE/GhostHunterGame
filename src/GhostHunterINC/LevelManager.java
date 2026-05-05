@@ -73,7 +73,7 @@ public class LevelManager {
 		
 	}
 	
-	void startTokenSpawn() {
+	void startTokenSpawn(int level) {
 		//The event thats gonna start on every 5 seconds.
 		KeyFrame frame = new KeyFrame(Duration.seconds(5), e -> {
 			int activeToken = 0;
@@ -86,7 +86,7 @@ public class LevelManager {
 			}
 			
 			if(activeToken < 2) {
-				spawnToken();
+				spawnToken(level);
 			}
 		});
 		
