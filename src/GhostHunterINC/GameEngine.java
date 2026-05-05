@@ -19,6 +19,7 @@ public class GameEngine {
 	private LevelManager levelManager;
 	private Hunter hunter;
 	private int currentLevel;
+	private HUDManager hudManager;
 	
 	//Direction keys
 	private boolean isWPressed = false;
@@ -42,21 +43,46 @@ public class GameEngine {
 	}
 	
 	public void startGame(int level, Stage stage) {
-		this.currentLevel = currentLevel;
+		this.currentLevel = level;
 		
-		allEntities.clear();; //Clear all former enemies 
-		gameObjects.getChildren().clear(); //Clear all former objects
+		this.allEntities = new ArrayList<>();
+		this.gameObjects = new Pane();
 		
 		gameObjects = new Pane();
 		
 		LevelManager levelManager = new LevelManager(gameObjects, allEntities);
+		hudManager = new HUDManager(level);
 		
 		hunter = new Hunter();
 		//gameObjects.getChildren().add(hunter.getShape());
 		
 		levelManager.loadEntities(level);
 		
-		gameLoop.play();
+		Pane levelPane = new Pane();
+		
+		levelPane.getChildren().addAll(gameObjects, hudManager.getHudPane());	
+		
+		gameScene = new Scene(levelPane, 800, 600);
+		
+		handleInput();
+		stage.setScene(gameScene);
+		
+		startTimelineLoop();
+	}
+	
+public void startTimelineLoop() {
+		
+		if (gameLoop != null) {
+			gameLoop.stop();
+		}
+		
+		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
+
+		}));
+
+		gameLoop.setCycleCount(Timeline.INDEFINITE); 
+		
+		gameLoop.play(); 
 	}
 	
 	public void gameLoop() {
