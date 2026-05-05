@@ -118,7 +118,7 @@ public void startTimelineLoop() {
 			}			
 		});
 		
-		gameScene.setOnKeyReleased(e -> { //Deactivate key when released
+		gameScene.setOnKeyReleased(e -> { //Deactivate key when pressed
 			switch (e.getCode()) {
 				case W: {
 					isWPressed = false;
