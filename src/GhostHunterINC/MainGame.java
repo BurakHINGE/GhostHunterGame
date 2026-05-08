@@ -16,15 +16,11 @@ public class MainGame extends Application {
 		ConfigManager config = new ConfigManager();
 		config.loadConfig();
 		
-		
 		Pane gameObjects = new Pane();
 		Scene gameScene = new Scene(gameObjects, primaryStage.getWidth(), primaryStage.getHeight());
 		Hunter hunter = new Hunter(30.0, 30.0, 0.0, 0.0, 0.0, 0.0);
 		ArrayList<GameObject> allEntities = new ArrayList<>();
 		LevelManager levelManager = new LevelManager(gameObjects, allEntities);
-		
-		
-		
 		
 		GameEngine gameEngine = new GameEngine(gameObjects, gameScene, levelManager, hunter, allEntities);
 		
