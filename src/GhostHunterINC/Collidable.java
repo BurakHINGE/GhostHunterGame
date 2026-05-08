@@ -3,6 +3,6 @@ package GhostHunterINC;
 
 public interface Collidable {
 	
-	boolean checkCollision();
+	boolean checkCollision(GameObject other);
 	
 }

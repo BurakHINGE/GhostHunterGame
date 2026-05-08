@@ -38,26 +38,26 @@ public class RangeToken extends Token {
 		this.shape.setTranslateX(this.x);
 		this.shape.setTranslateY(this.y);
 	}
-	
-	@Override
-	public boolean checkCollision() {
-		//If collides with hunter call applyEffect method.
-		return false;
-	}
 
 	@Override
 	void applyEffect(Hunter hunter) {
 		int increase_amount = ConfigManager.getRangeTokenIncrease(); 
 		
 		//Increase the range with the given amount
-		hunter.scanner.expandRange(increase_amount);
+		hunter.getScanner().expandRange(increase_amount);
 		
 	}
 
 	@Override
-	void update(double dt) {
-		// TODO Auto-generated method stub
+	public void update(double dt) {
+		//Increase the time every frame
+		tick++;
 		
+		//Change the size of the token with sin function between 0.9 and 1.1
+		double scale = 1.0 + (Math.sin(tick* 0.1) * 0.1);
+		
+		this.getShape().setScaleX(scale);
+		this.getShape().setScaleY(scale);
 	}
 	
 	public StackPane getShape() {

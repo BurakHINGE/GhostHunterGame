@@ -1,6 +1,8 @@
 package GhostHunterINC;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -30,10 +32,15 @@ public class Hunter extends GameObject {
     }
 
     private void createHunter() {
-        body = new Circle(20, 20, 20, Color.ORANGE);
-        hunterShape = new Pane(body);
-        hunterShape.setPrefSize(40, 40);
-        this.shape = body;
+    	 body = new Circle(20, 20, 20, Color.ORANGE);
+
+    	 Pane hunterPane = new Pane(body);
+    	 hunterPane.setPrefSize(40, 40);
+
+    	 hunterShape = hunterPane;
+    	 
+    	 shape = new StackPane(hunterPane);
+    	 shape.setPrefSize(40, 40);
     }
 
     @Override
@@ -57,7 +64,7 @@ public class Hunter extends GameObject {
     		y = newY;
     	
     	hunterShape.setLayoutX(newX);
-    	hunterShape.setLayoutX(newY);
+    	hunterShape.setLayoutY(newY);
     	
     	scanner.updatePosition();
     	scanner.update(dt);
@@ -73,8 +80,7 @@ public class Hunter extends GameObject {
 
     @Override
 	public void move(double dt) {
-		// TODO Auto-generated method stub
-		
+    	
 	}
     
     public void takeDamage(int amount) {
@@ -216,6 +222,11 @@ public class Hunter extends GameObject {
 
 	public void setMovingRight(boolean movingRight) {
 		this.movingRight = movingRight;
+	}
+
+	@Override
+	public Node getShape() {
+		return hunterShape;
 	}
 	
 

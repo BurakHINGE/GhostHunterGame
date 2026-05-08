@@ -37,12 +37,6 @@ public class EyeToken extends Token {
 	}
 	
 	@Override
-	public boolean checkCollision() {
-		//If collides with hunter call applyEffect method.
-		return false;
-	}
-
-	@Override
 	//Make all the entities visible for given time.
 	void applyEffect(Hunter hunter) {
 		int time = ConfigManager.getEyeTokenDuration();
@@ -51,8 +45,13 @@ public class EyeToken extends Token {
 	}
 
 	@Override
-	void update(double dt) {
-		// TODO Auto-generated method stub
+	public void update(double dt) {
+		tick++;
+		
+		//Angle will go from -15 degrees to 15 degrees slowly
+		double angle = Math.sin(tick * 0.03) * 15;
+		
+		this.getShape().setRotate(angle);
 		
 	}
 

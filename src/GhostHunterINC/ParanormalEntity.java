@@ -86,9 +86,6 @@ public abstract class ParanormalEntity extends GameObject {
 
 	public void setBeingVacuumed(boolean beingVacuumed) {
 		this.beingVacuumed = beingVacuumed;
-	}
-    
-    
-    
+	}   
     
 }

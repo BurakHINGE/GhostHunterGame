@@ -3,7 +3,6 @@ package GhostHunterINC;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Shape;
 
 public class Scanner {
 
@@ -63,9 +62,8 @@ public class Scanner {
     }
 
     public boolean intersects(GameObject entity) {
-    	Shape intersection = Shape.intersect(triangle, entity.getShape());
-        return intersection.getBoundsInLocal().getWidth() > 0;
-        
+    	return this.triangle.getBoundsInParent().intersects(entity.getShape().getBoundsInParent());
+    	
     }
 
     public void expandRange(int pixels) {

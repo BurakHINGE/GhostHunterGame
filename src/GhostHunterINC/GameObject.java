@@ -13,7 +13,7 @@ public abstract class GameObject implements Renderable, Movable, Collidable{
 	@Override
 	public abstract void move(double dt);
 	
-	abstract void update(double dt);
+	public abstract void update(double dt);
 	
 	@Override
 	public void render(Pane pane) {
@@ -53,6 +53,11 @@ public abstract class GameObject implements Renderable, Movable, Collidable{
 	}
 	public void setVisibility(boolean visibility) {
 		this.visible = visibility;
+	}
+	
+	@Override
+	public boolean checkCollision(GameObject other) {
+		return this.getShape().getBoundsInParent().intersects(other.getShape().getBoundsInParent());
 	}
 	
 }

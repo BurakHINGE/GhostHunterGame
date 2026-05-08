@@ -1,13 +1,15 @@
 package GhostHunterINC;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 
 public class Ghost extends ParanormalEntity {
 
-    private Pane ghostShape;
+    private StackPane ghostShape;
     private double areaX, areaY, areaW, areaH;
 
     public Ghost(double x, double y, double areaX, double areaY, double areaW, double areaH) {
@@ -34,9 +36,9 @@ public class Ghost extends ParanormalEntity {
         Circle leftEye  = new Circle(13, 15, 4, Color.BLACK);
         Circle rightEye = new Circle(27, 15, 4, Color.BLACK);
 
-        ghostShape = new Pane(head, bottom, leftEye, rightEye);
+        ghostShape = new StackPane(head, bottom, leftEye, rightEye);
         ghostShape.setPrefSize(40, 50);
-        this.shape = head;
+        this.shape = ghostShape;
     }
     
     @Override
@@ -52,25 +54,22 @@ public class Ghost extends ParanormalEntity {
 
     @Override
     public void render(Pane pane) {
-        this.currentPane = pane;
-        if (visible)
-            if (!pane.getChildren().contains(ghostShape)) 
+    	this.currentPane = pane;
+        if (visible) {
+            if (!pane.getChildren().contains(ghostShape)) {
                 pane.getChildren().add(ghostShape);
-        else 
+            }
+        } else {
             pane.getChildren().remove(ghostShape);
+        }
     }
 
-    @Override
-    public boolean checkCollision() {
-    	// TODO Auto-generated method stub
-        return false;
-    }
 
 	public Pane getGhostShape() {
 		return ghostShape;
 	}
 
-	public void setGhostShape(Pane ghostShape) {
+	public void setGhostShape(StackPane ghostShape) {
 		this.ghostShape = ghostShape;
 	}
 
@@ -104,6 +103,11 @@ public class Ghost extends ParanormalEntity {
 
 	public void setAreaH(double areaH) {
 		this.areaH = areaH;
+	}
+
+	@Override
+	public Node getShape() {
+		return ghostShape;
 	}
     
 }
