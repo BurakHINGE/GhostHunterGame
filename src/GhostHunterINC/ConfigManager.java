@@ -48,7 +48,7 @@ public class ConfigManager {
 	public static int rangeTokenIncrease;
 	public static int eyeTokenDuration;
 	
-	void loadConfig() { //Read configures from config.txt
+	public static void loadConfig() { //Read configures from config.txt
 		try {
 			File conf = new File("config.txt"); //Check file path
 			Scanner output = new Scanner(conf);
