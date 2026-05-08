@@ -26,14 +26,17 @@ public class LevelManager {
 			ghost = ConfigManager.getLevel1Ghosts();
 			wisp = ConfigManager.getLevel1Wisps();
 			ripper = ConfigManager.getLevel1Rippers();
+			break;
 		case 2:
 			ghost = ConfigManager.getLevel2Ghosts();
 			wisp = ConfigManager.getLevel2Wisps();
 			ripper = ConfigManager.getLevel2Rippers();
+			break;
 		case 3:
 			ghost = ConfigManager.getLevel3Ghosts();
 			wisp = ConfigManager.getLevel3Wisps();
 			ripper = ConfigManager.getLevel3Rippers();
+			break;
 	}
 		
 		//Load the entities.
