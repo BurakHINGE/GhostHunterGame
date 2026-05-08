@@ -67,7 +67,7 @@ public class HUDManager {
 		timeText.yProperty().bind(scoreText.yProperty().add(25));
 		
 		//Set health bar
-		Rectangle healthBarOuter = new Rectangle();
+		healthBarOuter = new Rectangle();
 		healthBarOuter.setFill(Color.TRANSPARENT);
 		healthBarOuter.setStroke(Color.BLACK);
 		healthBarOuter.setStrokeWidth(5);
@@ -91,7 +91,7 @@ public class HUDManager {
 		healthLabel.yProperty().bind(healthBarOuter.yProperty().subtract(10));
 		
 		//Set vacuum bar
-		Rectangle vacuumBarOuter = new Rectangle();
+		vacuumBarOuter = new Rectangle();
 		vacuumBarOuter.setFill(Color.TRANSPARENT);
 		vacuumBarOuter.setStroke(Color.BLACK);
 		vacuumBarOuter.setStrokeWidth(5);
