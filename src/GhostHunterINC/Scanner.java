@@ -63,7 +63,7 @@ public class Scanner {
     }
 
     public boolean intersects(GameObject entity) {
-    	Shape intersection = Shape.intersect(triangle, entity.getShape());
+    	Shape intersection = Shape.intersect(triangle, (Shape) entity.getShape());
         return intersection.getBoundsInLocal().getWidth() > 0;
         
     }
