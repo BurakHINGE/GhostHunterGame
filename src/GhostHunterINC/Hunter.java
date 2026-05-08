@@ -38,12 +38,37 @@ public class Hunter extends GameObject {
 
     @Override
     public void update(double dt) {
-		// TODO Auto-generated method stub
+    	
+    	double newX = x;
+    	double newY = y;
+    	
+    	if(movingUp)
+    		newY -= speed * dt;
+    	if(movingDown)
+    		newY += speed * dt;
+    	if(movingRight)
+    		newX += speed * dt;
+    	if(movingLeft)
+    		newX -= speed * dt;
+    	
+    	if (newX - 20 >= areaX && newX + 20 <= areaX + areaW)
+    		x = newX;
+    	if (newY - 20 >= areaY && newY + 20 <= areaY + areaH)
+    		y = newY;
+    	
+    	hunterShape.setLayoutX(newX);
+    	hunterShape.setLayoutX(newY);
+    	
+    	scanner.updatePosition();
+    	scanner.update(dt);
     }
 
     @Override
     public void render(Pane pane) {
-		// TODO Auto-generated method stub
+    	this.currentPane = pane;
+    	if(!pane.getChildren().contains(hunterShape)) 
+    		pane.getChildren().add(hunterShape);
+    	scanner.render(pane);
     }
 
     @Override
@@ -53,15 +78,20 @@ public class Hunter extends GameObject {
 	}
     
     public void takeDamage(int amount) {
-       
+       health -= amount;
+       body.setFill(Color.RED);
+       if (health <= 0)
+    	   health = 0;
     }
 
     public void resetColor() {
-        
+        body.setFill(Color.ORANGE);
     }
 
     public void heal(int amount) {
-       
+       health += amount;
+       if(health > maxHealth)
+    	   health = maxHealth;
     }
 
     public void addScore(int points) {

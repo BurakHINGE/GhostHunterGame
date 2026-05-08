@@ -3,6 +3,7 @@ package GhostHunterINC;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Shape;
 
 public class Scanner {
 
@@ -42,23 +43,45 @@ public class Scanner {
     }
 
     public void updatePosition() {
-    	
+    	double hx = hunter.getX();
+        double hy = hunter.getY();
+        double range = getRange();
+        triangle.getPoints().setAll(hx, hy,hx + range, hy - range / 2, hx + range, hy + range / 2  );
     }
     public void update(double dt) {
-       
+    	if (active) {
+            energy -= decreaseRate * dt;
+            if (energy <= 0) {
+                energy = 0;
+                deactivate();
+            }
+        } else {
+            energy += increaseRate * dt;
+            if (energy > maxEnergy) 
+            	energy = maxEnergy;
+        }
     }
 
     public boolean intersects(GameObject entity) {
-		return false;
+    	Shape intersection = Shape.intersect(triangle, entity.getShape());
+        return intersection.getBoundsInLocal().getWidth() > 0;
         
     }
 
     public void expandRange(int pixels) {
-        
+    	double currentRange = getRange();
+        double newRange = currentRange + pixels;
+
+        double hx = hunter.getX();
+        double hy = hunter.getY();
+
+        triangle.getPoints().setAll(hx, hy,hx + newRange, hy - newRange / 2,hx + newRange, hy + newRange / 2);
     }
 
     private double getRange() {
-		return 0.0;
+    	if (triangle.getPoints().size() < 6) 
+    		return 150; 
+        return triangle.getPoints().get(2) - triangle.getPoints().get(0);
         
     }
 
@@ -68,7 +91,7 @@ public class Scanner {
         }
     }
 
-    public void removeFromPane(Pane pane) {
+    public void remove(Pane pane) {
         pane.getChildren().remove(triangle);
     }
 
