@@ -141,7 +141,7 @@ public class SceneManager {
 		
 		layout.setAlignment(Pos.CENTER);
 		
-//		retryButton.setOnAction(e -> ); Reopen the same level
+		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage)); //Reopen the same level
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu
 		
 		return new Scene(layout, 500, 500);
@@ -163,7 +163,7 @@ public class SceneManager {
 		
 		layout.setAlignment(Pos.CENTER);
 		
-//		retryButton.setOnAction(e -> ); Reopen the same level
+		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage)); //Reopen the same level
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu
 		
 		return new Scene(layout, 500, 500);
