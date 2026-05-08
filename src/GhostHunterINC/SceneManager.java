@@ -109,41 +109,66 @@ public class SceneManager {
 	}
 	
 	Scene selectLevelMenu() { //Level selection menu
-		BorderPane mainLayout = new BorderPane();
 		
-		VBox centerLayout = new VBox(10);
+		StackPane mainPane = new StackPane();
 		
+		Image selectMenuImage = new Image("file:selectMenuPicture.png");
+		ImageView selectMenuView = new ImageView(selectMenuImage);
+		selectMenuView.fitWidthProperty().bind(stage.widthProperty());
+		selectMenuView.fitHeightProperty().bind(stage.heightProperty());
+		selectMenuView.setPreserveRatio(false);
+		
+		VBox centerLayout = new VBox(20);
 		centerLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
 		
 		Button levelEasyButton = new Button("Easy");
 		Button levelMediumButton = new Button("Medium");
 		Button levelHardButton = new Button("Hard");
 		
-		mainLayout.setStyle("-fx-background-color: lightgray");
-		levelEasyButton.setStyle("-fx-background-color: lightgreen");
-		levelEasyButton.setTextFill(Color.WHITE);
-		levelEasyButton.setFont(new Font(18));
-		levelEasyButton.setPrefSize(100, 50);
-		levelMediumButton.setStyle("-fx-background-color: gold");
-		levelMediumButton.setTextFill(Color.WHITE);
-		levelMediumButton.setFont(new Font(15));
-		levelMediumButton.setPrefSize(100, 50);
-		levelHardButton.setStyle("-fx-background-color: darkred");
-		levelHardButton.setTextFill(Color.WHITE);
-		levelHardButton.setFont(new Font(15));
-		levelHardButton.setPrefSize(100, 50);
+		levelEasyButton.setStyle(BUTTON_STYLE);
+		levelMediumButton.setStyle(BUTTON_STYLE);
+		levelHardButton.setStyle(BUTTON_STYLE);
 		
-		centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);
+		levelEasyButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+	    levelMediumButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+	    levelHardButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+
+	    levelEasyButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+	    levelMediumButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+	    levelHardButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
 		Button returnMainMenuButton = new Button("Main Menu");
-
-		returnMainMenuButton.setStyle("-fx-background-color: silver");
-		returnMainMenuButton.setTextFill(Color.WHITE);
-		returnMainMenuButton.setFont(new Font(18));
-		returnMainMenuButton.setPrefSize(120, 50);	
 		
-		mainLayout.setCenter(centerLayout); //Align the VBox in the center of border pane
-		mainLayout.setBottom(returnMainMenuButton); //Align the main menu button in the bottom of border pane
+		returnMainMenuButton.setStyle(BUTTON_STYLE);
+
+		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
+		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+		
+		levelEasyButton.setOnMouseEntered(e -> levelEasyButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	    levelEasyButton.setOnMouseExited(e -> levelEasyButton.setStyle(BUTTON_STYLE));
+	    
+	    levelMediumButton.setOnMouseEntered(e -> levelMediumButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	    levelMediumButton.setOnMouseExited(e -> levelMediumButton.setStyle(BUTTON_STYLE));
+	    
+	    levelHardButton.setOnMouseEntered(e -> levelHardButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	    levelHardButton.setOnMouseExited(e -> levelHardButton.setStyle(BUTTON_STYLE));
+	    
+	    returnMainMenuButton.setOnMouseEntered(e -> returnMainMenuButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	    returnMainMenuButton.setOnMouseExited(e -> returnMainMenuButton.setStyle(BUTTON_STYLE));
+	    
+	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+	        double fontSize = Math.max(12, newVal.doubleValue() / 45); 
+	        String dynamicStyle = BUTTON_STYLE + "-fx-font-size: " + fontSize + "px;";
+	        
+	        levelEasyButton.setStyle(dynamicStyle);
+	        levelMediumButton.setStyle(dynamicStyle);
+	        levelHardButton.setStyle(dynamicStyle);
+	        returnMainMenuButton.setStyle(dynamicStyle);
+	    });
+	    
+	    centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+		
+	    mainPane.getChildren().addAll(selectMenuView, centerLayout);
 		
 		BorderPane.setAlignment(returnMainMenuButton, Pos.CENTER_RIGHT); //Align the main menu button in the right (bottom) of border pane
 		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
@@ -153,7 +178,7 @@ public class SceneManager {
 		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage));
 		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage));
 		
-		return new Scene(mainLayout, 500, 500); //Return border pane with scene
+		return new Scene(mainPane, stage.getWidth(), stage.getHeight()); //Return border pane with scene
 	}
 
 	public Scene stopGamePanel() { //Stopped game menu
