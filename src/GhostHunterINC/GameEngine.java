@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -97,6 +98,7 @@ public class GameEngine {
 		
 		StackPane levelPane = new StackPane();
 		levelPane.getChildren().addAll(this.gameObjects, hudPane);
+		StackPane.setAlignment(this.gameObjects, Pos.TOP_LEFT);
 		
 		this.gameScene = new Scene(levelPane, stage.getWidth(), stage.getHeight());
 		
@@ -200,24 +202,29 @@ public void startTimelineLoop() {
 		
 		double hunterSize = 40.0;
 		
-		double hunterWidth; //Get info from hunter class
-		double hunterHeight; //Get info from hunter class
+		double hunterWidth = 40.0;
+		double hunterHeight = 40.0;
 		
 		//Check the borders
 		if (newX < minX) { 
 			newX = minX;
 		}
-		if (newX + hunterSize < maxX) {
+		if (newX + hunterSize > maxX) {
 			newX = maxX - hunterSize;
 		}
 		if (newY < minY) {
 			newY = minY;
 		}
-		if (newY + hunterSize < maxY) {
+		if (newY + hunterSize > maxY) {
 			newY = maxY - hunterSize;
 		}
 		
 		//Set coordinates for hunter
+		hunter.setX(newX);
+		hunter.setY(newY);
+		
+		hunter.getHunterShape().setLayoutX(newX);
+	    hunter.getHunterShape().setLayoutY(newY);
 		
 	}
 	
