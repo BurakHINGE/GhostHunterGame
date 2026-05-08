@@ -1,6 +1,6 @@
 package GhostHunterINC;
 
-public abstract class ParanormalEntity extends GameObject implements Collidable {
+public abstract class ParanormalEntity extends GameObject {
 
     private double speedX,speedY;
     private int pointValue;
