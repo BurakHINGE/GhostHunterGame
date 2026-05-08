@@ -12,6 +12,9 @@ public class MainGame extends Application {
 
 	public void start(Stage primaryStage) { //Create main stage
 		
+		ConfigManager config = new ConfigManager();
+		config.loadConfig();
+		
 		GameEngine gameEngine = new GameEngine();
 		
 		SceneManager sceneManager = new SceneManager(primaryStage, gameEngine);
