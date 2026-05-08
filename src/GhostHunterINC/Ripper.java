@@ -10,8 +10,7 @@ import javafx.scene.shape.Polygon;
 public class Ripper extends ParanormalEntity {
 
     private Pane ripperShape;
-    private double areaX, areaY, areaW, areaH,rotationAngle;
-    private Pane rotatingRects;
+    private double areaX, areaY, areaW, areaH;
 
     public Ripper(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         super((Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1), (Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1), 20 );
@@ -135,23 +134,5 @@ public class Ripper extends ParanormalEntity {
 	public void setAreaH(double areaH) {
 		this.areaH = areaH;
 	}
-
-	public double getRotationAngle() {
-		return rotationAngle;
-	}
-
-	public void setRotationAngle(double rotationAngle) {
-		this.rotationAngle = rotationAngle;
-	}
-
-	public Pane getRotatingRects() {
-		return rotatingRects;
-	}
-
-	public void setRotatingRects(Pane rotatingRects) {
-		this.rotatingRects = rotatingRects;
-	}
-
-	
 	
 }
