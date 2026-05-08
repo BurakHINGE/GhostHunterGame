@@ -29,7 +29,7 @@ public class GameEngine {
 	private boolean isDPressed = false;
 	
 	public GameEngine() {
-		this.allEntities = allEntities;
+		this.allEntities = new ArrayList<>();
 	}
 	
 	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList allEntities) {
@@ -85,8 +85,6 @@ public class GameEngine {
 		
 		this.levelManager = new LevelManager(this.gameObjects, this.allEntities);
 		this.hudManager = new HUDManager(level);
-
-		//gameObjects.getChildren().add(hunter.getShape());
 		
 		this.levelManager.loadEntities(level);
 		

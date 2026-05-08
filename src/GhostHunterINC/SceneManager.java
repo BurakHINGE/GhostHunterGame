@@ -5,9 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,6 +21,15 @@ public class SceneManager {
 	private Stage stage;
 	private HUDManager hud = new HUDManager(1);
 	private GameEngine gameEngine;
+	private final String BUTTON_STYLE = 
+            "-fx-background-color: rgba(10, 30, 20, 0.8);"
+          + "-fx-border-color: #4dfa9a;"
+          + "-fx-border-width: 2px;"
+          + "-fx-text-fill: #4dfa9a;"
+          + "-fx-font-family: 'Monospaced';"
+          + "-fx-font-weight: bold;"
+          + "-fx-background-radius: 0;"
+          + "-fx-border-radius: 0;";
 
 	
 	public SceneManager(Stage stage, GameEngine gameEngine) {
@@ -27,29 +39,73 @@ public class SceneManager {
 	
 	public Scene mainMenu() { //Main menu UI
 		
-		VBox layout = new VBox(10);
+		StackPane mainPane = new StackPane(); 
 		
+		Image mainMenuImage = new Image("file:mainMenuPicture.png");
+		ImageView mainMenuView = new ImageView(mainMenuImage);
+		
+		mainMenuView.fitWidthProperty().bind(stage.widthProperty());
+		mainMenuView.fitHeightProperty().bind(stage.heightProperty());
+		mainMenuView.setPreserveRatio(false);
+		
+		VBox layout = new VBox(20);
+		layout.setAlignment(Pos.CENTER_RIGHT);
+		layout.setPadding(new Insets(0, 80, 0, 0));
+		
+		Button startGameButton = new Button("Start Hunting");
 		Button selectLevelButton = new Button("Select Level");
 		Button exitButton = new Button("Exit");
 		
-		layout.setStyle("-fx-background-color: lightgray;");
-		selectLevelButton.setStyle("-fx-background-color: magenta;");
-		selectLevelButton.setTextFill(Color.WHITE);
-		selectLevelButton.setFont(new Font(17));
-		selectLevelButton.setPrefSize(120, 50);
-		exitButton.setStyle("-fx-background-color: magenta");
-		exitButton.setTextFill(Color.WHITE);
-		exitButton.setFont(new Font(17));
-		exitButton.setPrefSize(120, 50);
+		startGameButton.setStyle(BUTTON_STYLE);
+		selectLevelButton.setStyle(BUTTON_STYLE);
+		exitButton.setStyle(BUTTON_STYLE);
+
+		//Set button sizes according to stage size
+		startGameButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+        selectLevelButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+        exitButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+
+        startGameButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+        selectLevelButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+        exitButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
-		layout.getChildren().addAll(selectLevelButton, exitButton);
-		layout.setAlignment(Pos.CENTER); //Align the buttons in the center
+		startGameButton.setOnMouseEntered(e -> startGameButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+		startGameButton.setOnMouseExited(e -> startGameButton.setStyle(BUTTON_STYLE));
 		
+		selectLevelButton.setOnMouseEntered(e -> selectLevelButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	    selectLevelButton.setOnMouseExited(e -> selectLevelButton.setStyle(BUTTON_STYLE));
+	    
+	    exitButton.setOnMouseEntered(e -> exitButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	    exitButton.setOnMouseExited(e -> exitButton.setStyle(BUTTON_STYLE));
+	    
+	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+	        double fontSize = Math.max(12, newVal.doubleValue() / 45); 
+
+	        String dynamicStyle = BUTTON_STYLE + "-fx-font-size: " + fontSize + "px;";
+	        
+	        startGameButton.setStyle(dynamicStyle);
+	        selectLevelButton.setStyle(dynamicStyle);
+	        exitButton.setStyle(dynamicStyle);
+
+	        startGameButton.setOnMouseEntered(e -> startGameButton.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	        startGameButton.setOnMouseExited(e -> startGameButton.setStyle(dynamicStyle));
+	        
+	        selectLevelButton.setOnMouseEntered(e -> selectLevelButton.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	        selectLevelButton.setOnMouseExited(e -> selectLevelButton.setStyle(dynamicStyle));
+	        
+	        exitButton.setOnMouseEntered(e -> exitButton.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	        exitButton.setOnMouseExited(e -> exitButton.setStyle(dynamicStyle));
+	    });
 		
+		layout.getChildren().addAll(startGameButton, selectLevelButton, exitButton);
+		
+		mainPane.getChildren().addAll(mainMenuView, layout);
+		
+		//startGameButton.setOnAction(e -> );
 		selectLevelButton.setOnAction(e -> stage.setScene(selectLevelMenu())); //Open level selection menu
 		exitButton.setOnAction(e -> System.exit(0)); //Exit to program
 		
-		return new Scene(layout, 500, 500);	//Return buttons with scene
+		return new Scene(mainPane, stage.getWidth(), stage.getHeight());	//Return buttons with scene
 	}
 	
 	Scene selectLevelMenu() { //Level selection menu
