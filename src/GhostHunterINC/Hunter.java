@@ -63,8 +63,8 @@ public class Hunter extends GameObject {
     	if (newY - 20 >= areaY && newY + 20 <= areaY + areaH)
     		y = newY;
     	
-    	hunterShape.setLayoutX(newX);
-    	hunterShape.setLayoutY(newY);
+    	hunterShape.setLayoutX(x);
+    	hunterShape.setLayoutY(y);
     	
     	scanner.updatePosition();
     	scanner.update(dt);
