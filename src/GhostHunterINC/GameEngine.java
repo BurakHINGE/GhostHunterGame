@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -32,7 +33,7 @@ public class GameEngine {
 		this.allEntities = new ArrayList<>();
 	}
 	
-	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList allEntities) {
+	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList<GameObject> allEntities) {
 		this.gameObjects = gameObjects;
 		this.gameScene = gameScene;
 		this.hunter = hunter;
@@ -88,10 +89,14 @@ public class GameEngine {
 		
 		this.levelManager.loadEntities(level);
 		
-		Pane levelPane = new Pane();
-		levelPane.getChildren().addAll(this.gameObjects, this.hudManager.getHudPane());
+		Pane hudPane = this.hudManager.getHudPane();
+		hudPane.prefWidthProperty().bind(stage.widthProperty());
+		hudPane.prefHeightProperty().bind(stage.heightProperty());
 		
-		this.gameScene = new Scene(levelPane, 500, 500);
+		StackPane levelPane = new StackPane();
+		levelPane.getChildren().addAll(this.gameObjects, hudPane);
+		
+		this.gameScene = new Scene(levelPane, stage.getWidth(), stage.getHeight());
 		
 		handleInput();
 		stage.setScene(this.gameScene);
