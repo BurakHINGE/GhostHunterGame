@@ -27,23 +27,23 @@ public class HealthToken extends Token {
 		this.shape.setTranslateX(this.x);
 		this.shape.setTranslateY(this.y);
 	}
-	
-	public boolean checkCollision() {
-		//If collides with hunter call applyEffect method.
-		//TODO
-	}
-	
+
 	public void applyEffect(Hunter hunter) {
 		//Change the getMaxHealth method with the correct one after its implemented
-		int heal_amount = ConfigManager.getMaxHealth();
+		int heal_amount = ConfigManager.getHealthTokenIncrease();
 		
 		hunter.heal(heal_amount);
 	}
 
 	@Override
-	void update(double dt) {
-		// TODO Auto-generated method stub
+	public void update(double dt) {
+		//Increase the time every frame
+		tick++;
 		
+		//Sin function gave us a smooth curve 
+		double changeY = Math.sin(tick * 0.05) * 5;
+		
+		this.getShape().setTranslateY(this.y + changeY);
 	}
 	
 	public Node getShape() {
@@ -55,5 +55,7 @@ public class HealthToken extends Token {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }
