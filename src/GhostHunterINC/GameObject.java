@@ -1,12 +1,13 @@
 package GhostHunterINC;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
+import javafx.scene.layout.StackPane;
+import javafx.scene.Node;
 
-public abstract class GameObject implements Renderable, Movable{
+public abstract class GameObject implements Renderable, Movable, Collidable{
 	protected double x,y;
 	protected boolean visible;
-	protected Shape shape;
+	protected StackPane shape;
 	protected Pane currentPane;
 	
 	@Override
@@ -30,9 +31,7 @@ public abstract class GameObject implements Renderable, Movable{
 	        currentPane.getChildren().remove(shape);
 	}
 	
-	Shape getShape() {
-		return shape;
-	}
+	public abstract Node getShape();
 
 	public double getX() {
 		return x;
