@@ -26,7 +26,6 @@ public class SceneManager {
 	}
 	
 	public Scene mainMenu() { //Main menu UI
-		
 		VBox layout = new VBox(10);
 		
 		Button selectLevelButton = new Button("Select Level");
