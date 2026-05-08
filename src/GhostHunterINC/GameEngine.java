@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -28,7 +29,7 @@ public class GameEngine {
 	private boolean isDPressed = false;
 	
 	public GameEngine() {
-		
+		this.allEntities = allEntities;
 	}
 	
 	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList allEntities) {
@@ -46,26 +47,58 @@ public class GameEngine {
 		this.currentLevel = level;
 		
 		this.allEntities = new ArrayList<>();
+		
 		this.gameObjects = new Pane();
 		
-		gameObjects = new Pane();
+		double areaX;
+		double areaY;
+		double areaW;
+		double areaH;
 		
-		LevelManager levelManager = new LevelManager(gameObjects, allEntities);
-		hudManager = new HUDManager(level);
+		//Get special area informations
+		if (level == 1) {
+			areaX = ConfigManager.getLevel1PlayableAreaX();
+			areaY = ConfigManager.getLevel1PlayableAreaY();
+			areaW = ConfigManager.getLevel1PlayableAreaWidth();
+			areaH = ConfigManager.getLevel1PlayableAreaHeight();
+		}
+		else if (level == 2) {
+			areaX = ConfigManager.getLevel2PlayableAreaX();
+			areaY = ConfigManager.getLevel2PlayableAreaY();
+			areaW = ConfigManager.getLevel2PlayableAreaWidth();
+			areaH = ConfigManager.getLevel2PlayableAreaHeight();
+		}
+		else { //Level 3
+			areaX = ConfigManager.getLevel3PlayableAreaX();
+			areaY = ConfigManager.getLevel3PlayableAreaY();
+			areaW = ConfigManager.getLevel3PlayableAreaWidth();
+			areaH = ConfigManager.getLevel3PlayableAreaHeight();
+		}
 		
-		hunter = new Hunter();
+		//Set hunter's start position
+		double startX = areaX + (areaW / 2);
+		double startY = areaY + (areaH / 2);
+		
+		this.hunter = new Hunter(startX, startY, areaX, areaY, areaW, areaH);
+		
+		this.gameObjects.getChildren().add(this.hunter.getHunterShape());
+		
+		this.levelManager = new LevelManager(this.gameObjects, this.allEntities);
+		this.hudManager = new HUDManager(level);
+
 		//gameObjects.getChildren().add(hunter.getShape());
 		
-		levelManager.loadEntities(level);
+		this.levelManager.loadEntities(level);
 		
 		Pane levelPane = new Pane();
+		levelPane.getChildren().addAll(this.gameObjects, this.hudManager.getHudPane());
 		
-		levelPane.getChildren().addAll(gameObjects, hudManager.getHudPane());	
-		
-		gameScene = new Scene(levelPane, 800, 600);
+		this.gameScene = new Scene(levelPane, 500, 500);
 		
 		handleInput();
-		stage.setScene(gameScene);
+		stage.setScene(this.gameScene);
+		
+		levelPane.requestFocus();
 		
 		startTimelineLoop();
 	}
@@ -77,21 +110,12 @@ public void startTimelineLoop() {
 		}
 		
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
-
+			hunterMovement();
 		}));
 
 		gameLoop.setCycleCount(Timeline.INDEFINITE); 
 		
 		gameLoop.play(); 
-	}
-	
-	public void gameLoop() {
-		
-		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
-			//Add hunter movements
-		}));
-		
-		
 	}
 	
 	public void handleInput() {
@@ -141,34 +165,13 @@ public void startTimelineLoop() {
 		});
 	}
 	
-	public void hunterMovement(int level) {
+	public void hunterMovement() {
 		
 		double speed = 5.0;
 		
 		//Dynamic coordinates
-		double newX; //Get info from hunter class
-		double newY; //Get info from hunter class
-		
-		//Fixed coordinates
-		double minX;
-		double minY;
-		double maxX;
-		double maxY;
-		
-		
-		//Set minX and minY according to configManager
-		if (level == 1) {
-			minX = ConfigManager.getLevel1PlayableAreaX();
-			minY = ConfigManager.getLevel1PlayableAreaY();
-		}
-		else if (level == 2) {
-			minX = ConfigManager.getLevel2PlayableAreaX();
-			minY = ConfigManager.getLevel2PlayableAreaY();
-		}
-		else if (level == 3) {
-			minX = ConfigManager.getLevel3PlayableAreaX();
-			minY = ConfigManager.getLevel3PlayableAreaY();
-		}
+		double newX = hunter.getX();
+		double newY = hunter.getY();
 		
 		//Movement
 		if (isWPressed) {
@@ -184,6 +187,14 @@ public void startTimelineLoop() {
 			newX += speed;
 		}
 		
+		//Fixed coordinates
+		double minX = hunter.getAreaX();
+		double minY = hunter.getAreaY();
+		double maxX = hunter.getAreaX() + hunter.getAreaW();
+		double maxY = hunter.getAreaY() + hunter.getAreaH();
+		
+		double hunterSize = 40.0;
+		
 		double hunterWidth; //Get info from hunter class
 		double hunterHeight; //Get info from hunter class
 		
@@ -191,14 +202,14 @@ public void startTimelineLoop() {
 		if (newX < minX) { 
 			newX = minX;
 		}
-		if (newX + hunterWidth < maxX) {
-			newX = maxX - hunterWidth;
+		if (newX + hunterSize < maxX) {
+			newX = maxX - hunterSize;
 		}
 		if (newY < minY) {
 			newY = minY;
 		}
-		if (newY + hunterHeight < maxY) {
-			newY = maxY - hunterHeight;
+		if (newY + hunterSize < maxY) {
+			newY = maxY - hunterSize;
 		}
 		
 		//Set coordinates for hunter
@@ -224,6 +235,10 @@ public void startTimelineLoop() {
 	public Timeline getGameLoop() {
 		return gameLoop;
 	}
+	
+	public int getCurrentLevel() {
+		return currentLevel;
+	}
 
 	public void setEnemies(ArrayList<GameObject> allEntities) {
 		this.allEntities = allEntities;
@@ -239,5 +254,9 @@ public void startTimelineLoop() {
 
 	public void setGameLoop(Timeline gameLoop) {
 		this.gameLoop = gameLoop;
+	}
+	
+	public void setCurrentLevel(int currentLevel) {
+		this.currentLevel = currentLevel;
 	}
 }
