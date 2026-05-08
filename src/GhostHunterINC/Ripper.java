@@ -1,14 +1,15 @@
 package GhostHunterINC;
 
-import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 
 public class Ripper extends ParanormalEntity {
 
-    private Group ripperShape;
+    private Pane ripperShape;
     private double areaX, areaY, areaW, areaH;
 
     public Ripper(double x, double y, double areaX, double areaY, double areaW, double areaH) {
@@ -19,39 +20,48 @@ public class Ripper extends ParanormalEntity {
         this.areaY = areaY;
         this.areaW = areaW;
         this.areaH = areaH;
-
+        
         createRipper();
     }
 
     private void createRipper() {
-        Polygon spikes = new Polygon();
-        int numSpikes = 12;
-        double outerRadius = 30;
-        double innerRadius = 18; 
+    	 Polygon spikes = new Polygon();
+    	 
+    	 int numOfSpikes = 12;
+    	 double outerRadius = 30;
+    	 double innerRadius = 18;
+    	 double cx = 35;
+    	 double cy = 35;
+    	 double radius = 0;
+    	 
+    	 for (int i = 0; i < numOfSpikes * 2; i++) {
+    		 double angle = Math.PI / numOfSpikes * i - Math.PI / 2;
+    		 
+    		 if (i % 2 == 0)
+    			 radius = outerRadius;
+    		 else
+    			 radius = innerRadius;
+    		 
+    	     spikes.getPoints().addAll(cx + Math.cos(angle) * radius,cy + Math.sin(angle) * radius);
+    	 }
+    	 spikes.setFill(Color.PURPLE);
 
-        for (int i = 0; i < numSpikes * 2; i++) {
-            double angle = Math.PI / numSpikes * i - Math.PI / 2;
-            double radius = (i % 2 == 0) ? outerRadius : innerRadius;
-            spikes.getPoints().addAll(
-                Math.cos(angle) * radius,
-                Math.sin(angle) * radius
-            );
-        }
-        spikes.setFill(Color.PURPLE);
+    	 Circle body = new Circle(cx, cy, 15, Color.web("#6A0DAD"));
+    	    
+    	 Circle leftEye = new Circle(cx - 5, cy - 2, 5, Color.BLACK);
+    	 Circle rightEye = new Circle(cx + 5, cy - 2, 5, Color.BLACK);
+    	    
+    	 Circle leftPupil = new Circle(cx - 5, cy - 2, 2, Color.RED);
+    	 Circle rightPupil = new Circle(cx + 5, cy - 2, 2, Color.RED);
 
-      
-        Circle body = new Circle(15, Color.web("#6A0DAD")); 
 
-       
-        Circle leftEye  = new Circle(-5, -2, 5, Color.BLACK);
-        Circle rightEye = new Circle( 5, -2, 5, Color.BLACK);
+    	 Pane ripperPane = new Pane(spikes, body, leftEye, rightEye, leftPupil, rightPupil);
+    	 ripperPane.setPrefSize(70, 70);
 
-        
-        Circle leftPupil  = new Circle(-5, -2, 2, Color.RED);
-        Circle rightPupil = new Circle( 5, -2, 2, Color.RED);
-
-        ripperShape = new Group(spikes, body, leftEye, rightEye, leftPupil, rightPupil);
-        this.shape = body; 
+    	 ripperShape = ripperPane;
+    	 shape = new StackPane(ripperPane);
+    	 shape.setPrefSize(70, 70);
+    	    
     }
 
     @Override
@@ -79,8 +89,50 @@ public class Ripper extends ParanormalEntity {
         }
     }
 
-    @Override
-    public boolean checkCollision() {
-        return false;
-    }
+
+	@Override
+	public Node getShape() {
+		return ripperShape;
+	}
+
+	public Pane getRipperShape() {
+		return ripperShape;
+	}
+
+	public void setRipperShape(Pane ripperShape) {
+		this.ripperShape = ripperShape;
+	}
+
+	public double getAreaX() {
+		return areaX;
+	}
+
+	public void setAreaX(double areaX) {
+		this.areaX = areaX;
+	}
+
+	public double getAreaY() {
+		return areaY;
+	}
+
+	public void setAreaY(double areaY) {
+		this.areaY = areaY;
+	}
+
+	public double getAreaW() {
+		return areaW;
+	}
+
+	public void setAreaW(double areaW) {
+		this.areaW = areaW;
+	}
+
+	public double getAreaH() {
+		return areaH;
+	}
+
+	public void setAreaH(double areaH) {
+		this.areaH = areaH;
+	}
+	
 }

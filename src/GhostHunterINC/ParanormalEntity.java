@@ -40,7 +40,6 @@ public abstract class ParanormalEntity extends GameObject {
     public void makeVisible() {
         visible = true;
         shape.setOpacity(1.0);
-        shape.setStyle("-fx-fill: rgba(200, 200, 200, 0.8);");
     }
 
     public void makeInvisible() {
@@ -86,9 +85,6 @@ public abstract class ParanormalEntity extends GameObject {
 
 	public void setBeingVacuumed(boolean beingVacuumed) {
 		this.beingVacuumed = beingVacuumed;
-	}
-    
-    
-    
+	}   
     
 }
