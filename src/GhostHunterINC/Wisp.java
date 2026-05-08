@@ -57,6 +57,7 @@ public class Wisp extends ParanormalEntity {
         Pane wispPane = new Pane(outerGlow, middleGlow, innerGlow, rotatingRects, core, leftEye, rightEye);
         wispPane.setPrefSize(100, 100);
 
+        wispShape = wispPane;
         shape = new StackPane(wispPane);
         shape.setPrefSize(100, 100);
     }
@@ -81,19 +82,17 @@ public class Wisp extends ParanormalEntity {
 
     @Override
     public void render(Pane pane) {
-       this.currentPane = pane;
-       if(visible) {
-    	   if(!pane.getChildren().contains(wispShape)) 
-    		   pane.getChildren().add(wispShape);
-    	   else
-    		   pane.getChildren().remove(wispShape);
-       }
+    	this.currentPane = pane;
+        if (visible) {
+            if (!pane.getChildren().contains(wispShape)) {
+                pane.getChildren().add(wispShape);
+            }
+        } else {
+            pane.getChildren().remove(wispShape);
+        }
     }
 
-    @Override
-    public boolean checkCollision() {
-        return false;
-    }
+   
     @Override
 	public Node getShape() {
 

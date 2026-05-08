@@ -54,19 +54,16 @@ public class Ghost extends ParanormalEntity {
 
     @Override
     public void render(Pane pane) {
-        this.currentPane = pane;
-        if (visible)
-            if (!pane.getChildren().contains(ghostShape)) 
+    	this.currentPane = pane;
+        if (visible) {
+            if (!pane.getChildren().contains(ghostShape)) {
                 pane.getChildren().add(ghostShape);
-        else 
+            }
+        } else {
             pane.getChildren().remove(ghostShape);
+        }
     }
 
-    @Override
-    public boolean checkCollision() {
-    	// TODO Auto-generated method stub
-        return false;
-    }
 
 	public Pane getGhostShape() {
 		return ghostShape;

@@ -37,6 +37,8 @@ public class Hunter extends GameObject {
     	 Pane hunterPane = new Pane(body);
     	 hunterPane.setPrefSize(40, 40);
 
+    	 hunterShape = hunterPane;
+    	 
     	 shape = new StackPane(hunterPane);
     	 shape.setPrefSize(40, 40);
     }
@@ -62,7 +64,7 @@ public class Hunter extends GameObject {
     		y = newY;
     	
     	hunterShape.setLayoutX(newX);
-    	hunterShape.setLayoutX(newY);
+    	hunterShape.setLayoutY(newY);
     	
     	scanner.updatePosition();
     	scanner.update(dt);
@@ -220,12 +222,6 @@ public class Hunter extends GameObject {
 
 	public void setMovingRight(boolean movingRight) {
 		this.movingRight = movingRight;
-	}
-
-	@Override
-	public boolean checkCollision() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

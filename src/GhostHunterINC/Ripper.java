@@ -1,6 +1,5 @@
 package GhostHunterINC;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -10,7 +9,7 @@ import javafx.scene.shape.Polygon;
 
 public class Ripper extends ParanormalEntity {
 
-    private Group ripperShape;
+    private Pane ripperShape;
     private double areaX, areaY, areaW, areaH,rotationAngle;
     private Pane rotatingRects;
 
@@ -60,8 +59,10 @@ public class Ripper extends ParanormalEntity {
     	 Pane ripperPane = new Pane(spikes, body, leftEye, rightEye, leftPupil, rightPupil);
     	 ripperPane.setPrefSize(70, 70);
 
-    	    shape = new StackPane(ripperPane);
-    	    shape.setPrefSize(70, 70);
+    	 ripperShape = ripperPane;
+    	 shape = new StackPane(ripperPane);
+    	 shape.setPrefSize(70, 70);
+    	    
     }
 
     @Override
@@ -89,21 +90,17 @@ public class Ripper extends ParanormalEntity {
         }
     }
 
-    @Override
-    public boolean checkCollision() {
-        return false;
-    }
 
 	@Override
 	public Node getShape() {
 		return ripperShape;
 	}
 
-	public Group getRipperShape() {
+	public Pane getRipperShape() {
 		return ripperShape;
 	}
 
-	public void setRipperShape(Group ripperShape) {
+	public void setRipperShape(Pane ripperShape) {
 		this.ripperShape = ripperShape;
 	}
 
