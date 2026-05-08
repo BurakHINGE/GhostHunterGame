@@ -14,7 +14,7 @@ public class HealthToken extends Token {
 		this.y = y;
 		
 		Circle background = new Circle(15);
-		background.setFill(Color.GREEN);
+		background.setFill(Color.PINK);
 		background.setStroke(Color.BLACK);
 		background.setStrokeWidth(2);
 		

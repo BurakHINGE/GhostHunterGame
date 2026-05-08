@@ -14,7 +14,7 @@ public class EyeToken extends Token {
 		this.y = y;
 		
 		Circle background = new Circle(15);
-		background.setFill(Color.AQUA);
+		background.setFill(Color.DARKGREEN);
 		background.setStroke(Color.BLACK);
 		background.setStrokeWidth(2);
 		
