@@ -89,6 +89,8 @@ public class GameEngine {
 		
 		this.levelManager.loadEntities(level);
 		
+		this.levelManager.startTokenSpawn(level);
+		
 		Pane hudPane = this.hudManager.getHudPane();
 		hudPane.prefWidthProperty().bind(stage.widthProperty());
 		hudPane.prefHeightProperty().bind(stage.heightProperty());
