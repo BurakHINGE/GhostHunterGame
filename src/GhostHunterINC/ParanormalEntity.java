@@ -5,7 +5,7 @@ public abstract class ParanormalEntity extends GameObject {
     private double speedX,speedY;
     private int pointValue;
     private double scale;
-    private boolean beingVacuumed;
+    private boolean beingVacuumed,captured;
 
     public ParanormalEntity(double speedX, double speedY, int pointValue) {
         this.speedX = speedX;
@@ -32,19 +32,32 @@ public abstract class ParanormalEntity extends GameObject {
     public void vacuumEffect(double dt) {
         if (scale > 0) {
             scale -= 0.5 * dt;
-            shape.setScaleX(scale);
-            shape.setScaleY(scale);
+            if (scale < 0)
+            	scale = 0;
+            sPane.setScaleX(scale);
+            sPane.setScaleY(scale);
+        } else {
+        	captured = true;
+        	visible = false;			
         }
     }
 
-    public void makeVisible() {
+    public boolean isCaptured() {
+		return captured;
+	}
+
+	public void setCaptured(boolean captured) {
+		this.captured = captured;
+	}
+
+	public void makeVisible() {
         visible = true;
-        shape.setOpacity(1.0);
+        sPane.setOpacity(1.0);
     }
 
     public void makeInvisible() {
         visible = false;
-        shape.setOpacity(0.0);
+        sPane.setOpacity(0.0);
     }
 
 	public double getSpeedX() {

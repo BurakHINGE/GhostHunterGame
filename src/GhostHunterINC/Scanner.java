@@ -10,6 +10,7 @@ public class Scanner {
     private Hunter hunter;
     private double energy,maxEnergy,decreaseRate,increaseRate;
     private boolean active;
+    public static final double RANGE = 150;
     
     public Scanner(Hunter hunter) {
         this.hunter = hunter;
@@ -77,10 +78,9 @@ public class Scanner {
     }
 
     private double getRange() {
-    	if (triangle.getPoints().size() < 6) 
-    		return 150; 
+        if (triangle.getPoints().size() < 6) 
+            return RANGE; 
         return triangle.getPoints().get(2) - triangle.getPoints().get(0);
-        
     }
 
     public void render(Pane pane) {

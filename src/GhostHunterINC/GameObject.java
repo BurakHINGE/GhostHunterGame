@@ -7,7 +7,7 @@ import javafx.scene.Node;
 public abstract class GameObject implements Renderable, Movable, Collidable{
 	protected double x,y;
 	protected boolean visible;
-	protected StackPane shape;
+	protected StackPane sPane;
 	protected Pane currentPane;
 	
 	@Override
@@ -19,16 +19,16 @@ public abstract class GameObject implements Renderable, Movable, Collidable{
 	public void render(Pane pane) {
 	    this.currentPane = pane;
 	    if (visible) {
-	        if (!pane.getChildren().contains(shape)) 
-	            pane.getChildren().add(shape);
-	        shape.setLayoutX(x);
-	        shape.setLayoutY(y);
+	        if (!pane.getChildren().contains(sPane)) 
+	            pane.getChildren().add(sPane);
+	        sPane.setLayoutX(x);
+	        sPane.setLayoutY(y);
 	    } else 
-	        pane.getChildren().remove(shape);
+	        pane.getChildren().remove(sPane);
 	}
 	public void removeFromPane() {
 	    if (currentPane != null) 
-	        currentPane.getChildren().remove(shape);
+	        currentPane.getChildren().remove(sPane);
 	}
 	
 	public abstract Node getShape();
