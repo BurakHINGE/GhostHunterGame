@@ -7,14 +7,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Hunter extends GameObject {
-
-    private int health,maxHealth,score;
-    private double areaX, areaY, areaW, areaH,speed;
+ 
+    private int health, maxHealth, score;
+    private double areaX, areaY, areaW, areaH, speed;
     private boolean movingUp, movingDown, movingLeft, movingRight;
     private Scanner scanner;
     private Pane hunterShape;
     private Circle body;
-
+ 
     public Hunter(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         this.x = x;
         this.y = y;
@@ -22,89 +22,60 @@ public class Hunter extends GameObject {
         this.areaY = areaY;
         this.areaW = areaW;
         this.areaH = areaH;
-        this.maxHealth = ConfigManager.getMaxHealth();
+        this.maxHealth = 100;
         this.health = maxHealth;
         this.score = 0;
-        this.speed = 200; 
+        this.speed = 200;
         this.visible = true;
         this.scanner = new Scanner(this);
         createHunter();
     }
-
+ 
     private void createHunter() {
-    	 body = new Circle(20, 20, 20, Color.ORANGE);
-
-    	 Pane hunterPane = new Pane(body);
-    	 hunterPane.setPrefSize(40, 40);
-
-    	 hunterShape = hunterPane;
-    	 
-    	 shape = new StackPane(hunterPane);
-    	 shape.setPrefSize(40, 40);
+        body = new Circle(20, 20, 20, Color.ORANGE);
+        Pane hunterPane = new Pane(body);
+        hunterPane.setPrefSize(40, 40);
+        hunterShape = hunterPane;
+        sPane = new StackPane(hunterPane);
+        sPane.setPrefSize(40, 40);
     }
-
+ 
     @Override
     public void update(double dt) {
-    	
-    	double newX = x;
-    	double newY = y;
-    	
-    	if(movingUp)
-    		newY -= speed * dt;
-    	if(movingDown)
-    		newY += speed * dt;
-    	if(movingRight)
-    		newX += speed * dt;
-    	if(movingLeft)
-    		newX -= speed * dt;
-    	
-    	if (newX - 20 >= areaX && newX + 20 <= areaX + areaW)
-    		x = newX;
-    	if (newY - 20 >= areaY && newY + 20 <= areaY + areaH)
-    		y = newY;
-    	
-    	hunterShape.setLayoutX(x);
-    	hunterShape.setLayoutY(y);
-    	
-    	scanner.updatePosition();
-    	scanner.update(dt);
+        scanner.update(dt);
     }
-
+ 
     @Override
     public void render(Pane pane) {
-    	this.currentPane = pane;
-    	if(!pane.getChildren().contains(hunterShape)) 
-    		pane.getChildren().add(hunterShape);
-    	scanner.render(pane);
+        this.currentPane = pane;
+        if (!pane.getChildren().contains(hunterShape))
+            pane.getChildren().add(hunterShape);
+        scanner.render(pane);
     }
-
+ 
     @Override
-	public void move(double dt) {
-    	
-	}
-    
+    public void move(double dt) {}
+ 
     public void takeDamage(int amount) {
-       health -= amount;
-       body.setFill(Color.RED);
-       if (health <= 0)
-    	   health = 0;
+        health -= amount;
+        body.setFill(Color.RED);
+        if (health <= 0) health = 0;
     }
-
+ 
     public void resetColor() {
         body.setFill(Color.ORANGE);
     }
-
+ 
     public void heal(int amount) {
-       health += amount;
-       if(health > maxHealth)
-    	   health = maxHealth;
+        health += amount;
+        if (health > maxHealth) health = maxHealth;
     }
-
+ 
     public void addScore(int points) {
         score += points;
     }
-    
-	public int getHealth() {
+ 
+    public int getHealth() {
 		return health;
 	}
 
@@ -126,30 +97,6 @@ public class Hunter extends GameObject {
 
 	public void setScore(int score) {
 		this.score = score;
-	}
-
-	public Scanner getScanner() {
-		return scanner;
-	}
-
-	public void setScanner(Scanner scanner) {
-		this.scanner = scanner;
-	}
-
-	public Pane getHunterShape() {
-		return hunterShape;
-	}
-
-	public void setHunterShape(Pane hunterShape) {
-		this.hunterShape = hunterShape;
-	}
-
-	public Circle getBody() {
-		return body;
-	}
-
-	public void setBody(Circle body) {
-		this.body = body;
 	}
 
 	public double getAreaX() {
@@ -224,10 +171,33 @@ public class Hunter extends GameObject {
 		this.movingRight = movingRight;
 	}
 
-	@Override
-	public Node getShape() {
+	public Scanner getScanner() {
+		return scanner;
+	}
+
+	public void setScanner(Scanner scanner) {
+		this.scanner = scanner;
+	}
+
+	public Pane getHunterShape() {
 		return hunterShape;
 	}
-	
 
+	public void setHunterShape(Pane hunterShape) {
+		this.hunterShape = hunterShape;
+	}
+
+	public Circle getBody() {
+		return body;
+	}
+
+	public void setBody(Circle body) {
+		this.body = body;
+	}
+
+	@Override
+    public Node getShape() { 
+    	return hunterShape; 
+    	}
 }
+ 

@@ -1,5 +1,6 @@
 package GhostHunterINC;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -8,104 +9,81 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class Wisp extends ParanormalEntity {
-
-    private Pane wispShape,rotatingRects;
-    private double areaX, areaY, areaW, areaH,rotationAngle;
-
+    
+    private double areaX, areaY, areaW, areaH, rotationAngle;
+    private Group rotatingRects;
+ 
     public Wisp(double x, double y, double areaX, double areaY, double areaW, double areaH) {
-        super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),30);
+        super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1), 30);
         this.x = x;
         this.y = y;
         this.areaX = areaX;
         this.areaY = areaY;
         this.areaW = areaW;
         this.areaH = areaH;
-
+        
         createWisp();
     }
-
+ 
     private void createWisp() {
-    	double cx = 50, cy = 50;
-
-        Circle outerGlow = new Circle(cx, cy, 40, Color.web("#FF4500", 0.2));
-        Circle middleGlow = new Circle(cx, cy, 28, Color.web("#FF4500", 0.4));
-        Circle innerGlow = new Circle(cx, cy, 18, Color.web("#FF6347", 0.7));
-        Circle core = new Circle(cx, cy, 10, Color.web("#FF0000", 1.0));
-
-        Circle leftEye = new Circle(cx - 4, cy - 2, 4, Color.BLACK);
-        Circle rightEye = new Circle(cx + 4, cy - 2, 4, Color.BLACK);
-
-        rotatingRects = new Pane();
+        double centerX = 50, centerY = 50;
+        Circle glow  = new Circle(centerX, centerY, 18, Color.RED);
+        glow.setOpacity(0.7);
+        Circle core = new Circle(centerX, centerY, 10, Color.RED);
+        Circle leftEye = new Circle(centerX - 4, centerY - 2, 4, Color.YELLOW);
+        Circle rightEye = new Circle(centerX + 4, centerY - 2, 4, Color.YELLOW);
+ 
+        rotatingRects = new Group();
         int rectCount = 6;
         for (int i = 0; i < rectCount; i++) {
-        	
-            Rectangle rect = new Rectangle(8, 20, Color.web("#FF4500", 0.8));
-            
+            Rectangle rect = new Rectangle(8, 20, Color.RED);
             rect.setArcWidth(3);
             rect.setArcHeight(3);
-
             double angle = (2 * Math.PI / rectCount) * i;
-            double radius = 50;
-            
-            rect.setLayoutX(cx + Math.cos(angle) * radius - 4);
-            rect.setLayoutY(cy + Math.sin(angle) * radius - 10);
-            rect.setRotate(Math.toDegrees(angle));
-
+            double radius = 35;
+            rect.setX(centerX + Math.cos(angle) * radius - 4);
+            rect.setY(centerY + Math.sin(angle) * radius - 10);
+            rect.setRotate(Math.toDegrees(angle) + 90);
             rotatingRects.getChildren().add(rect);
         }
-
-        Pane wispPane = new Pane(outerGlow, middleGlow, innerGlow, rotatingRects, core, leftEye, rightEye);
+ 
+        Pane wispPane = new Pane(glow, rotatingRects, core, leftEye, rightEye);
         wispPane.setPrefSize(100, 100);
-
-        wispShape = wispPane;
-        shape = new StackPane(wispPane);
-        shape.setPrefSize(100, 100);
+ 
+        sPane = new StackPane(wispPane);
+        sPane.setPrefSize(100, 100);
     }
-
+ 
     @Override
     public void update(double dt) {
-    	move(dt);
+        move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
-
-        if (isBeingVacuumed()) {
+        if (isBeingVacuumed())
             vacuumEffect(dt);
-        }
-
         rotationAngle += 100 * dt;
-        if (rotationAngle >= 360)
-        	rotationAngle = 0;
+        if (rotationAngle >= 360) rotationAngle = 0;
         rotatingRects.setRotate(rotationAngle);
-        
-        wispShape.setLayoutX(x);
-        wispShape.setLayoutY(y);
+        sPane.setLayoutX(x);
+        sPane.setLayoutY(y);
     }
-
+ 
     @Override
     public void render(Pane pane) {
-    	this.currentPane = pane;
+        this.currentPane = pane;
         if (visible) {
-            if (!pane.getChildren().contains(wispShape)) {
-                pane.getChildren().add(wispShape);
-            }
+            if (!pane.getChildren().contains(sPane))
+                pane.getChildren().add(sPane);
+            sPane.setLayoutX(x);
+            sPane.setLayoutY(y);
         } else {
-            pane.getChildren().remove(wispShape);
+            pane.getChildren().remove(sPane);
         }
     }
-
-   
+ 
     @Override
-	public Node getShape() {
-
-    	return wispShape;
-	}
-
-	public Pane getWispShape() {
-		return wispShape;
-	}
-
-	public void setWispShape(Pane wispShape) {
-		this.wispShape = wispShape;
-	}
+    public Node getShape() { 
+    	return sPane; 
+    }
 
 	public double getAreaX() {
 		return areaX;
@@ -138,5 +116,22 @@ public class Wisp extends ParanormalEntity {
 	public void setAreaH(double areaH) {
 		this.areaH = areaH;
 	}
+
+	public double getRotationAngle() {
+		return rotationAngle;
+	}
+
+	public void setRotationAngle(double rotationAngle) {
+		this.rotationAngle = rotationAngle;
+	}
+
+	public Group getRotatingRects() {
+		return rotatingRects;
+	}
+
+	public void setRotatingRects(Group rotatingRects) {
+		this.rotatingRects = rotatingRects;
+	}
     
 }
+

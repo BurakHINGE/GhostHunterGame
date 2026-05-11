@@ -30,8 +30,8 @@ public class Ripper extends ParanormalEntity {
     	 int numOfSpikes = 12;
     	 double outerRadius = 30;
     	 double innerRadius = 18;
-    	 double cx = 35;
-    	 double cy = 35;
+    	 double centerX = 35;
+    	 double centerY = 35;
     	 double radius = 0;
     	 
     	 for (int i = 0; i < numOfSpikes * 2; i++) {
@@ -42,25 +42,25 @@ public class Ripper extends ParanormalEntity {
     		 else
     			 radius = innerRadius;
     		 
-    	     spikes.getPoints().addAll(cx + Math.cos(angle) * radius,cy + Math.sin(angle) * radius);
+    	     spikes.getPoints().addAll(centerX + Math.cos(angle) * radius,centerY + Math.sin(angle) * radius);
     	 }
     	 spikes.setFill(Color.PURPLE);
 
-    	 Circle body = new Circle(cx, cy, 15, Color.web("#6A0DAD"));
+    	 Circle body = new Circle(centerX, centerY, 15, Color.web("#6A0DAD"));
     	    
-    	 Circle leftEye = new Circle(cx - 5, cy - 2, 5, Color.BLACK);
-    	 Circle rightEye = new Circle(cx + 5, cy - 2, 5, Color.BLACK);
+    	 Circle leftEye = new Circle(centerX - 5, centerY - 2, 5, Color.BLACK);
+    	 Circle rightEye = new Circle(centerX + 5, centerY - 2, 5, Color.BLACK);
     	    
-    	 Circle leftPupil = new Circle(cx - 5, cy - 2, 2, Color.RED);
-    	 Circle rightPupil = new Circle(cx + 5, cy - 2, 2, Color.RED);
+    	 Circle leftInnerEye = new Circle(centerX - 5, centerY - 2, 2, Color.RED);
+    	 Circle rightInnerEye = new Circle(centerX + 5, centerY - 2, 2, Color.RED);
 
 
-    	 Pane ripperPane = new Pane(spikes, body, leftEye, rightEye, leftPupil, rightPupil);
+    	 Pane ripperPane = new Pane(spikes, body, leftEye, rightEye, leftInnerEye, rightInnerEye);
     	 ripperPane.setPrefSize(70, 70);
 
     	 ripperShape = ripperPane;
-    	 shape = new StackPane(ripperPane);
-    	 shape.setPrefSize(70, 70);
+    	 sPane = new StackPane(ripperPane);
+    	 sPane.setPrefSize(70, 70);
     	    
     }
 
@@ -72,27 +72,25 @@ public class Ripper extends ParanormalEntity {
         if (isBeingVacuumed()) {
             vacuumEffect(dt);
         }
-
-        ripperShape.setLayoutX(x);
-        ripperShape.setLayoutY(y);
     }
 
     @Override
     public void render(Pane pane) {
-        this.currentPane = pane;
+    	this.currentPane = pane;
         if (visible) {
-            if (!pane.getChildren().contains(ripperShape)) {
-                pane.getChildren().add(ripperShape);
-            }
+            if (!pane.getChildren().contains(sPane))
+                pane.getChildren().add(sPane);
+            sPane.setLayoutX(x);
+            sPane.setLayoutY(y);
         } else {
-            pane.getChildren().remove(ripperShape);
+            pane.getChildren().remove(sPane);
         }
     }
 
 
 	@Override
 	public Node getShape() {
-		return ripperShape;
+		return sPane;
 	}
 
 	public Pane getRipperShape() {

@@ -4,74 +4,98 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 
 public class Ghost extends ParanormalEntity {
-
-    private StackPane ghostShape;
+ 
     private double areaX, areaY, areaW, areaH;
-
+	private StackPane ghostShape;
+ 
     public Ghost(double x, double y, double areaX, double areaY, double areaW, double areaH) {
-        super((Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1),10);
+        super((Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1), 10);
         this.x = x;
         this.y = y;
         this.areaX = areaX;
         this.areaY = areaY;
         this.areaW = areaW;
         this.areaH = areaH;
+        
         createGhost();
     }
-
+ 
     private void createGhost() {
-    	Circle head = new Circle(20, Color.WHITE);
-        head.setOpacity(0.75);
-        head.setCenterX(20);
-        head.setCenterY(20);
+    	
+    	ghostShape = new StackPane();
+    	ghostShape.setPrefSize(60, 60);
 
-        Polygon bottom = new Polygon(0.0, 20.0,0.0, 40.0,10.0, 30.0,20.0, 40.0,30.0, 30.0,40.0, 40.0,40.0, 20.0);
-        bottom.setFill(Color.WHITE);
-        bottom.setOpacity(0.75);
+        Arc head = new Arc(30, 30, 30, 30, 0, 180);
+        head.setType(ArcType.OPEN);
+        head.setFill(Color.WHITE);
+        head.setStroke(Color.DARKGRAY);
+        head.setStrokeWidth(2);
         
-        Circle leftEye  = new Circle(13, 15, 4, Color.BLACK);
-        Circle rightEye = new Circle(27, 15, 4, Color.BLACK);
+        Polygon bottom = new Polygon(
+        	    0.0, 30.0,
+        	    0.0, 60.0,
+        	    10.0, 47.0,
+        	    20.0, 60.0,
+        	    30.0, 47.0,
+        	    40.0, 60.0,
+        	    50.0, 47.0,
+        	    60.0, 60.0,
+        	    60.0, 30.0
+        	);
+        bottom.setFill(Color.WHITE);
+        bottom.setStroke(Color.DARKGRAY);
+        bottom.setStrokeWidth(2);
 
-        ghostShape = new StackPane(head, bottom, leftEye, rightEye);
-        ghostShape.setPrefSize(40, 50);
-        this.shape = ghostShape;
+        
+        Circle leftEyeOuter  = new Circle(18, 28, 10, Color.WHITE);
+        leftEyeOuter.setStroke(Color.DARKGRAY);
+        leftEyeOuter.setStrokeWidth(2);
+        Circle leftEyeInner  = new Circle(18, 28, 5, Color.BLACK);
+        
+        Circle rightEyeOuter = new Circle(42, 28, 10, Color.WHITE);
+        rightEyeOuter.setStroke(Color.DARKGRAY);
+        rightEyeOuter.setStrokeWidth(2);
+        Circle rightEyeInner = new Circle(42, 28, 5, Color.BLACK);
+
+        ghostShape.getChildren().addAll(bottom, head, leftEyeOuter, leftEyeInner, rightEyeOuter, rightEyeInner);
+        
+        ghostShape.setPrefSize(60, 60);
+        this.sPane = ghostShape;
     }
-    
+ 
     @Override
     public void update(double dt) {
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
-
-        if (isBeingVacuumed()) 
+        if (isBeingVacuumed())
             vacuumEffect(dt);
-        ghostShape.setLayoutX(x);
-        ghostShape.setLayoutY(y);
+        sPane.setLayoutX(x);
+        sPane.setLayoutY(y);
     }
-
+ 
     @Override
     public void render(Pane pane) {
-    	this.currentPane = pane;
+        this.currentPane = pane;
         if (visible) {
-            if (!pane.getChildren().contains(ghostShape)) {
-                pane.getChildren().add(ghostShape);
-            }
+            if (!pane.getChildren().contains(sPane))
+                pane.getChildren().add(sPane);
+            sPane.setLayoutX(x);
+            sPane.setLayoutY(y);
         } else {
-            pane.getChildren().remove(ghostShape);
+            pane.getChildren().remove(sPane);
         }
     }
-
-
-	public Pane getGhostShape() {
-		return ghostShape;
-	}
-
-	public void setGhostShape(StackPane ghostShape) {
-		this.ghostShape = ghostShape;
-	}
+ 
+    @Override
+    public Node getShape() { 
+    	return sPane; 
+    }
 
 	public double getAreaX() {
 		return areaX;
@@ -105,9 +129,12 @@ public class Ghost extends ParanormalEntity {
 		this.areaH = areaH;
 	}
 
-	@Override
-	public Node getShape() {
+	public StackPane getGhostShape() {
 		return ghostShape;
+	}
+
+	public void setGhostShape(StackPane ghostShape) {
+		this.ghostShape = ghostShape;
 	}
     
 }
