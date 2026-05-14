@@ -25,43 +25,32 @@ public class Ripper extends ParanormalEntity {
 
     private void createRipper() {
     	
-    	 Pane ripperShape = new Pane();
-    	 ripperShape.setPrefSize(56, 56);
-    	 
-    	 Polygon spikes = new Polygon();
-    	 
-    	 int numOfSpikes = 12;
-    	 double outerRadius = 24;
-    	 double innerRadius = 14.4;
-    	 double centerX = 28;
-    	 double centerY = 28;
-    	 
-    	 for (int i = 0; i < numOfSpikes * 2; i++) {
-    		 double angle = Math.PI / numOfSpikes * i - Math.PI / 2;
-    		 double radius = 0;
-    		 
-    		 if (i % 2 == 0)
-    			 radius = outerRadius;
-    		 else
-    			 radius = innerRadius;
-    		 
-    	     spikes.getPoints().addAll(centerX + Math.cos(angle) * radius,centerY + Math.sin(angle) * radius);
-    	 }
-    	 spikes.setFill(Color.PURPLE);
+    	Pane ripperShape = new Pane();
+    	ripperShape.setPrefSize(70, 70);
+    	
+        Polygon spikes = new Polygon();
+        int numOfSpikes = 12;
+        double outerRadius = 30, innerRadius = 18, cx = 35, cy = 35;
 
-    	 Circle body = new Circle(centerX, centerY, 12, Color.DARKVIOLET);
-    	    
-    	 Circle leftEye = new Circle(centerX - 4, centerY - 1.6, 4, Color.BLACK);
-    	 Circle rightEye = new Circle(centerX + 4, centerY - 1.6, 4, Color.BLACK);
-    	    
-    	 Circle leftInnerEye = new Circle(centerX - 4, centerY - 1.6, 1.6, Color.RED);
-    	 Circle rightInnerEye = new Circle(centerX + 4, centerY - 1.6, 1.6, Color.RED);
+        for (int i = 0; i < numOfSpikes * 2; i++) {
+            double angle = Math.PI / numOfSpikes * i - Math.PI / 2;
+            double radius = (i % 2 == 0) ? outerRadius : innerRadius;
+            spikes.getPoints().addAll(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+        }
+        spikes.setFill(Color.PURPLE);
 
-
-    	 ripperShape.getChildren().addAll(spikes, body, leftEye, rightEye, leftInnerEye, rightInnerEye);
-    	 
-    	 sPane = new StackPane(ripperShape);
-    	 sPane.setPrefSize(56, 56);
+        Circle body      = new Circle(cx, cy, 15, Color.DARKVIOLET);
+        
+        Circle leftEye   = new Circle(cx - 5, cy - 2, 5, Color.BLACK);
+        Circle rightEye  = new Circle(cx + 5, cy - 2, 5, Color.BLACK);
+        
+        Circle leftPupil  = new Circle(cx - 5, cy - 2, 2, Color.RED);
+        Circle rightPupil = new Circle(cx + 5, cy - 2, 2, Color.RED);
+        
+        ripperShape.getChildren().addAll(spikes, body, leftEye, rightEye, leftPupil, rightPupil);
+        
+        sPane = new StackPane(ripperShape);
+        sPane.setPrefSize(70, 70);
     	    
     }
 
