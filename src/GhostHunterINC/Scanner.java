@@ -12,7 +12,7 @@ public class Scanner {
     private boolean active;
     private double aimAngle = 0;
     public static final double DEFAULT_RANGE = 90;
-    public static final double ANGLE = Math.toRadians(22);
+    public static final double ANGLE = Math.toRadians(18);
     
     public Scanner(Hunter hunter) {
         this.hunter = hunter;

@@ -58,8 +58,6 @@ public class Ripper extends ParanormalEntity {
     public void update(double dt) {
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
-        if (isBeingVacuumed()) 
-            vacuumEffect(dt);
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }

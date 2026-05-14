@@ -140,6 +140,15 @@ public void startTimelineLoop() {
 	            	}
 	            }
 	            if(obj instanceof ParanormalEntity) {
+	            	
+	            	if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
+	            		((ParanormalEntity) obj).setBeingVacuumed(true);
+	            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
+	            	} else {
+	            		((ParanormalEntity) obj).setBeingVacuumed(false);
+	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
+	            	}
+	            	
 	            	if(hunter.checkCollision(obj)) {
 	            		hunter.takeDamage(10);
 	            	}

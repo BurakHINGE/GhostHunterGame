@@ -68,8 +68,6 @@ public class Wisp extends ParanormalEntity {
     public void update(double dt) {
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
-        if (isBeingVacuumed())
-            vacuumEffect(dt);
         rotationAngle += 100 * dt;
         if (rotationAngle >= 360) rotationAngle = 0;
         rotatingRects.setRotate(rotationAngle);
