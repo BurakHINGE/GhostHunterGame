@@ -37,6 +37,7 @@ public class GameEngine {
 	
 	//Cheat keys
 	private boolean visibilityCheat = false;
+	private boolean borderCheat = false;
 	
 	//Mouse Coordinates
 	private double mouseX = 0;
@@ -214,12 +215,8 @@ public class GameEngine {
 					break;
 				}
 				case ESCAPE: {
-					if (gameLoop != null) {
-						gameLoop.stop();
-						
-						Stage stage = (Stage) gameScene.getWindow();
-						stage.setScene(sceneManager.stopGamePanel());
-					}
+					pauseGame();
+					break;
 				}
 				case G: { 
 					
@@ -230,7 +227,13 @@ public class GameEngine {
 							obj.getShape().setVisible(visibilityCheat);
 						}
 					}
-					System.out.println("Hile Durumu: " + (visibilityCheat ? "AÇIK" : "KAPALI"));
+					break;
+				}
+				case B: {
+					
+					borderCheat = !borderCheat;
+					
+					borderArea.setVisible(borderCheat);
 					break;
 				}
 				//Add cheat key
