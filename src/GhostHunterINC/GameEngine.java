@@ -108,8 +108,10 @@ public class GameEngine {
 		
 		this.hunter = new Hunter(startX, startY, areaX, areaY, areaW, areaH);
 		
-		this.gameObjects.getChildren().add(this.hunter.getShape());
+		this.hunter.getScanner().render(this.gameObjects);
 		
+		this.gameObjects.getChildren().add(this.hunter.getShape());
+		this.hunter.getScanner().render(this.gameObjects);
 		this.levelManager = new LevelManager(this.gameObjects, this.allEntities);
 		this.hudManager = new HUDManager(level);
 		
@@ -143,6 +145,8 @@ public class GameEngine {
 		
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
 			hunterMovement();
+			hunter.getScanner().updatePosition(); 
+		    hunter.getScanner().update(0.016);
 			hudManager.updatedHealthBar(hunter.getHealth(), 100);
 			hudManager.updateTime(remainingTime);
 			boolean isTouching = false;
@@ -179,7 +183,7 @@ public class GameEngine {
 	            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
 	            	} else {
 	            		((ParanormalEntity) obj).setBeingVacuumed(false);
-	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
+//	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
 	            	}
 		        
 		        }   
@@ -228,6 +232,10 @@ public class GameEngine {
 					isDPressed = true;
 					break;
 				}
+				case SPACE: {
+		            hunter.getScanner().activate();
+		            break;
+		        }
 				case ESCAPE: {
 					pauseGame();
 					break;
@@ -288,6 +296,10 @@ public class GameEngine {
 					isDPressed = false;
 					break;
 				}
+				case SPACE: {
+		            hunter.getScanner().deactivate(); 
+		            break;
+		        }
 				//Add cheat key
 			}			
 		});
@@ -295,11 +307,13 @@ public class GameEngine {
 		gameScene.setOnMouseMoved(e -> {
 			mouseX = e.getX();
 			mouseY = e.getY();
+			hunter.getScanner().pointToMouse(mouseX, mouseY);
 		});
 
 		gameScene.setOnMouseDragged(e -> {
 			mouseX = e.getX();
 			mouseY = e.getY();
+			hunter.getScanner().pointToMouse(mouseX, mouseY);
 		});
 	}
 	
