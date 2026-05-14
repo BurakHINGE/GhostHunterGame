@@ -23,6 +23,7 @@ public class GameEngine {
 	private Hunter hunter;
 	private int currentLevel;
 	private HUDManager hudManager;
+	private SceneManager sceneManager;
 	
 	//Letter direction keys
 	private boolean isWPressed = false;
@@ -212,6 +213,15 @@ public void startTimelineLoop() {
 				}
 				//Add cheat key
 			}			
+		});
+		
+		gameScene.setOnKeyPressed(e -> {
+			if (gameLoop != null) {
+				gameLoop.stop();
+				
+				Stage stage = (Stage) gameScene.getWindow();
+				stage.setScene(sceneManager.stopGamePanel());
+			}
 		});
 	}
 	
