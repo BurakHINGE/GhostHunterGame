@@ -27,6 +27,7 @@ public class GameEngine {
 	private int remainingTime;
 	private Timeline countdown;
 	private SceneManager sceneManager;
+	private javafx.scene.shape.Rectangle borderArea;
 	
 	//Direction keys
 	private boolean isWPressed = false;
@@ -93,6 +94,14 @@ public class GameEngine {
 		//Set hunter's start position
 		double startX = areaX + (areaW / 2);
 		double startY = areaY + (areaH / 2);
+		
+		this.borderArea = new javafx.scene.shape.Rectangle(areaX, areaY, areaW, areaH);
+		this.borderArea.setFill(Color.TRANSPARENT);
+		this.borderArea.setStroke(Color.WHITE);
+		this.borderArea.setStrokeWidth(4);
+		this.borderArea.setVisible(false);
+		
+		this.gameObjects.getChildren().add(borderArea);
 		
 		this.hunter = new Hunter(startX, startY, areaX, areaY, areaW, areaH);
 		
