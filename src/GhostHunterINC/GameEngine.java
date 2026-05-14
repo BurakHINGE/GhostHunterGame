@@ -26,6 +26,7 @@ public class GameEngine {
 	private HUDManager hudManager;
 	private int remainingTime;
 	private Timeline countdown;
+	private SceneManager sceneManager;
 	
 	//Letter direction keys
 	private boolean isWPressed = false;
@@ -48,12 +49,14 @@ public class GameEngine {
 		handleInput();
 	}
 	
-	public void startGame(int level, Stage stage) {
+	public void startGame(int level, Stage stage, SceneManager sceneManager) {
 		this.currentLevel = level;
 		
 		this.allEntities = new ArrayList<>();
 		
 		this.gameObjects = new Pane();
+		
+		this.sceneManager = sceneManager;
 		
 		double areaX;
 		double areaY;
