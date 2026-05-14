@@ -24,7 +24,7 @@ public class GameEngine {
 	private int currentLevel;
 	private HUDManager hudManager;
 	
-	//Direction keys
+	//Letter direction keys
 	private boolean isWPressed = false;
 	private boolean isAPressed = false;
 	private boolean isSPressed = false;
@@ -83,7 +83,7 @@ public class GameEngine {
 		
 		this.hunter = new Hunter(startX, startY, areaX, areaY, areaW, areaH);
 		
-		this.gameObjects.getChildren().add(this.hunter.getHunterShape());
+		this.gameObjects.getChildren().add(this.hunter.getShape());
 		
 		this.levelManager = new LevelManager(this.gameObjects, this.allEntities);
 		this.hudManager = new HUDManager(level);
@@ -118,6 +118,7 @@ public void startTimelineLoop() {
 		
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
 			hunterMovement();
+			hudManager.updatedHealthBar(hunter.getHealth(), 100);
 			
 			for (GameObject obj : allEntities) {
 	            obj.update(0);
@@ -155,6 +156,22 @@ public void startTimelineLoop() {
 					isDPressed = true;
 					break;
 				}
+				case UP: {
+					isWPressed = true;
+					break;
+				}
+				case LEFT: {
+					isAPressed = true;
+					break;
+				}
+				case DOWN: {
+					isSPressed = true;
+					break;
+				}
+				case RIGHT: {
+					isDPressed = true;
+					break;
+				}
 				//Add cheat key
 			}			
 		});
@@ -174,6 +191,22 @@ public void startTimelineLoop() {
 					break;
 				}
 				case D: {
+					isDPressed = false;
+					break;
+				}
+				case UP: {
+					isWPressed = false;
+					break;
+				}
+				case LEFT: {
+					isAPressed = false;
+					break;
+				}
+				case DOWN: {
+					isSPressed = false;
+					break;
+				}
+				case RIGHT: {
 					isDPressed = false;
 					break;
 				}
@@ -265,8 +298,8 @@ public void startTimelineLoop() {
 		hunter.setX(newX);
 		hunter.setY(newY);
 		
-		hunter.getHunterShape().setLayoutX(newX);
-	    hunter.getHunterShape().setLayoutY(newY);
+		hunter.getShape().setLayoutX(newX);
+	    hunter.getShape().setLayoutY(newY);
 		
 	}
 	
