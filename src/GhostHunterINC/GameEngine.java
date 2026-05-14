@@ -129,22 +129,35 @@ public void startTimelineLoop() {
 			hunterMovement();
 			hudManager.updatedHealthBar(hunter.getHealth(), 100);
 			hudManager.updateTime(remainingTime);
+			boolean isTouching = false;
 			
-			for (GameObject obj : allEntities) {
-	            obj.update(0.016);
-	            if(obj instanceof Token) {
-	            	if(hunter.checkCollision(obj)) {
-	            		((Token)obj).applyEffect(hunter);
-	            		gameObjects.getChildren().remove(obj.getShape());
-	            		allEntities.remove(obj);
-	            	}
-	            }
-	            if(obj instanceof ParanormalEntity) {
-	            	if(hunter.checkCollision(obj)) {
-	            		hunter.takeDamage(10);
-	            	}
-	            }
-	        }
+			java.util.Iterator<GameObject> iterator = allEntities.iterator();
+			
+			while(iterator.hasNext()) {
+				GameObject obj = iterator.next();
+				obj.update(0.016);
+				
+				if(obj instanceof Token) {
+					if(hunter.checkCollision(obj)) {
+						((Token) obj).applyEffect(hunter);
+						gameObjects.getChildren().remove(obj.getShape());
+						iterator.remove();
+					}
+				}
+				
+				if(obj instanceof ParanormalEntity) {
+					if(hunter.checkCollision(obj)) {
+						isTouching = true;
+						hunter.takeDamage(2);
+					}
+				}
+				
+				if(isTouching) {
+					hunter.getBody().setFill(Color.RED);
+				}else {
+					hunter.resetColor();
+				}
+			}
 		}));
 
 		gameLoop.setCycleCount(Timeline.INDEFINITE); 
