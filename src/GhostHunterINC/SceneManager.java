@@ -69,33 +69,11 @@ public class SceneManager {
         selectLevelButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
         exitButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
-		startGameButton.setOnMouseEntered(e -> startGameButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-		startGameButton.setOnMouseExited(e -> startGameButton.setStyle(BUTTON_STYLE));
+		applyButtonStyles(stage.getWidth(), startGameButton, selectLevelButton, exitButton);
 		
-		selectLevelButton.setOnMouseEntered(e -> selectLevelButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	    selectLevelButton.setOnMouseExited(e -> selectLevelButton.setStyle(BUTTON_STYLE));
-	    
-	    exitButton.setOnMouseEntered(e -> exitButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	    exitButton.setOnMouseExited(e -> exitButton.setStyle(BUTTON_STYLE));
-	    
-	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-	        double fontSize = Math.max(12, newVal.doubleValue() / 45); 
-
-	        String dynamicStyle = BUTTON_STYLE + "-fx-font-size: " + fontSize + "px;";
-	        
-	        startGameButton.setStyle(dynamicStyle);
-	        selectLevelButton.setStyle(dynamicStyle);
-	        exitButton.setStyle(dynamicStyle);
-
-	        startGameButton.setOnMouseEntered(e -> startGameButton.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	        startGameButton.setOnMouseExited(e -> startGameButton.setStyle(dynamicStyle));
-	        
-	        selectLevelButton.setOnMouseEntered(e -> selectLevelButton.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	        selectLevelButton.setOnMouseExited(e -> selectLevelButton.setStyle(dynamicStyle));
-	        
-	        exitButton.setOnMouseEntered(e -> exitButton.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	        exitButton.setOnMouseExited(e -> exitButton.setStyle(dynamicStyle));
-	    });
+		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			applyButtonStyles(newVal.doubleValue(), startGameButton, selectLevelButton, exitButton);
+		});
 		
 		layout.getChildren().addAll(startGameButton, selectLevelButton, exitButton);
 		
@@ -144,27 +122,11 @@ public class SceneManager {
 		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
 		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
-		levelEasyButton.setOnMouseEntered(e -> levelEasyButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	    levelEasyButton.setOnMouseExited(e -> levelEasyButton.setStyle(BUTTON_STYLE));
-	    
-	    levelMediumButton.setOnMouseEntered(e -> levelMediumButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	    levelMediumButton.setOnMouseExited(e -> levelMediumButton.setStyle(BUTTON_STYLE));
-	    
-	    levelHardButton.setOnMouseEntered(e -> levelHardButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	    levelHardButton.setOnMouseExited(e -> levelHardButton.setStyle(BUTTON_STYLE));
-	    
-	    returnMainMenuButton.setOnMouseEntered(e -> returnMainMenuButton.setStyle(BUTTON_STYLE + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
-	    returnMainMenuButton.setOnMouseExited(e -> returnMainMenuButton.setStyle(BUTTON_STYLE));
-	    
-	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-	        double fontSize = Math.max(12, newVal.doubleValue() / 45); 
-	        String dynamicStyle = BUTTON_STYLE + "-fx-font-size: " + fontSize + "px;";
-	        
-	        levelEasyButton.setStyle(dynamicStyle);
-	        levelMediumButton.setStyle(dynamicStyle);
-	        levelHardButton.setStyle(dynamicStyle);
-	        returnMainMenuButton.setStyle(dynamicStyle);
-	    });
+		applyButtonStyles(stage.getWidth(), levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+		
+		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			applyButtonStyles(newVal.doubleValue(), levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+		});
 	    
 	    centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
 		
@@ -248,6 +210,18 @@ public class SceneManager {
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu
 		
 		return new Scene(layout, 500, 500);
+	}
+	
+	private void applyButtonStyles(double width, Button... buttons) {
+	    double validWidth = Double.isNaN(width) ? 800 : width; 
+	    double fontSize = Math.max(12, validWidth / 45);
+	    String dynamicStyle = BUTTON_STYLE + "-fx-font-size: " + fontSize + "px;";
+
+	    for (Button btn : buttons) {
+	        btn.setStyle(dynamicStyle);
+	        btn.setOnMouseEntered(e -> btn.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
+	        btn.setOnMouseExited(e -> btn.setStyle(dynamicStyle));
+	    }
 	}
 	
 	public Stage getStage() {
