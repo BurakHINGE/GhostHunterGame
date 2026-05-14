@@ -47,11 +47,9 @@ public class Wisp extends ParanormalEntity {
             rotatingRects.getChildren().add(rect);
         }
  
-        Pane wispPane = new Pane(glow, rotatingRects, core, leftEye, rightEye);
-        wispPane.setPrefSize(100, 100);
- 
-        sPane = new StackPane(wispPane);
+        sPane = new StackPane(glow, rotatingRects, core, leftEye, rightEye);
         sPane.setPrefSize(100, 100);
+        
     }
  
     @Override

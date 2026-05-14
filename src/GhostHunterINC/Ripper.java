@@ -8,8 +8,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 
 public class Ripper extends ParanormalEntity {
-
-    private Pane ripperShape;
+	
     private double areaX, areaY, areaW, areaH;
 
     public Ripper(double x, double y, double areaX, double areaY, double areaW, double areaH) {
@@ -28,14 +27,14 @@ public class Ripper extends ParanormalEntity {
     	 Polygon spikes = new Polygon();
     	 
     	 int numOfSpikes = 12;
-    	 double outerRadius = 30;
-    	 double innerRadius = 18;
-    	 double centerX = 35;
-    	 double centerY = 35;
-    	 double radius = 0;
+    	 double outerRadius = 24;
+    	 double innerRadius = 14.4;
+    	 double centerX = 28;
+    	 double centerY = 28;
     	 
     	 for (int i = 0; i < numOfSpikes * 2; i++) {
     		 double angle = Math.PI / numOfSpikes * i - Math.PI / 2;
+    		 double radius = 0;
     		 
     		 if (i % 2 == 0)
     			 radius = outerRadius;
@@ -46,21 +45,20 @@ public class Ripper extends ParanormalEntity {
     	 }
     	 spikes.setFill(Color.PURPLE);
 
-    	 Circle body = new Circle(centerX, centerY, 15, Color.web("#6A0DAD"));
+    	 Circle body = new Circle(centerX, centerY, 12, Color.DARKVIOLET);
     	    
-    	 Circle leftEye = new Circle(centerX - 5, centerY - 2, 5, Color.BLACK);
-    	 Circle rightEye = new Circle(centerX + 5, centerY - 2, 5, Color.BLACK);
+    	 Circle leftEye = new Circle(centerX - 4, centerY - 1.6, 4, Color.BLACK);
+    	 Circle rightEye = new Circle(centerX + 4, centerY - 1.6, 4, Color.BLACK);
     	    
-    	 Circle leftInnerEye = new Circle(centerX - 5, centerY - 2, 2, Color.RED);
-    	 Circle rightInnerEye = new Circle(centerX + 5, centerY - 2, 2, Color.RED);
+    	 Circle leftInnerEye = new Circle(centerX - 4, centerY - 1.6, 1.6, Color.RED);
+    	 Circle rightInnerEye = new Circle(centerX + 4, centerY - 1.6, 1.6, Color.RED);
 
 
     	 Pane ripperPane = new Pane(spikes, body, leftEye, rightEye, leftInnerEye, rightInnerEye);
-    	 ripperPane.setPrefSize(70, 70);
-
-    	 ripperShape = ripperPane;
+    	 ripperPane.setPrefSize(56, 56);
+    	 
     	 sPane = new StackPane(ripperPane);
-    	 sPane.setPrefSize(70, 70);
+    	 sPane.setPrefSize(56, 56);
     	    
     }
 
@@ -91,14 +89,6 @@ public class Ripper extends ParanormalEntity {
 	@Override
 	public Node getShape() {
 		return sPane;
-	}
-
-	public Pane getRipperShape() {
-		return ripperShape;
-	}
-
-	public void setRipperShape(Pane ripperShape) {
-		this.ripperShape = ripperShape;
 	}
 
 	public double getAreaX() {

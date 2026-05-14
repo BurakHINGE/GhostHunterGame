@@ -6,11 +6,13 @@ import javafx.scene.shape.Polygon;
 
 public class Scanner {
 
-    private Polygon triangle;
+    private Polygon scanner;
     private Hunter hunter;
-    private double energy,maxEnergy,decreaseRate,increaseRate;
+    private double energy,maxEnergy,decreaseRate,increaseRate,range;
     private boolean active;
-    public static final double RANGE = 150;
+    private double aimAngle = 0;
+    public static final double DEFAULT_RANGE = 90;
+    public static final double ANGLE = Math.toRadians(22);
     
     public Scanner(Hunter hunter) {
         this.hunter = hunter;
@@ -19,35 +21,50 @@ public class Scanner {
         this.active = false;
         this.decreaseRate = ConfigManager.getVacuumDecrease();
         this.increaseRate = ConfigManager.getVacuumIncrease();
+        this.range = DEFAULT_RANGE;
         createScanner();
     }
 
     private void createScanner() {
-        triangle = new Polygon();
-        updatePosition(); 
-        triangle.setFill(Color.ORANGE);
-        triangle.setOpacity(0.5);
-        triangle.setVisible(false);
+        scanner = new Polygon();
+        scanner.setFill(Color.RED);
+        scanner.setOpacity(0.5);
+        scanner.setVisible(false);
     }
 
     public void activate() {
         if (energy > 0) {
             active = true;
-            triangle.setVisible(true);
+            scanner.setVisible(true);
         }
     }
 
     public void deactivate() {
         active = false;
-        triangle.setVisible(false);
+        scanner.setVisible(false);
     }
 
     public void updatePosition() {
-    	double hx = hunter.getX();
-        double hy = hunter.getY();
-        double range = getRange();
-        triangle.getPoints().setAll(hx, hy,hx + range, hy - range / 2, hx + range, hy + range / 2  );
+    	
+    	double firstPointX = hunter.getX() + 20;
+        double firstPointY = hunter.getY() + 20;
+
+        double secondPointX  = firstPointX + Math.cos(aimAngle) * range;
+        double secondPointY  = firstPointY + Math.sin(aimAngle) * range;
+
+        double thirdPointX = -Math.sin(aimAngle) * range * Math.tan(ANGLE);
+        double thirdPointY =  Math.cos(aimAngle) * range * Math.tan(ANGLE);
+        
+        scanner.getPoints().setAll(firstPointX,firstPointY,secondPointX + thirdPointX, secondPointY + thirdPointY,secondPointX - thirdPointX, secondPointY - thirdPointY);      
     }
+    
+    public void pointToMouse(double mouseX,double mouseY) {
+    	double centerX = hunter.getX() + 20;
+    	double centerY = hunter.getY() + 20;
+    	aimAngle = Math.atan2(mouseY - centerY, mouseX - centerX);
+    	updatePosition();
+    }
+    
     public void update(double dt) {
     	if (active) {
             energy -= decreaseRate * dt;
@@ -57,48 +74,35 @@ public class Scanner {
             }
         } else {
             energy += increaseRate * dt;
-            if (energy > maxEnergy) 
-            	energy = maxEnergy;
+            if (energy > maxEnergy) energy = maxEnergy;
         }
     }
 
-    public boolean intersects(GameObject entity) {
-    	return this.triangle.getBoundsInParent().intersects(entity.getShape().getBoundsInParent());
+    public boolean intersects(GameObject gameObject) {
+    	return this.scanner.getBoundsInParent().intersects(gameObject.getShape().getBoundsInParent());
     	
     }
 
-    public void expandRange(int pixels) {
-    	double currentRange = getRange();
-        double newRange = currentRange + pixels;
-
-        double hx = hunter.getX();
-        double hy = hunter.getY();
-
-        triangle.getPoints().setAll(hx, hy,hx + newRange, hy - newRange / 2,hx + newRange, hy + newRange / 2);
-    }
-
-    private double getRange() {
-        if (triangle.getPoints().size() < 6) 
-            return RANGE; 
-        return triangle.getPoints().get(2) - triangle.getPoints().get(0);
+    public void expandRange(int extraRange) {
+    	range += extraRange;
     }
 
     public void render(Pane pane) {
-        if (!pane.getChildren().contains(triangle)) {
-            pane.getChildren().add(triangle);
+        if (!pane.getChildren().contains(scanner)) {
+            pane.getChildren().add(scanner);
         }
     }
 
     public void remove(Pane pane) {
-        pane.getChildren().remove(triangle);
+        pane.getChildren().remove(scanner);
     }
 
-	public Polygon getTriangle() {
-		return triangle;
+	public Polygon getScanner() {
+		return scanner;
 	}
 
-	public void setTriangle(Polygon triangle) {
-		this.triangle = triangle;
+	public void setScanner(Polygon scanner) {
+		this.scanner = scanner;
 	}
 
 	public Hunter getHunter() {
