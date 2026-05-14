@@ -1,7 +1,6 @@
 package GhostHunterINC;
 
 import java.util.ArrayList;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
@@ -171,7 +170,9 @@ public class GameEngine {
 		                isTouching = true; 
 		                hunter.takeDamage(2); 
 		            }
-		            if (isTouching) {
+		        
+		        
+			        if (isTouching) {
 			            hunter.getBody().setFill(Color.RED);
 			        } else {
 			            hunter.resetColor();
@@ -184,9 +185,8 @@ public class GameEngine {
 	            		((ParanormalEntity) obj).setBeingVacuumed(false);
 //	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
 	            	}
-		        }
 		        
-		        
+		        }   
 		    }
 	        
 		}));
