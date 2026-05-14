@@ -152,7 +152,7 @@ public class GameEngine {
 			
 		    while (iterator.hasNext()) {
 		        GameObject obj = iterator.next();
-		        obj.update(0); 
+		        obj.update(0.016); 
 
 		        if (obj instanceof Token) {
 		            if (hunter.checkCollision(obj)) {
@@ -167,21 +167,22 @@ public class GameEngine {
 		                isTouching = true; 
 		                hunter.takeDamage(2); 
 		            }
+		            if (isTouching) {
+			            hunter.getBody().setFill(Color.RED);
+			        } else {
+			            hunter.resetColor();
+			        }
+			        
+			        if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
+	            		((ParanormalEntity) obj).setBeingVacuumed(true);
+	            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
+	            	} else {
+	            		((ParanormalEntity) obj).setBeingVacuumed(false);
+	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
+	            	}
 		        }
 		        
-		        if (isTouching) {
-		            hunter.getBody().setFill(Color.RED);
-		        } else {
-		            hunter.resetColor();
-		        }
 		        
-		        if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
-            		((ParanormalEntity) obj).setBeingVacuumed(true);
-            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
-            	} else {
-            		((ParanormalEntity) obj).setBeingVacuumed(false);
-            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
-            	}
 		    }
 	        
 		}));
