@@ -35,6 +35,13 @@ public class GameEngine {
 	private boolean isSPressed = false;
 	private boolean isDPressed = false;
 	
+	//Cheat keys
+	private boolean visibilityCheat = false;
+	
+	//Mouse Coordinates
+	private double mouseX = 0;
+	private double mouseY = 0;
+	
 	public GameEngine() {
 		this.allEntities = new ArrayList<>();
 	}
@@ -128,7 +135,7 @@ public class GameEngine {
 		startTimelineLoop();
 	}
 	
-public void startTimelineLoop() {
+	public void startTimelineLoop() {
 		
 		if (gameLoop != null) {
 			gameLoop.stop();
@@ -214,6 +221,18 @@ public void startTimelineLoop() {
 						stage.setScene(sceneManager.stopGamePanel());
 					}
 				}
+				case G: { 
+					
+					visibilityCheat = !visibilityCheat;
+					
+					for (GameObject obj : allEntities) {
+						if (obj instanceof ParanormalEntity) { 
+							obj.getShape().setVisible(visibilityCheat);
+						}
+					}
+					System.out.println("Hile Durumu: " + (visibilityCheat ? "AÇIK" : "KAPALI"));
+					break;
+				}
 				//Add cheat key
 			}			
 		});
@@ -255,6 +274,45 @@ public void startTimelineLoop() {
 				//Add cheat key
 			}			
 		});
+		
+		gameScene.setOnMouseMoved(e -> {
+			mouseX = e.getX();
+			mouseY = e.getY();
+		});
+
+		gameScene.setOnMouseDragged(e -> {
+			mouseX = e.getX();
+			mouseY = e.getY();
+		});
+	}
+	
+	public void pauseGame() {
+		if (gameLoop != null) {
+			gameLoop.pause(); 
+		}
+		if (countdown != null) {
+			countdown.pause();
+		}
+		if (levelManager != null) {
+			levelManager.pauseTokenSpawn(); 
+		}
+		
+		if (sceneManager != null) {
+			Stage stage = (Stage) gameScene.getWindow();
+			stage.setScene(sceneManager.stopGamePanel());
+		}
+	}
+
+	public void resumeGame() {
+		if (gameLoop != null) {
+			gameLoop.play();
+		}
+		if (countdown != null) {
+			countdown.play();
+		}
+		if (levelManager != null) {
+			levelManager.resumeTokenSpawn();
+		}
 	}
 	
 	public void hunterMovement() {
