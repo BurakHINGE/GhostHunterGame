@@ -44,10 +44,10 @@ public class Ripper extends ParanormalEntity {
         Circle leftEye   = new Circle(cx - 5, cy - 2, 5, Color.BLACK);
         Circle rightEye  = new Circle(cx + 5, cy - 2, 5, Color.BLACK);
         
-        Circle leftPupil  = new Circle(cx - 5, cy - 2, 2, Color.RED);
-        Circle rightPupil = new Circle(cx + 5, cy - 2, 2, Color.RED);
+        Circle leftInnerEye  = new Circle(cx - 5, cy - 2, 2, Color.RED);
+        Circle rightInnerEye = new Circle(cx + 5, cy - 2, 2, Color.RED);
         
-        ripperShape.getChildren().addAll(spikes, body, leftEye, rightEye, leftPupil, rightPupil);
+        ripperShape.getChildren().addAll(spikes, body, leftEye, rightEye, leftInnerEye, rightInnerEye);
         
         sPane = new StackPane(ripperShape);
         sPane.setPrefSize(70, 70);
