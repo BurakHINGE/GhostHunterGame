@@ -12,8 +12,7 @@ import javafx.scene.shape.Polygon;
 public class Ghost extends ParanormalEntity {
  
     private double areaX, areaY, areaW, areaH;
-	private StackPane ghostShape;
- 
+    
     public Ghost(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         super((Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1), 10);
         this.x = x;
@@ -28,45 +27,42 @@ public class Ghost extends ParanormalEntity {
  
     private void createGhost() {
     	
-    	ghostShape = new StackPane();
-    	ghostShape.setPrefSize(60, 60);
+    	
 
-        Arc head = new Arc(30, 30, 30, 30, 0, 180);
+    	Arc head = new Arc(15, 15, 15, 15, 0, 180);
         head.setType(ArcType.OPEN);
         head.setFill(Color.WHITE);
         head.setStroke(Color.DARKGRAY);
-        head.setStrokeWidth(2);
+        head.setStrokeWidth(1);
         
         Polygon bottom = new Polygon(
-        	    0.0, 30.0,
-        	    0.0, 60.0,
-        	    10.0, 47.0,
-        	    20.0, 60.0,
-        	    30.0, 47.0,
-        	    40.0, 60.0,
-        	    50.0, 47.0,
-        	    60.0, 60.0,
-        	    60.0, 30.0
+        		0.0,  15.0,
+                0.0,  30.0,
+                5.0,  23.5,
+                10.0, 30.0,
+                15.0, 23.5,
+                20.0, 30.0,
+                25.0, 23.5,
+                30.0, 30.0,
+                30.0, 15.0
         	);
         bottom.setFill(Color.WHITE);
         bottom.setStroke(Color.DARKGRAY);
-        bottom.setStrokeWidth(2);
+        bottom.setStrokeWidth(1);
 
-        
-        Circle leftEyeOuter  = new Circle(18, 28, 10, Color.WHITE);
+        Circle leftEyeOuter  = new Circle(9, 14, 5, Color.WHITE);
         leftEyeOuter.setStroke(Color.DARKGRAY);
-        leftEyeOuter.setStrokeWidth(2);
-        Circle leftEyeInner  = new Circle(18, 28, 5, Color.BLACK);
+        leftEyeOuter.setStrokeWidth(1);
+        Circle leftEyeInner  = new Circle(9, 14, 2.5, Color.BLACK);
         
-        Circle rightEyeOuter = new Circle(42, 28, 10, Color.WHITE);
+        Circle rightEyeOuter = new Circle(21, 14, 5, Color.WHITE);
         rightEyeOuter.setStroke(Color.DARKGRAY);
-        rightEyeOuter.setStrokeWidth(2);
-        Circle rightEyeInner = new Circle(42, 28, 5, Color.BLACK);
+        rightEyeOuter.setStrokeWidth(1);
+        Circle rightEyeInner = new Circle(21, 14, 2.5, Color.BLACK);
 
-        ghostShape.getChildren().addAll(bottom, head, leftEyeOuter, leftEyeInner, rightEyeOuter, rightEyeInner);
+        sPane = new StackPane(bottom, head, leftEyeOuter, leftEyeInner, rightEyeOuter, rightEyeInner);
+        sPane.setPrefSize(30, 30);
         
-        ghostShape.setPrefSize(60, 60);
-        this.sPane = ghostShape;
     }
  
     @Override
@@ -127,14 +123,6 @@ public class Ghost extends ParanormalEntity {
 
 	public void setAreaH(double areaH) {
 		this.areaH = areaH;
-	}
-
-	public StackPane getGhostShape() {
-		return ghostShape;
-	}
-
-	public void setGhostShape(StackPane ghostShape) {
-		this.ghostShape = ghostShape;
 	}
     
 }
