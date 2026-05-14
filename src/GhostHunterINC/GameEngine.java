@@ -28,11 +28,15 @@ public class GameEngine {
 	private Timeline countdown;
 	private SceneManager sceneManager;
 	
-	//Letter direction keys
+	//Direction keys
 	private boolean isWPressed = false;
 	private boolean isAPressed = false;
 	private boolean isSPressed = false;
 	private boolean isDPressed = false;
+	
+	//Mouse coordinates
+	private double mouseX;
+	private double mouseY;
 	
 	public GameEngine() {
 		this.allEntities = new ArrayList<>();
@@ -263,6 +267,16 @@ public void startTimelineLoop() {
 				//Add cheat key
 			}			
 		});
+		
+		gameScene.setOnMouseMoved(e -> {
+			mouseX = e.getX();
+			mouseY = e.getY();
+		});
+		
+		gameScene.setOnMouseDragged(e -> {
+			mouseX = e.getX();
+			mouseY = e.getY();
+		});
 	}
 	
 	public void hunterMovement() {
@@ -398,6 +412,14 @@ public void startTimelineLoop() {
 	public int getCurrentLevel() {
 		return currentLevel;
 	}
+	
+	public double getMouseX() {
+		return mouseX;
+	}
+	
+	public double getMouseY() {
+		return mouseY;
+	}
 
 	public void setEnemies(ArrayList<GameObject> allEntities) {
 		this.allEntities = allEntities;
@@ -417,5 +439,13 @@ public void startTimelineLoop() {
 	
 	public void setCurrentLevel(int currentLevel) {
 		this.currentLevel = currentLevel;
+	}
+	
+	public void setMouseX(double mouseX) {
+		this.mouseX = mouseX;
+	}
+	
+	public void setMouseY(double mouseY) {
+		this.mouseY = mouseY;
 	}
 }

@@ -145,6 +145,14 @@ public class SceneManager {
 
 	public Scene stopGamePanel() { //Stopped game menu
 		
+		StackPane mainPane = new StackPane();
+		
+		Image pauseGamePicture = new Image("file:pauseMenuPicture.png");
+		ImageView pauseMenuView = new ImageView(pauseGamePicture);
+		pauseMenuView.fitWidthProperty().bind(stage.widthProperty());
+		pauseMenuView.fitHeightProperty().bind(stage.heightProperty());
+		pauseMenuView.setPreserveRatio(false);
+		
 		VBox layout = new VBox(10);
 		
 		layout.setAlignment(Pos.CENTER);
@@ -158,9 +166,26 @@ public class SceneManager {
 		Button resumeButton = new Button("Resume");
 		Button returnMainMenuButton = new Button("Main Menu");
 		
+		resumeButton.setStyle(BUTTON_STYLE);
+		returnMainMenuButton.setStyle(BUTTON_STYLE);
+		
+		resumeButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
+		resumeButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+		
+		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
+		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+		
+		applyButtonStyles(stage.getWidth(), resumeButton, returnMainMenuButton);
+		
+		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			applyButtonStyles(newVal.doubleValue(), resumeButton, returnMainMenuButton);
+		});
+		
 		buttonLayout.getChildren().addAll(resumeButton, returnMainMenuButton);
 		
 		layout.getChildren().addAll(pauseText, buttonLayout);
+		
+		mainPane.getChildren().addAll(pauseMenuView, layout);
 		
 		resumeButton.setOnAction(e -> { //Game resume from the same time
 			stage.setScene(gameEngine.getGameScene());
@@ -169,7 +194,7 @@ public class SceneManager {
 		});
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from stopped game menu
 		
-		return new Scene(layout, stage.getWidth(), stage.getHeight());
+		return new Scene(mainPane, stage.getWidth(), stage.getHeight());
 	}
 	
 	public Scene winPanel() { //Show this panel if user win the game
