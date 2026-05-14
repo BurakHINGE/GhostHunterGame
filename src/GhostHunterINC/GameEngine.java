@@ -10,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -122,11 +123,17 @@ public void startTimelineLoop() {
 			hudManager.updatedHealthBar(hunter.getHealth(), 100);
 			
 			for (GameObject obj : allEntities) {
-	            obj.update(0);
+	            obj.update(0.016);
 	            if(obj instanceof Token) {
 	            	if(hunter.checkCollision(obj)) {
+	            		((Token)obj).applyEffect(hunter);
 	            		gameObjects.getChildren().remove(obj.getShape());
 	            		allEntities.remove(obj);
+	            	}
+	            }
+	            if(obj instanceof ParanormalEntity) {
+	            	if(hunter.checkCollision(obj)) {
+	            		hunter.takeDamage(10);
 	            	}
 	            }
 	        }
