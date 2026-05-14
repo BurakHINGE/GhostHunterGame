@@ -29,15 +29,11 @@ public class GameEngine {
 	private SceneManager sceneManager;
 	private javafx.scene.shape.Rectangle borderArea;
 	
-	//Direction keys
+	//Letter direction keys
 	private boolean isWPressed = false;
 	private boolean isAPressed = false;
 	private boolean isSPressed = false;
 	private boolean isDPressed = false;
-	
-	//Mouse coordinates
-	private double mouseX;
-	private double mouseY;
 	
 	public GameEngine() {
 		this.allEntities = new ArrayList<>();
@@ -142,70 +138,36 @@ public void startTimelineLoop() {
 			hunterMovement();
 			hudManager.updatedHealthBar(hunter.getHealth(), 100);
 			hudManager.updateTime(remainingTime);
-			boolean isTouching = false;
 			
-			java.util.Iterator<GameObject> iterator = allEntities.iterator();
-			
-			while(iterator.hasNext()) {
-				GameObject obj = iterator.next();
-				obj.update(0.016);
-				
-				if(obj instanceof Token) {
-					if(hunter.checkCollision(obj)) {
-						((Token) obj).applyEffect(hunter);
-						gameObjects.getChildren().remove(obj.getShape());
-						iterator.remove();
-					}
-				}
-				
-				if(obj instanceof ParanormalEntity) {
-					if(hunter.checkCollision(obj)) {
-						isTouching = true;
-						hunter.takeDamage(2);
-					}
-				}
-				
-				if(isTouching) {
-					hunter.getBody().setFill(Color.RED);
-				}else {
-					hunter.resetColor();
-				}
-			}
+			for (GameObject obj : allEntities) {
+	            obj.update(0.016);
+	            if(obj instanceof Token) {
+	            	if(hunter.checkCollision(obj)) {
+	            		((Token)obj).applyEffect(hunter);
+	            		gameObjects.getChildren().remove(obj.getShape());
+	            		allEntities.remove(obj);
+	            	}
+	            }
+	            if(obj instanceof ParanormalEntity) {
+	            	
+	            	if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
+	            		((ParanormalEntity) obj).setBeingVacuumed(true);
+	            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
+	            	} else {
+	            		((ParanormalEntity) obj).setBeingVacuumed(false);
+	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
+	            	}
+	            	
+	            	if(hunter.checkCollision(obj)) {
+	            		hunter.takeDamage(10);
+	            	}
+	            }
+	        }
 		}));
 
 		gameLoop.setCycleCount(Timeline.INDEFINITE); 
 		
 		gameLoop.play(); 
-	}
-
-	public void pauseGame() {
-		
-		if (gameLoop != null) {
-			gameLoop.pause();
-		}
-		
-		if (countdown != null) {
-			countdown.pause();
-		}
-		if (levelManager != null) {
-			levelManager.pauseTokenSpawn();
-		}
-		
-		Stage stage = (Stage) gameScene.getWindow();
-		stage.setScene(sceneManager.stopGamePanel());
-	}
-	
-	public void resumeGame() {
-
-		if (gameLoop != null) {
-			gameLoop.play();
-		}
-		if (countdown != null) {
-			countdown.play();
-		}
-		if (levelManager != null) {
-			levelManager.resumeTokenSpawn();
-		}
 	}
 	
 	public void handleInput() {
@@ -245,8 +207,12 @@ public void startTimelineLoop() {
 					break;
 				}
 				case ESCAPE: {
-					pauseGame();
-					break;
+					if (gameLoop != null) {
+						gameLoop.stop();
+						
+						Stage stage = (Stage) gameScene.getWindow();
+						stage.setScene(sceneManager.stopGamePanel());
+					}
 				}
 				//Add cheat key
 			}			
@@ -288,16 +254,6 @@ public void startTimelineLoop() {
 				}
 				//Add cheat key
 			}			
-		});
-		
-		gameScene.setOnMouseMoved(e -> {
-			mouseX = e.getX();
-			mouseY = e.getY();
-		});
-		
-		gameScene.setOnMouseDragged(e -> {
-			mouseX = e.getX();
-			mouseY = e.getY();
 		});
 	}
 	
@@ -434,14 +390,6 @@ public void startTimelineLoop() {
 	public int getCurrentLevel() {
 		return currentLevel;
 	}
-	
-	public double getMouseX() {
-		return mouseX;
-	}
-	
-	public double getMouseY() {
-		return mouseY;
-	}
 
 	public void setEnemies(ArrayList<GameObject> allEntities) {
 		this.allEntities = allEntities;
@@ -461,13 +409,5 @@ public void startTimelineLoop() {
 	
 	public void setCurrentLevel(int currentLevel) {
 		this.currentLevel = currentLevel;
-	}
-	
-	public void setMouseX(double mouseX) {
-		this.mouseX = mouseX;
-	}
-	
-	public void setMouseY(double mouseY) {
-		this.mouseY = mouseY;
 	}
 }

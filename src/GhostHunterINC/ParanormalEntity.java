@@ -30,17 +30,29 @@ public abstract class ParanormalEntity extends GameObject {
             speedY = -speedY;
     }
 
-    public void vacuumEffect(double dt) {
+    public void vacuumEffect(double dt,double hunterX,double hunterY) {
         if (scale > 0) {
             scale -= 0.5 * dt;
             if (scale < 0)
             	scale = 0;
             sPane.setScaleX(scale);
             sPane.setScaleY(scale);
+            
+            x += (hunterX - x) * dt;
+            y += (hunterY - y) * dt;
         } else {
         	captured = true;
         	visible = false;			
         }
+    }
+    public void inverseVacuuumEffect(double dt) {
+    	if (scale <1.0) {
+    		scale += 0.5 * dt;
+    		if (scale >1.0)
+    			scale = 1.0;
+    		sPane.setScaleX(scale);
+    		sPane.setScaleY(scale);
+    	}
     }
     
 	public void makeVisible() {

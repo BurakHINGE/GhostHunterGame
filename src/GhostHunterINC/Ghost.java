@@ -71,9 +71,7 @@ public class Ghost extends ParanormalEntity {
     @Override
     public void update(double dt) {
         move(dt);
-        bounceOffWalls(areaX, areaY, areaW, areaH);
-        if (isBeingVacuumed())
-            vacuumEffect(dt);
+        bounceOffWalls(areaX, areaY, areaW, areaH);  
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }
