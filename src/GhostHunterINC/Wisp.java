@@ -26,29 +26,41 @@ public class Wisp extends ParanormalEntity {
     }
  
     private void createWisp() {
-        double centerX = 50, centerY = 50;
-        Circle glow  = new Circle(centerX, centerY, 18, Color.RED);
+    	double centerX = 50;
+        double centerY = 50;
+        double scale = 0.75;
+        centerX *= scale;
+        centerY *= scale;
+        
+        Pane wispShape = new Pane();
+        wispShape.setPrefSize(100 * scale, 100 * scale);
+        
+        Circle membrane = new Circle(centerX, centerY, 26 * scale, Color.RED);
+        membrane.setOpacity(0.2);
+        Circle glow  = new Circle(centerX, centerY, 18 * scale, Color.RED);
         glow.setOpacity(0.7);
-        Circle core = new Circle(centerX, centerY, 10, Color.RED);
-        Circle leftEye = new Circle(centerX - 4, centerY - 2, 4, Color.YELLOW);
-        Circle rightEye = new Circle(centerX + 4, centerY - 2, 4, Color.YELLOW);
+        Circle core = new Circle(centerX, centerY, 10 * scale, Color.RED);
+        Circle leftEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
+        Circle rightEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
  
         rotatingRects = new Group();
         int rectCount = 6;
         for (int i = 0; i < rectCount; i++) {
-            Rectangle rect = new Rectangle(8, 20, Color.RED);
-            rect.setArcWidth(3);
-            rect.setArcHeight(3);
+            Rectangle rect = new Rectangle(8 * scale, 20 * scale, Color.RED);
+            rect.setArcWidth(3 * scale);
+            rect.setArcHeight(3 * scale);
             double angle = (2 * Math.PI / rectCount) * i;
-            double radius = 35;
-            rect.setX(centerX + Math.cos(angle) * radius - 4);
-            rect.setY(centerY + Math.sin(angle) * radius - 10);
+            double radius = 35 * scale;
+            rect.setX(centerX + Math.cos(angle) * radius - 4 * scale);
+            rect.setY(centerY + Math.sin(angle) * radius - 10 * scale);
             rect.setRotate(Math.toDegrees(angle) + 90);
             rotatingRects.getChildren().add(rect);
         }
  
-        sPane = new StackPane(glow, rotatingRects, core, leftEye, rightEye);
-        sPane.setPrefSize(100, 100);
+        wispShape.getChildren().addAll(core, glow, membrane, rotatingRects, leftEye, rightEye);
+        
+        sPane = new StackPane(wispShape);
+        sPane.setPrefSize(100 * scale, 100 * scale);
         
     }
  

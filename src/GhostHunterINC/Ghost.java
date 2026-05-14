@@ -27,7 +27,8 @@ public class Ghost extends ParanormalEntity {
  
     private void createGhost() {
     	
-    	
+    	Pane ghostShape = new Pane();
+    	ghostShape.setPrefSize(30, 30);
 
     	Arc head = new Arc(15, 15, 15, 15, 0, 180);
         head.setType(ArcType.OPEN);
@@ -60,7 +61,9 @@ public class Ghost extends ParanormalEntity {
         rightEyeOuter.setStrokeWidth(1);
         Circle rightEyeInner = new Circle(21, 14, 2.5, Color.BLACK);
 
-        sPane = new StackPane(bottom, head, leftEyeOuter, leftEyeInner, rightEyeOuter, rightEyeInner);
+        ghostShape.getChildren().addAll(bottom, head, leftEyeOuter, leftEyeInner, rightEyeOuter, rightEyeInner);
+        
+        sPane = new StackPane(ghostShape);
         sPane.setPrefSize(30, 30);
         
     }
