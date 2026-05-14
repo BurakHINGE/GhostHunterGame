@@ -34,7 +34,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Ghost newGhost = new Ghost(randX, randY,ConfigManager.level1PlayableAreaX, ConfigManager.level1PlayableAreaY, ConfigManager.level1PlayableAreaWidth, ConfigManager.level1PlayableAreaHeight);
-				newGhost.getShape().setVisible(true);
+				newGhost.getShape().setVisible(false);
 				allEntities.add(newGhost);
 				enemies.getChildren().add(newGhost.getShape());
 			}
@@ -45,7 +45,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Ripper newRipper = new Ripper(randX, randY,ConfigManager.level1PlayableAreaX, ConfigManager.level1PlayableAreaY, ConfigManager.level1PlayableAreaWidth, ConfigManager.level1PlayableAreaHeight);
-				newRipper.getShape().setVisible(true);
+				newRipper.getShape().setVisible(false);
 				allEntities.add(newRipper);
 				enemies.getChildren().add(newRipper.getShape());
 			}
@@ -56,7 +56,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Wisp newWisp = new Wisp(randX, randY,ConfigManager.level1PlayableAreaX, ConfigManager.level1PlayableAreaY, ConfigManager.level1PlayableAreaWidth, ConfigManager.level1PlayableAreaHeight);
-				newWisp.getShape().setVisible(true);
+				newWisp.getShape().setVisible(false);
 				allEntities.add(newWisp);
 				enemies.getChildren().add(newWisp.getShape());
 			}
@@ -74,7 +74,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Ghost newGhost = new Ghost(randX, randY,ConfigManager.level2PlayableAreaX, ConfigManager.level2PlayableAreaY, ConfigManager.level2PlayableAreaWidth, ConfigManager.level2PlayableAreaHeight);
-				newGhost.getShape().setVisible(true);
+				newGhost.getShape().setVisible(false);
 				allEntities.add(newGhost);
 				enemies.getChildren().add(newGhost.getShape());
 			}
@@ -85,7 +85,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Ripper newRipper = new Ripper(randX, randY,ConfigManager.level2PlayableAreaX, ConfigManager.level2PlayableAreaY, ConfigManager.level2PlayableAreaWidth, ConfigManager.level2PlayableAreaHeight);
-				newRipper.getShape().setVisible(true);
+				newRipper.getShape().setVisible(false);
 				allEntities.add(newRipper);
 				enemies.getChildren().add(newRipper.getShape());
 			}
@@ -96,7 +96,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Wisp newWisp = new Wisp(randX, randY,ConfigManager.level2PlayableAreaX, ConfigManager.level2PlayableAreaY, ConfigManager.level2PlayableAreaWidth, ConfigManager.level2PlayableAreaHeight);
-				newWisp.getShape().setVisible(true);
+				newWisp.getShape().setVisible(false);
 				allEntities.add(newWisp);
 				enemies.getChildren().add(newWisp.getShape());
 			}
@@ -114,7 +114,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Ghost newGhost = new Ghost(randX, randY,ConfigManager.level3PlayableAreaX, ConfigManager.level3PlayableAreaY, ConfigManager.level3PlayableAreaWidth, ConfigManager.level3PlayableAreaHeight);
-				newGhost.getShape().setVisible(true);
+				newGhost.getShape().setVisible(false);
 				allEntities.add(newGhost);
 				enemies.getChildren().add(newGhost.getShape());
 			}
@@ -125,7 +125,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Ripper newRipper = new Ripper(randX, randY,ConfigManager.level3PlayableAreaX, ConfigManager.level3PlayableAreaY, ConfigManager.level3PlayableAreaWidth, ConfigManager.level3PlayableAreaHeight);
-				newRipper.getShape().setVisible(true);
+				newRipper.getShape().setVisible(false);
 				allEntities.add(newRipper);
 				enemies.getChildren().add(newRipper.getShape());
 			}
@@ -136,7 +136,7 @@ public class LevelManager {
 				double randY = Math.random() * 400 + 200;
 				
 				Wisp newWisp = new Wisp(randX, randY,ConfigManager.level3PlayableAreaX, ConfigManager.level3PlayableAreaY, ConfigManager.level3PlayableAreaWidth, ConfigManager.level3PlayableAreaHeight);
-				newWisp.getShape().setVisible(true);
+				newWisp.getShape().setVisible(false);
 				allEntities.add(newWisp);
 				enemies.getChildren().add(newWisp.getShape());
 			}
@@ -179,6 +179,18 @@ public class LevelManager {
 	void stopTokenSpawn() {
 		if(tokenTimeline != null) {
 			tokenTimeline.stop();
+		}
+	}
+	
+	void pauseTokenSpawn() {
+		if(tokenTimeline != null) {
+			tokenTimeline.pause();
+		}
+	}
+	
+	void resumeTokenSpawn() {
+		if(tokenTimeline != null) {
+			tokenTimeline.play();
 		}
 	}
 	

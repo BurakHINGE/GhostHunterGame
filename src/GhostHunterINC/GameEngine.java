@@ -24,6 +24,8 @@ public class GameEngine {
 	private Hunter hunter;
 	private int currentLevel;
 	private HUDManager hudManager;
+	private int remainingTime;
+	private Timeline countdown;
 	private SceneManager sceneManager;
 	
 	//Letter direction keys
@@ -47,12 +49,14 @@ public class GameEngine {
 		handleInput();
 	}
 	
-	public void startGame(int level, Stage stage) {
+	public void startGame(int level, Stage stage, SceneManager sceneManager) {
 		this.currentLevel = level;
 		
 		this.allEntities = new ArrayList<>();
 		
 		this.gameObjects = new Pane();
+		
+		this.sceneManager = sceneManager;
 		
 		double areaX;
 		double areaY;
@@ -65,18 +69,21 @@ public class GameEngine {
 			areaY = ConfigManager.getLevel1PlayableAreaY();
 			areaW = ConfigManager.getLevel1PlayableAreaWidth();
 			areaH = ConfigManager.getLevel1PlayableAreaHeight();
+			remainingTime = ConfigManager.getLevel1Time();
 		}
 		else if (level == 2) {
 			areaX = ConfigManager.getLevel2PlayableAreaX();
 			areaY = ConfigManager.getLevel2PlayableAreaY();
 			areaW = ConfigManager.getLevel2PlayableAreaWidth();
 			areaH = ConfigManager.getLevel2PlayableAreaHeight();
+			remainingTime = ConfigManager.getLevel2Time();
 		}
 		else { //Level 3
 			areaX = ConfigManager.getLevel3PlayableAreaX();
 			areaY = ConfigManager.getLevel3PlayableAreaY();
 			areaW = ConfigManager.getLevel3PlayableAreaWidth();
 			areaH = ConfigManager.getLevel3PlayableAreaHeight();
+			remainingTime = ConfigManager.getLevel3Time();
 		}
 		
 		//Set hunter's start position
@@ -103,7 +110,7 @@ public class GameEngine {
 		StackPane.setAlignment(this.gameObjects, Pos.TOP_LEFT);
 		
 		this.gameScene = new Scene(levelPane, stage.getWidth(), stage.getHeight());
-		
+		startCountdown();
 		handleInput();
 		stage.setScene(this.gameScene);
 		
@@ -121,6 +128,7 @@ public void startTimelineLoop() {
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
 			hunterMovement();
 			hudManager.updatedHealthBar(hunter.getHealth(), 100);
+			hudManager.updateTime(remainingTime);
 			
 			for (GameObject obj : allEntities) {
 	            obj.update(0.016);
@@ -180,6 +188,14 @@ public void startTimelineLoop() {
 					isDPressed = true;
 					break;
 				}
+				case ESCAPE: {
+					if (gameLoop != null) {
+						gameLoop.stop();
+						
+						Stage stage = (Stage) gameScene.getWindow();
+						stage.setScene(sceneManager.stopGamePanel());
+					}
+				}
 				//Add cheat key
 			}			
 		});
@@ -220,15 +236,6 @@ public void startTimelineLoop() {
 				}
 				//Add cheat key
 			}			
-		});
-		
-		gameScene.setOnKeyPressed(e -> {
-			if (gameLoop != null) {
-				gameLoop.stop();
-				
-				Stage stage = (Stage) gameScene.getWindow();
-				stage.setScene(sceneManager.stopGamePanel());
-			}
 		});
 	}
 	
@@ -320,8 +327,30 @@ public void startTimelineLoop() {
 		
 	}
 	
+	private void startCountdown() {
+		//Clean the previous timers.
+		if(countdown != null) {
+			countdown.stop();
+		}
+		
+		countdown = new Timeline(new KeyFrame(Duration.seconds(1), e-> {
+			remainingTime -= 1;
+			hudManager.updateTime(remainingTime);
+			
+			if(remainingTime <= 0) {
+				countdown.stop();
+				stopGame();
+				System.out.println("SÜRE BİTTİ !!!");			}
+		}));
+		
+		countdown.setCycleCount(Timeline.INDEFINITE);
+		countdown.play();
+	}
+	
 	public void stopGame() { //Stop the game
 		gameLoop.stop();
+		countdown.stop();
+		levelManager.stopTokenSpawn();
 	}
 
 	public ArrayList<GameObject> getEnemies() {
