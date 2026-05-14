@@ -26,7 +26,7 @@ public class SceneManager {
           + "-fx-border-color: #4dfa9a;"
           + "-fx-border-width: 2px;"
           + "-fx-text-fill: #4dfa9a;"
-          + "-fx-font-family: 'Monospaced';"
+          + "-fx-font-family: 'Creepster';"
           + "-fx-font-weight: bold;"
           + "-fx-background-radius: 0;"
           + "-fx-border-radius: 0;";
@@ -35,6 +35,19 @@ public class SceneManager {
 	public SceneManager(Stage stage, GameEngine gameEngine) {
 		this.stage = stage;
 		this.gameEngine = gameEngine;
+		
+		String fontPath = "file:resources/fonts/Creepster-Regular.ttf";
+
+	    try {
+	        Font loadedFont = Font.loadFont(fontPath, 14);
+	        if (loadedFont != null) {
+	            System.out.println("Font Yüklendi: " + loadedFont.getFamily());
+	        } else {
+	            System.out.println("Font bulunamadı, yol yanlış olabilir: " + fontPath);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public Scene mainMenu() { //Main menu UI

@@ -433,7 +433,7 @@ public class GameEngine {
 			if(remainingTime <= 0) {
 				countdown.stop();
 				stopGame();
-				System.out.println("SÜRE BİTTİ !!!");			}
+			}
 		}));
 		
 		countdown.setCycleCount(Timeline.INDEFINITE);
