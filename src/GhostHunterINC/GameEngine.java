@@ -151,6 +151,36 @@ public void startTimelineLoop() {
 		
 		gameLoop.play(); 
 	}
+
+	public void pauseGame() {
+		
+		if (gameLoop != null) {
+			gameLoop.pause();
+		}
+		
+		if (countdown != null) {
+			countdown.pause();
+		}
+		if (levelManager != null) {
+			levelManager.pauseTokenSpawn();
+		}
+		
+		Stage stage = (Stage) gameScene.getWindow();
+		stage.setScene(sceneManager.stopGamePanel());
+	}
+	
+	public void resumeGame() {
+
+		if (gameLoop != null) {
+			gameLoop.play();
+		}
+		if (countdown != null) {
+			countdown.play();
+		}
+		if (levelManager != null) {
+			levelManager.resumeTokenSpawn();
+		}
+	}
 	
 	public void handleInput() {
 		
@@ -189,12 +219,8 @@ public void startTimelineLoop() {
 					break;
 				}
 				case ESCAPE: {
-					if (gameLoop != null) {
-						gameLoop.stop();
-						
-						Stage stage = (Stage) gameScene.getWindow();
-						stage.setScene(sceneManager.stopGamePanel());
-					}
+					pauseGame();
+					break;
 				}
 				//Add cheat key
 			}			

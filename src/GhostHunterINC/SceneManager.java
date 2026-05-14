@@ -165,9 +165,7 @@ public class SceneManager {
 		resumeButton.setOnAction(e -> { //Game resume from the same time
 			stage.setScene(gameEngine.getGameScene());
 			
-			if (gameEngine.getGameLoop() != null) {
-				gameEngine.getGameLoop().play();
-			}
+			gameEngine.resumeGame();
 		});
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from stopped game menu
 		
