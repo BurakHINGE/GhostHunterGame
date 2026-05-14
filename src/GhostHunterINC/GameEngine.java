@@ -182,6 +182,14 @@ public void startTimelineLoop() {
 					isDPressed = true;
 					break;
 				}
+				case ESCAPE: {
+					if (gameLoop != null) {
+						gameLoop.stop();
+						
+						Stage stage = (Stage) gameScene.getWindow();
+						stage.setScene(sceneManager.stopGamePanel());
+					}
+				}
 				//Add cheat key
 			}			
 		});
@@ -219,14 +227,6 @@ public void startTimelineLoop() {
 				case RIGHT: {
 					isDPressed = false;
 					break;
-				}
-				case ESCAPE: {
-					if (gameLoop != null) {
-						gameLoop.stop();
-						
-						Stage stage = (Stage) gameScene.getWindow();
-						stage.setScene(sceneManager.stopGamePanel());
-					}
 				}
 				//Add cheat key
 			}			
