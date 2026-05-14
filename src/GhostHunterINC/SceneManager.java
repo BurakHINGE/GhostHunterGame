@@ -136,9 +136,9 @@ public class SceneManager {
 		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
 		
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from Level Selection Menu
-		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage));
-		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage));
-		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage));
+		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
+		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage, this));
+		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage, this));
 		
 		return new Scene(mainPane, stage.getWidth(), stage.getHeight()); //Return border pane with scene
 	}
@@ -162,10 +162,16 @@ public class SceneManager {
 		
 		layout.getChildren().addAll(pauseText, buttonLayout);
 		
-//		resumeButton.setOnAction(e -> ); Game resume from the same time
+		resumeButton.setOnAction(e -> { //Game resume from the same time
+			stage.setScene(gameEngine.getGameScene());
+			
+			if (gameEngine.getGameLoop() != null) {
+				gameEngine.getGameLoop().play();
+			}
+		});
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from stopped game menu
 		
-		return new Scene(layout, 500, 500);
+		return new Scene(layout, stage.getWidth(), stage.getHeight());
 	}
 	
 	public Scene winPanel() { //Show this panel if user win the game
@@ -184,10 +190,10 @@ public class SceneManager {
 		
 		layout.setAlignment(Pos.CENTER);
 		
-		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage)); //Reopen the same level
+		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this)); //Reopen the same level
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu
 		
-		return new Scene(layout, 500, 500);
+		return new Scene(layout, stage.getWidth(), stage.getHeight());
 	}
 	
 	public Scene losePanel() { //Show this panel if user lose the game
@@ -206,10 +212,10 @@ public class SceneManager {
 		
 		layout.setAlignment(Pos.CENTER);
 		
-		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage)); //Reopen the same level
+		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this)); //Reopen the same level
 		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu
 		
-		return new Scene(layout, 500, 500);
+		return new Scene(layout, stage.getWidth(), stage.getHeight());
 	}
 	
 	private void applyButtonStyles(double width, Button... buttons) {
