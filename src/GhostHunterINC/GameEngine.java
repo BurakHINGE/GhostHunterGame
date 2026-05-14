@@ -83,7 +83,7 @@ public class GameEngine {
 		
 		this.hunter = new Hunter(startX, startY, areaX, areaY, areaW, areaH);
 		
-		this.gameObjects.getChildren().add(this.hunter.getHunterShape());
+		this.gameObjects.getChildren().add(this.hunter.getShape());
 		
 		this.levelManager = new LevelManager(this.gameObjects, this.allEntities);
 		this.hudManager = new HUDManager(level);
@@ -265,8 +265,8 @@ public void startTimelineLoop() {
 		hunter.setX(newX);
 		hunter.setY(newY);
 		
-		hunter.getHunterShape().setLayoutX(newX);
-	    hunter.getHunterShape().setLayoutY(newY);
+		hunter.getShape().setLayoutX(newX);
+	    hunter.getShape().setLayoutY(newY);
 		
 	}
 	
