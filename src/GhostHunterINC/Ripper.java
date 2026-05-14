@@ -24,6 +24,10 @@ public class Ripper extends ParanormalEntity {
     }
 
     private void createRipper() {
+    	
+    	 Pane ripperShape = new Pane();
+    	 ripperShape.setPrefSize(56, 56);
+    	 
     	 Polygon spikes = new Polygon();
     	 
     	 int numOfSpikes = 12;
@@ -54,10 +58,9 @@ public class Ripper extends ParanormalEntity {
     	 Circle rightInnerEye = new Circle(centerX + 4, centerY - 1.6, 1.6, Color.RED);
 
 
-    	 Pane ripperPane = new Pane(spikes, body, leftEye, rightEye, leftInnerEye, rightInnerEye);
-    	 ripperPane.setPrefSize(56, 56);
+    	 ripperShape.getChildren().addAll(spikes, body, leftEye, rightEye, leftInnerEye, rightInnerEye);
     	 
-    	 sPane = new StackPane(ripperPane);
+    	 sPane = new StackPane(ripperShape);
     	 sPane.setPrefSize(56, 56);
     	    
     }
