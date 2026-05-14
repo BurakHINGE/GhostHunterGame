@@ -118,6 +118,16 @@ public void startTimelineLoop() {
 		
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
 			hunterMovement();
+			
+			for (GameObject obj : allEntities) {
+	            obj.update(0);
+	            if(obj instanceof Token) {
+	            	if(hunter.checkCollision(obj)) {
+	            		gameObjects.getChildren().remove(obj.getShape());
+	            		allEntities.remove(obj);
+	            	}
+	            }
+	        }
 		}));
 
 		gameLoop.setCycleCount(Timeline.INDEFINITE); 
@@ -182,15 +192,47 @@ public void startTimelineLoop() {
 		
 		//Movement
 		if (isWPressed) {
-			newY -= speed;
+			if (isAPressed) {
+				newX -= speed / Math.sqrt(2);
+				newY -= speed / Math.sqrt(2);
+			}
+			else if (isDPressed) {
+				newX += speed / Math.sqrt(2);
+				newY -= speed / Math.sqrt(2);
+			}
+			else if (isSPressed) {
+				newY += 0;
+			}
+			else {
+				newY -= speed;
+			}
 		}
-		if (isAPressed) {
-			newX -= speed;
+		else if (isAPressed) {
+			if (isWPressed) {
+				newX -= speed / Math.sqrt(2);
+				newY -= speed / Math.sqrt(2);
+			}
+			else if (isSPressed) {
+				newX -= speed / Math.sqrt(2);
+				newY += speed / Math.sqrt(2);
+			}
+			else if (isDPressed) {
+				newX += 0;
+			}
+			else {
+				newX -= speed;
+			}
 		}
-		if (isSPressed) {
-			newY += speed;
+		else if (isSPressed) {
+			if (isDPressed) {
+				newX += speed / Math.sqrt(2);
+				newY += speed / Math.sqrt(2);
+			}
+			else {
+				newY += speed;
+			}
 		}
-		if (isDPressed) {
+		else if (isDPressed) {
 			newX += speed;
 		}
 		
