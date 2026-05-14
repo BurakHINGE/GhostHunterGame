@@ -12,7 +12,6 @@ public class Hunter extends GameObject {
     private double areaX, areaY, areaW, areaH, speed;
     private boolean movingUp, movingDown, movingLeft, movingRight;
     private Scanner scanner;
-    private Pane hunterShape;
     private Circle body;
  
     public Hunter(double x, double y, double areaX, double areaY, double areaW, double areaH) {
@@ -22,7 +21,7 @@ public class Hunter extends GameObject {
         this.areaY = areaY;
         this.areaW = areaW;
         this.areaH = areaH;
-        this.maxHealth = 100;
+        this.maxHealth = ConfigManager.getMaxHealth();
         this.health = maxHealth;
         this.score = 0;
         this.speed = 200;
@@ -33,10 +32,7 @@ public class Hunter extends GameObject {
  
     private void createHunter() {
         body = new Circle(20, 20, 20, Color.ORANGE);
-        Pane hunterPane = new Pane(body);
-        hunterPane.setPrefSize(40, 40);
-        hunterShape = hunterPane;
-        sPane = new StackPane(hunterPane);
+        sPane = new StackPane(body);
         sPane.setPrefSize(40, 40);
     }
  
@@ -48,8 +44,8 @@ public class Hunter extends GameObject {
     @Override
     public void render(Pane pane) {
         this.currentPane = pane;
-        if (!pane.getChildren().contains(hunterShape))
-            pane.getChildren().add(hunterShape);
+        if (!pane.getChildren().contains(sPane))
+            pane.getChildren().add(sPane);
         scanner.render(pane);
     }
  
@@ -59,7 +55,8 @@ public class Hunter extends GameObject {
     public void takeDamage(int amount) {
         health -= amount;
         body.setFill(Color.RED);
-        if (health <= 0) health = 0;
+        if (health <= 0) 
+        	health = 0;
     }
  
     public void resetColor() {
@@ -179,14 +176,6 @@ public class Hunter extends GameObject {
 		this.scanner = scanner;
 	}
 
-	public Pane getHunterShape() {
-		return hunterShape;
-	}
-
-	public void setHunterShape(Pane hunterShape) {
-		this.hunterShape = hunterShape;
-	}
-
 	public Circle getBody() {
 		return body;
 	}
@@ -197,7 +186,7 @@ public class Hunter extends GameObject {
 
 	@Override
     public Node getShape() { 
-    	return hunterShape; 
-    	}
+    	return sPane; 
+    }
 }
  

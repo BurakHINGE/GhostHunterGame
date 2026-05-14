@@ -6,12 +6,13 @@ public abstract class ParanormalEntity extends GameObject {
     private int pointValue;
     private double scale;
     private boolean beingVacuumed,captured;
+    private static final double DEFAULT_RANGE =1.0;
 
     public ParanormalEntity(double speedX, double speedY, int pointValue) {
         this.speedX = speedX;
         this.speedY = speedY;
         this.pointValue = pointValue;
-        this.scale = 1.0;
+        this.scale = DEFAULT_RANGE;
         this.beingVacuumed = false;
         this.visible = false; 
     }
@@ -41,15 +42,7 @@ public abstract class ParanormalEntity extends GameObject {
         	visible = false;			
         }
     }
-
-    public boolean isCaptured() {
-		return captured;
-	}
-
-	public void setCaptured(boolean captured) {
-		this.captured = captured;
-	}
-
+    
 	public void makeVisible() {
         visible = true;
         sPane.setOpacity(1.0);
@@ -59,7 +52,13 @@ public abstract class ParanormalEntity extends GameObject {
         visible = false;
         sPane.setOpacity(0.0);
     }
+    public boolean isCaptured() {
+		return captured;
+	}
 
+	public void setCaptured(boolean captured) {
+		this.captured = captured;
+	}
 	public double getSpeedX() {
 		return speedX;
 	}
