@@ -182,6 +182,18 @@ public class LevelManager {
 		}
 	}
 	
+	void pauseTokenSpawn() {
+		if(tokenTimeline != null) {
+			tokenTimeline.pause();
+		}
+	}
+	
+	void resumeTokenSpawn() {
+		if(tokenTimeline != null) {
+			tokenTimeline.play();
+		}
+	}
+	
 	void spawnToken(int level) {
 		double randX = 0, randY = 0;
 		Token token = null;

@@ -47,12 +47,14 @@ public class GameEngine {
 		handleInput();
 	}
 	
-	public void startGame(int level, Stage stage) {
+	public void startGame(int level, Stage stage, SceneManager sceneManager) {
 		this.currentLevel = level;
 		
 		this.allEntities = new ArrayList<>();
 		
 		this.gameObjects = new Pane();
+		
+		this.sceneManager = sceneManager;
 		
 		double areaX;
 		double areaY;
@@ -218,17 +220,16 @@ public void startTimelineLoop() {
 					isDPressed = false;
 					break;
 				}
+				case ESCAPE: {
+					if (gameLoop != null) {
+						gameLoop.stop();
+						
+						Stage stage = (Stage) gameScene.getWindow();
+						stage.setScene(sceneManager.stopGamePanel());
+					}
+				}
 				//Add cheat key
 			}			
-		});
-		
-		gameScene.setOnKeyPressed(e -> {
-			if (gameLoop != null) {
-				gameLoop.stop();
-				
-				Stage stage = (Stage) gameScene.getWindow();
-				stage.setScene(sceneManager.stopGamePanel());
-			}
 		});
 	}
 	
