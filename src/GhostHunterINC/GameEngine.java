@@ -34,6 +34,9 @@ public class GameEngine {
 	private boolean isSPressed = false;
 	private boolean isDPressed = false;
 	
+	//Cheat keys
+	private boolean visibilityCheat = false;
+	
 	//Mouse coordinates
 	private double mouseX;
 	private double mouseY;
@@ -150,11 +153,19 @@ public void startTimelineLoop() {
 				}
 				
 				if(obj instanceof ParanormalEntity) {
-					if(hunter.checkCollision(obj)) {
-						isTouching = true;
-						hunter.takeDamage(2);
-					}
-				}
+	            	
+	            	if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
+	            		((ParanormalEntity) obj).setBeingVacuumed(true);
+	            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
+	            	} else {
+	            		((ParanormalEntity) obj).setBeingVacuumed(false);
+	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
+	            	}
+	            	
+	            	if(hunter.checkCollision(obj)) {
+	            		hunter.takeDamage(10);
+	            	}
+	            }
 				
 				if(isTouching) {
 					hunter.getBody().setFill(Color.RED);
@@ -238,6 +249,15 @@ public void startTimelineLoop() {
 				case ESCAPE: {
 					pauseGame();
 					break;
+				}
+				case G: {
+					visibilityCheat = !visibilityCheat;
+					
+					for (GameObject entities: allEntities) {
+						if (entities instanceof ParanormalEntity) {
+							entities.getShape().setVisible(visibilityCheat);
+						}
+					}
 				}
 				//Add cheat key
 			}			
