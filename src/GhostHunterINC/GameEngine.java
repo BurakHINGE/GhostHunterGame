@@ -240,10 +240,12 @@ public class GameEngine {
 		    
 		    if(hunter.getHealth() <= 0) {
 		    	stopGame();
-		    	Stage Stage = (Stage)gameScene.getWindow();
+		    	StackPane root = (StackPane) gameScene.getRoot();
 		    	
-		    	Stage.setScene(sceneManager.losePanel());
-		    	return;
+		    	if (!root.getChildren().contains(sceneManager.losePanel())) {
+		            root.getChildren().add(sceneManager.losePanel());
+		        }
+		        return;
 		    }
 		    
 		    boolean isGhostLeft = false;
@@ -258,7 +260,10 @@ public class GameEngine {
 		    if(!isGhostLeft) {
 		    	stopGame();
 		    	StackPane root = (StackPane) gameScene.getRoot();
-		    	root.getChildren().add(sceneManager.winPanel());	
+		    	
+		    	if (!root.getChildren().contains(sceneManager.winPanel())) {
+		            root.getChildren().add(sceneManager.winPanel());
+		        }	
 		    }
 		    
 	        
@@ -529,8 +534,8 @@ public class GameEngine {
 				countdown.stop();
 				stopGame();
 				
-				Stage Stage = (Stage)gameScene.getWindow();
-				Stage.setScene(sceneManager.losePanel());
+				StackPane root = (StackPane) gameScene.getRoot();
+	            root.getChildren().add(sceneManager.losePanel());
 			}
 		}));
 		
