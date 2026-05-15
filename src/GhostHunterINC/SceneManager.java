@@ -96,7 +96,7 @@ public class SceneManager {
 		mainPane.getChildren().addAll(mainMenuView, layout);
 		
 		//startGameButton.setOnAction(e -> );
-		selectLevelButton.setOnAction(e -> stage.setScene(selectLevelMenu())); //Open level selection menu
+		selectLevelButton.setOnAction(e -> switchScene(selectLevelMenu())); //Open level selection menu
 		exitButton.setOnAction(e -> System.exit(0)); //Exit to program
 		
 		return new Scene(mainPane, stage.getWidth(), stage.getHeight());	//Return buttons with scene
@@ -151,7 +151,7 @@ public class SceneManager {
 		BorderPane.setAlignment(returnMainMenuButton, Pos.CENTER_RIGHT); //Align the main menu button in the right (bottom) of border pane
 		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
 		
-		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from Level Selection Menu
+		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); //Return to main menu from Level Selection Menu
 		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
 		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage, this));
 		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage, this));
@@ -204,71 +204,99 @@ public class SceneManager {
 		mainPane.getChildren().addAll(pauseMenuView, layout);
 		
 		resumeButton.setOnAction(e -> { //Game resume from the same time
-			stage.setScene(gameEngine.getGameScene());
+			switchScene(gameEngine.getGameScene());
 			
 			gameEngine.resumeGame();
 		});
-		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu from stopped game menu
+		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); //Return to main menu from stopped game menu
 		
 		return new Scene(mainPane, stage.getWidth(), stage.getHeight());
 	}
 	
-	public Scene winPanel() { //Show this panel if user win the game
-		
-		VBox layout = new VBox(10);
-		
-		Label winText = new Label("Congratulations, You Win!");
-		Button retryButton = new Button("Play Again");
-		Button returnMainMenuButton = new Button("Main Menu");
-		
-		retryButton.setStyle(BUTTON_STYLE);
-		returnMainMenuButton.setStyle(BUTTON_STYLE);
-		
-		retryButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
-		retryButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-		
-		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
-		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-		
-		applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
-		
-		layout.getChildren().addAll(winText, retryButton, returnMainMenuButton);
-		
-		layout.setAlignment(Pos.CENTER);
-		
-		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this)); //Reopen the same level
-		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu
-		
-		return new Scene(layout, stage.getWidth(), stage.getHeight());
+	public VBox winPanel() {
+
+	    VBox overlay = new VBox();
+	    overlay.setAlignment(Pos.CENTER);
+	    overlay.setStyle("-fx-background-color: rgba(5, 15, 10, 0.8);");
+	    overlay.prefWidthProperty().bind(stage.widthProperty());
+	    overlay.prefHeightProperty().bind(stage.heightProperty());
+
+	    VBox box = new VBox(25);
+	    box.setMaxSize(500, 350);
+	    box.setAlignment(Pos.CENTER);
+	    box.setStyle("-fx-background-color: rgba(10, 30, 20, 0.95); " +
+	                 "-fx-border-color: #4dfa9a; " +
+	                 "-fx-border-width: 4px;");
+	    box.setPadding(new Insets(40));
+
+	    Label winText = new Label("MISSION ACCOMPLISHED");
+	    winText.setFont(Font.font("Creepster", 45));
+	    winText.setTextFill(Color.web("#4dfa9a"));
+	    winText.setStyle("-fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
+
+	    Button retryButton = new Button("NEXT HUNT");
+	    Button returnMainMenuButton = new Button("MAIN MENU");
+
+	    retryButton.setStyle(BUTTON_STYLE);
+	    returnMainMenuButton.setStyle(BUTTON_STYLE);
+	    
+	    retryButton.setPrefSize(280, 60);
+	    returnMainMenuButton.setPrefSize(280, 60);
+
+	    applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
+
+	    retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this));
+	    returnMainMenuButton.setOnAction(e -> {
+	    	switchScene(mainMenu());
+	        stage.setFullScreen(true);
+	    });
+
+	    box.getChildren().addAll(winText, retryButton, returnMainMenuButton);
+	    overlay.getChildren().add(box);
+
+	    return overlay;
 	}
 	
-	public Scene losePanel() { //Show this panel if user lose the game
-		
-		VBox layout = new VBox(10);
-		
-		Label loseText = new Label("Oh No, You Lose. Let's Try Again");
-		Button retryButton = new Button("Try Again");
-		Button returnMainMenuButton = new Button("Main Menu");
-		
-		retryButton.setStyle(BUTTON_STYLE);
-		returnMainMenuButton.setStyle(BUTTON_STYLE);
-		
-		retryButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
-		retryButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-		
-		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
-		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-		
-		applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
-		
-		layout.getChildren().addAll(loseText, retryButton, returnMainMenuButton);
-		
-		layout.setAlignment(Pos.CENTER);
-		
-		retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this)); //Reopen the same level
-		returnMainMenuButton.setOnAction(e -> stage.setScene(mainMenu())); //Return to main menu
-		
-		return new Scene(layout, stage.getWidth(), stage.getHeight());
+	public VBox losePanel() {
+	    VBox overlay = new VBox();
+	    overlay.setAlignment(Pos.CENTER);
+	    overlay.setStyle("-fx-background-color: rgba(15, 5, 5, 0.8);");
+	    overlay.prefWidthProperty().bind(stage.widthProperty());
+	    overlay.prefHeightProperty().bind(stage.heightProperty());
+
+	    VBox box = new VBox(25);
+	    box.setMaxSize(500, 350);
+	    box.setAlignment(Pos.CENTER);
+	    box.setStyle("-fx-background-color: rgba(20, 10, 10, 0.95); " +
+	                 "-fx-border-color: #ff4d4d; " + 
+	                 "-fx-border-width: 4px;");
+	    box.setPadding(new Insets(40));
+
+	    Label loseText = new Label("SYSTEM FAILURE");
+	    loseText.setFont(Font.font("Creepster", 45));
+	    loseText.setTextFill(Color.web("#ff4d4d"));
+
+	    Button retryButton = new Button("REBOOT SYSTEM");
+	    Button returnMainMenuButton = new Button("ABORT MISSION");
+
+	    retryButton.setStyle(BUTTON_STYLE);
+	    returnMainMenuButton.setStyle(BUTTON_STYLE);
+	    
+	    retryButton.setPrefSize(280, 60);
+	    returnMainMenuButton.setPrefSize(280, 60);
+
+	    applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
+
+	    retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this));
+	    returnMainMenuButton.setOnAction(e -> {
+	    	switchScene(mainMenu());
+	        stage.setFullScreen(true);
+	    });
+
+	    box.getChildren().addAll(loseText, retryButton, returnMainMenuButton);
+	    overlay.getChildren().add(box);
+
+	    return overlay;
 	}
 	
 	private void applyButtonStyles(double width, Button... buttons) {
@@ -281,6 +309,11 @@ public class SceneManager {
 	        btn.setOnMouseEntered(e -> btn.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
 	        btn.setOnMouseExited(e -> btn.setStyle(dynamicStyle));
 	    }
+	}
+	
+	private void switchScene(Scene scene) {
+	    stage.setScene(scene);
+	    stage.setFullScreen(true);
 	}
 	
 	public Stage getStage() {

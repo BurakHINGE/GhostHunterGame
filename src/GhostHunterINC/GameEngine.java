@@ -249,8 +249,8 @@ public class GameEngine {
 		    
 		    if(!isGhostLeft) {
 		    	stopGame();
-		    	Stage Stage = (Stage) gameScene.getWindow();
-		    	Stage.setScene(sceneManager.winPanel());
+		    	StackPane root = (StackPane) gameScene.getRoot();
+		    	root.getChildren().add(sceneManager.winPanel());	
 		    }
 		    
 	        
