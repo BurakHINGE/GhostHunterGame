@@ -8,12 +8,11 @@ public class Scanner {
 
     private Polygon scanner;
     private Hunter hunter;
-    private double energy,maxEnergy,decreaseRate,increaseRate,range,spreadAngle;
+    private double energy,maxEnergy,decreaseRate,increaseRate,range;
     private boolean active;
     private double aimAngle = 0;
-    public static final double RANGE = 90;
+    public static final double DEFAULT_RANGE = 90;
     public static final double ANGLE = Math.toRadians(18);
-    public static final double MAX_ANGLE = Math.toRadians(38);
     
     public Scanner(Hunter hunter) {
         this.hunter = hunter;
@@ -22,8 +21,7 @@ public class Scanner {
         this.active = false;
         this.decreaseRate = ConfigManager.getVacuumDecrease();
         this.increaseRate = ConfigManager.getVacuumIncrease();
-        this.range = RANGE;
-        this.spreadAngle = ANGLE;
+        this.range = DEFAULT_RANGE;
         createScanner();
     }
 
@@ -54,8 +52,8 @@ public class Scanner {
         double secondPointX  = firstPointX + Math.cos(aimAngle) * range;
         double secondPointY  = firstPointY + Math.sin(aimAngle) * range;
 
-        double thirdPointX = -Math.sin(aimAngle) * range * Math.tan(spreadAngle);
-        double thirdPointY =  Math.cos(aimAngle) * range * Math.tan(spreadAngle);
+        double thirdPointX = -Math.sin(aimAngle) * range * Math.tan(ANGLE);
+        double thirdPointY =  Math.cos(aimAngle) * range * Math.tan(ANGLE);
         
         scanner.getPoints().setAll(firstPointX,firstPointY,secondPointX + thirdPointX, secondPointY + thirdPointY,secondPointX - thirdPointX, secondPointY - thirdPointY);      
     }
@@ -66,7 +64,6 @@ public class Scanner {
     	aimAngle = Math.atan2(mouseY - centerY, mouseX - centerX);
     	updatePosition();
     }
-    
     
     public void update(double dt) {
     	if (active) {
@@ -86,18 +83,10 @@ public class Scanner {
     	
     }
 
-    public void expandRange(double extraAngleDegrees) {
-        double newAngle = spreadAngle + Math.toRadians(extraAngleDegrees);
-        spreadAngle = Math.min(newAngle, MAX_ANGLE);
-        updatePosition();
+    public void expandRange(int extraRange) {
+    	range += extraRange;
     }
 
-    public void revertExpand(double extraAngleDegrees) {
-        double newAngle = spreadAngle - Math.toRadians(extraAngleDegrees);
-        spreadAngle = Math.max(newAngle, ANGLE);
-        updatePosition();
-    }
-    
     public void render(Pane pane) {
         if (!pane.getChildren().contains(scanner)) {
             pane.getChildren().add(scanner);

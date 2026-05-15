@@ -1,9 +1,6 @@
 package GhostHunterINC;
 
 import javafx.scene.shape.*;
-import javafx.util.Duration;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.StackPane;
@@ -44,14 +41,10 @@ public class RangeToken extends Token {
 
 	@Override
 	void applyEffect(Hunter hunter) {
-		double increaseAmount = ConfigManager.getRangeTokenIncrease();
-	    hunter.getScanner().expandRange(increaseAmount);
-	    
-	    Timeline timer = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
-	        hunter.getScanner().revertExpand(increaseAmount);
-	    }));
-	    timer.setCycleCount(1);
-	    timer.play();
+		int increase_amount = ConfigManager.getRangeTokenIncrease(); 
+		
+		//Increase the range with the given amount
+		hunter.getScanner().expandRange(increase_amount);
 		
 	}
 
