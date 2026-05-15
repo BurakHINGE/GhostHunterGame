@@ -46,7 +46,7 @@ public class GameEngine {
 		this.allEntities = new ArrayList<>();
 	}
 	
-	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList<GameObject> allEntities) {
+	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter,ArrayList<GameObject> allEntities) {
 		this.gameObjects = gameObjects;
 		this.gameScene = gameScene;
 		this.hunter = hunter;
@@ -147,15 +147,18 @@ public class GameEngine {
 			hunterMovement();
 			hunter.getScanner().updatePosition(); 
 		    hunter.getScanner().update(0.016);
-			hudManager.updatedHealthBar(hunter.getHealth(), 100);
+			hudManager.updateHealthBar(hunter.getHealth(), 100);
+			hudManager.updateVacuumBar(hunter.getScanner().getEnergy(), hunter.getScanner().getMaxEnergy());
 			hudManager.updateTime(remainingTime);
+			
 			boolean isTouching = false;
 			
 			java.util.Iterator<GameObject> iterator = allEntities.iterator();
 			
 		    while (iterator.hasNext()) {
 		        GameObject obj = iterator.next();
-		        obj.update(0.016); 
+		        obj.update(0.016);
+		        hunter.update(0.016);
 
 		        if (obj instanceof Token) {
 		            if (hunter.checkCollision(obj)) {
@@ -297,7 +300,7 @@ public class GameEngine {
 					break;
 				}
 				case SPACE: {
-		            hunter.getScanner().deactivate(); 
+		            hunter.getScanner().deactivate();
 		            break;
 		        }
 				//Add cheat key
