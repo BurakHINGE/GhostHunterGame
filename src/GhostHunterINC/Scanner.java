@@ -23,6 +23,7 @@ public class Scanner {
         this.decreaseRate = ConfigManager.getVacuumDecrease();
         this.increaseRate = ConfigManager.getVacuumIncrease();
         this.range = RANGE;
+        this.spreadAngle = ANGLE;
         createScanner();
     }
 
@@ -53,8 +54,8 @@ public class Scanner {
         double secondPointX  = firstPointX + Math.cos(aimAngle) * range;
         double secondPointY  = firstPointY + Math.sin(aimAngle) * range;
 
-        double thirdPointX = -Math.sin(aimAngle) * range * Math.tan(ANGLE);
-        double thirdPointY =  Math.cos(aimAngle) * range * Math.tan(ANGLE);
+        double thirdPointX = -Math.sin(aimAngle) * range * Math.tan(spreadAngle);
+        double thirdPointY =  Math.cos(aimAngle) * range * Math.tan(spreadAngle);
         
         scanner.getPoints().setAll(firstPointX,firstPointY,secondPointX + thirdPointX, secondPointY + thirdPointY,secondPointX - thirdPointX, secondPointY - thirdPointY);      
     }
