@@ -7,6 +7,7 @@ public abstract class ParanormalEntity extends GameObject {
     private double scale;
     private boolean beingVacuumed,captured;
     private static final double DEFAULT_RANGE =1.0;
+    private boolean revealedByToken = false;
 
     public ParanormalEntity(double speedX, double speedY, int pointValue) {
         this.speedX = speedX;
@@ -120,6 +121,14 @@ public abstract class ParanormalEntity extends GameObject {
 
 	public void setBeingVacuumed(boolean beingVacuumed) {
 		this.beingVacuumed = beingVacuumed;
-	}   
+	}
+	
+	public boolean isRevealedByToken() {
+	    return revealedByToken;
+	}
+
+	public void setRevealedByToken(boolean revealedByToken) {
+	    this.revealedByToken = revealedByToken;
+	}
     
 }

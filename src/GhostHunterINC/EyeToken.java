@@ -51,6 +51,7 @@ public class EyeToken extends Token {
 		//Make all entities visible for given time
 		for(GameObject obj : allEntities) {
 			if(obj instanceof ParanormalEntity) {
+				((ParanormalEntity) obj).setRevealedByToken(true);
 				obj.getShape().setVisible(true);
 			}
 		}
@@ -60,7 +61,7 @@ public class EyeToken extends Token {
 		duration.setOnFinished(e -> {
 			for(GameObject obj : allEntities) {
 				if(obj instanceof ParanormalEntity) {
-					obj.getShape().setVisible(false);
+					((ParanormalEntity) obj).setRevealedByToken(false);
 				}
 			}
 		});

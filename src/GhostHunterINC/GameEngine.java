@@ -223,8 +223,14 @@ public class GameEngine {
 			        
 			        if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
 	            		((ParanormalEntity) obj).setBeingVacuumed(true);
+	            		((ParanormalEntity) obj).getShape().setVisible(true);
 	            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
 	            	} else {
+	            		
+	            		if(!visibilityCheat && !((ParanormalEntity)obj).isRevealedByToken()) {
+	            			obj.getShape().setVisible(false);
+	            		}
+	            		
 	            		((ParanormalEntity) obj).setBeingVacuumed(false);
 //	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
 	            	}
