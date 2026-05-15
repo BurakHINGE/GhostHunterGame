@@ -158,7 +158,7 @@ public class GameEngine {
 	}
 	
 	public void startTimelineLoop() {
-		
+		Stage stage = new Stage();
 		if (gameLoop != null) {
 			gameLoop.stop();
 		}
@@ -228,9 +228,23 @@ public class GameEngine {
 //	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
 	            	}
 		        }
-		        	
-		        
-		        }
+		    }
+		    
+		    boolean isGhostLeft = false;
+		    
+		    for(GameObject obj: allEntities) {
+		    	if(obj instanceof ParanormalEntity) {
+		    		isGhostLeft = true;
+		    		break;
+		    	}
+		    }
+		    
+		    if(!isGhostLeft) {
+		    	stopGame();
+		    	Stage Stage = (Stage) gameScene.getWindow();
+		    	Stage.setScene(sceneManager.winPanel());
+		    }
+		    
 	        
 		}));
 
