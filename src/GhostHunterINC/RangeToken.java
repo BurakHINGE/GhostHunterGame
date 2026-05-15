@@ -44,16 +44,8 @@ public class RangeToken extends Token {
 
 	@Override
 	void applyEffect(Hunter hunter) {
-
 		int increaseAmount = ConfigManager.getRangeTokenIncrease();
-	    hunter.getScanner().expandRange(increaseAmount);
-	    
-	    Timeline timer = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
-	        hunter.getScanner().revertExpand(increaseAmount);
-	    }));
-	    timer.setCycleCount(1);
-	    timer.play();
-	
+	    hunter.getScanner().rangeTimer(increaseAmount,5.0);
 	}
 
 	@Override

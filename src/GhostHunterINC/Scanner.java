@@ -1,8 +1,12 @@
 package GhostHunterINC;
 
+import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.util.Duration;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 
 public class Scanner {
 
@@ -14,6 +18,7 @@ public class Scanner {
     public static final double RANGE = 90;
     public static final double ANGLE = Math.toRadians(18);
     public static final double MAX_ANGLE = Math.toRadians(38);
+    private Timeline rangeTime;
     
     public Scanner(Hunter hunter) {
         this.hunter = hunter;
@@ -95,6 +100,19 @@ public class Scanner {
         double newAngle = spreadAngle - Math.toRadians(extraAngleDegrees);
         spreadAngle = Math.max(newAngle, ANGLE);
         updatePosition();
+    }
+    public void rangeTimer(double extraAngleDegrees, double durationSeconds) {
+       
+        if (rangeTime != null && rangeTime.getStatus() == Animation.Status.RUNNING) 
+        	rangeTime.stop();
+        else 
+        	expandRange(extraAngleDegrees);
+
+        rangeTime = new Timeline(new KeyFrame(Duration.seconds(durationSeconds), e -> {
+            revertExpand(extraAngleDegrees);
+        }));
+        rangeTime.setCycleCount(1);
+        rangeTime.play();
     }
 
     public void render(Pane pane) {
