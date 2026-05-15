@@ -167,7 +167,7 @@ public class GameEngine {
 			hunterMovement();
 			hunter.getScanner().updatePosition(); 
 		    hunter.getScanner().update(0.016);
-			hudManager.updatedHealthBar(hunter.getHealth(), 100);
+			hudManager.updateHealthBar(hunter.getHealth(), 100);
 			hudManager.updateTime(remainingTime);
 			boolean isTouching = false;
 			
@@ -200,12 +200,20 @@ public class GameEngine {
 		            }
 		        }
 		        
-		        else if (obj instanceof ParanormalEntity) {
-		            if (hunter.checkCollision(obj)) {
+		        else if (obj instanceof ParanormalEntity) 
+
+		        	if(obj.getShape().getScaleX() <= 0.30) {
+		        		gameObjects.getChildren().remove(obj.getShape());
+		        		iterator.remove();
+		        		
+		        		hunter.addScore(100);
+		        		hudManager.updateScore(hunter.getScore());
+		        		
+		        	}
+		        	else if(hunter.checkCollision(obj)){
 		                isTouching = true; 
 		                hunter.takeDamage(2); 
 		            }
-		        
 		        
 			        if (isTouching) {
 			            hunter.getBody().setFill(Color.RED);
@@ -222,7 +230,7 @@ public class GameEngine {
 	            	}
 		        
 		        }   
-		    }
+		    
 	        
 		}));
 
