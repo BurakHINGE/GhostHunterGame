@@ -200,8 +200,7 @@ public class GameEngine {
 		            }
 		        }
 		        
-		        else if (obj instanceof ParanormalEntity) 
-
+		        else if (obj instanceof ParanormalEntity) {
 		        	if(obj.getShape().getScaleX() <= 0.30) {
 		        		gameObjects.getChildren().remove(obj.getShape());
 		        		iterator.remove();
@@ -228,9 +227,10 @@ public class GameEngine {
 	            		((ParanormalEntity) obj).setBeingVacuumed(false);
 //	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
 	            	}
+		        }
+		        	
 		        
-		        }   
-		    
+		        }
 	        
 		}));
 
