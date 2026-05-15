@@ -370,15 +370,23 @@ public class GameEngine {
 		});
 		
 		gameScene.setOnMouseMoved(e -> {
-			mouseX = e.getX();
-			mouseY = e.getY();
-			hunter.getScanner().pointToMouse(mouseX, mouseY);
+			javafx.geometry.Point2D localMouse = gameObjects.sceneToLocal(e.getX(), e.getY());
+		    
+		    if (localMouse != null) {
+		        mouseX = localMouse.getX();
+		        mouseY = localMouse.getY();
+		        hunter.getScanner().pointToMouse(mouseX, mouseY);
+		    }
 		});
 
 		gameScene.setOnMouseDragged(e -> {
-			mouseX = e.getX();
-			mouseY = e.getY();
-			hunter.getScanner().pointToMouse(mouseX, mouseY);
+			javafx.geometry.Point2D localMouse = gameObjects.sceneToLocal(e.getX(), e.getY());
+		    
+		    if (localMouse != null) {
+		        mouseX = localMouse.getX();
+		        mouseY = localMouse.getY();
+		        hunter.getScanner().pointToMouse(mouseX, mouseY);
+		    }
 		});
 	}
 	
