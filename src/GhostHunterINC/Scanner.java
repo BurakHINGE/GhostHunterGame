@@ -6,13 +6,14 @@ import javafx.scene.shape.Polygon;
 
 public class Scanner {
 
-    private Polygon scanner;
+	private Polygon scanner;
     private Hunter hunter;
-    private double energy,maxEnergy,decreaseRate,increaseRate,range;
+    private double energy,maxEnergy,decreaseRate,increaseRate,range,spreadAngle;
     private boolean active;
     private double aimAngle = 0;
-    public static final double DEFAULT_RANGE = 90;
+    public static final double RANGE = 90;
     public static final double ANGLE = Math.toRadians(18);
+    public static final double MAX_ANGLE = Math.toRadians(38);
     
     public Scanner(Hunter hunter) {
         this.hunter = hunter;
@@ -21,7 +22,7 @@ public class Scanner {
         this.active = false;
         this.decreaseRate = ConfigManager.getVacuumDecrease();
         this.increaseRate = ConfigManager.getVacuumIncrease();
-        this.range = DEFAULT_RANGE;
+        this.range = RANGE;
         createScanner();
     }
 
@@ -83,8 +84,16 @@ public class Scanner {
     	
     }
 
-    public void expandRange(int extraRange) {
-    	range += extraRange;
+    public void expandRange(double extraAngleDegrees) {
+        double newAngle = spreadAngle + Math.toRadians(extraAngleDegrees);
+        spreadAngle = Math.min(newAngle, MAX_ANGLE);
+        updatePosition();
+    }
+
+    public void revertExpand(double extraAngleDegrees) {
+        double newAngle = spreadAngle - Math.toRadians(extraAngleDegrees);
+        spreadAngle = Math.max(newAngle, ANGLE);
+        updatePosition();
     }
 
     public void render(Pane pane) {

@@ -49,7 +49,7 @@ public class GameEngine {
 		this.allEntities = new ArrayList<>();
 	}
 	
-	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter,ArrayList<GameObject> allEntities) {
+	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList<GameObject> allEntities) {
 		this.gameObjects = gameObjects;
 		this.gameScene = gameScene;
 		this.hunter = hunter;
@@ -112,11 +112,13 @@ public class GameEngine {
 		double startX = areaX + (areaW / 2);
 		double startY = areaY + (areaH / 2);
 		
-		this.borderArea = new javafx.scene.shape.Rectangle(areaX, areaY, areaW, areaH);
+		this.borderArea = new javafx.scene.shape.Rectangle();
+		this.borderArea.setWidth(areaW);
+		this.borderArea.setHeight(areaH);
+		
 		this.borderArea.setFill(Color.TRANSPARENT);
 		this.borderArea.setStroke(Color.WHITE);
 		this.borderArea.setStrokeWidth(4);
-		this.borderArea.setVisible(false);
 		
 		this.gameObjects.getChildren().add(borderArea);
 		
@@ -137,11 +139,15 @@ public class GameEngine {
 		hudPane.prefWidthProperty().bind(stage.widthProperty());
 		hudPane.prefHeightProperty().bind(stage.heightProperty());
 		
+		this.gameObjects.setMaxSize(areaW, areaH);
+		this.gameObjects.setPrefSize(areaW, areaH);
+		
 		StackPane levelPane = new StackPane();
 		levelPane.getChildren().addAll(levelView, this.gameObjects, hudPane);
-		StackPane.setAlignment(this.gameObjects, Pos.TOP_LEFT);
+		StackPane.setAlignment(this.gameObjects, Pos.CENTER);
 		
 		this.gameScene = new Scene(levelPane, stage.getWidth(), stage.getHeight());
+		
 		startCountdown();
 		handleInput();
 		stage.setScene(this.gameScene);
@@ -161,18 +167,30 @@ public class GameEngine {
 			hunterMovement();
 			hunter.getScanner().updatePosition(); 
 		    hunter.getScanner().update(0.016);
-			hudManager.updateHealthBar(hunter.getHealth(), 100);
-			hudManager.updateVacuumBar(hunter.getScanner().getEnergy(), hunter.getScanner().getMaxEnergy());
+			hudManager.updatedHealthBar(hunter.getHealth(), 100);
 			hudManager.updateTime(remainingTime);
-			
 			boolean isTouching = false;
 			
 			java.util.Iterator<GameObject> iterator = allEntities.iterator();
 			
+			double areaW = borderArea.getWidth();
+	        double areaH = borderArea.getHeight();
+			
 		    while (iterator.hasNext()) {
 		        GameObject obj = iterator.next();
-		        obj.update(0.016);
-		        hunter.update(0.016);
+		        
+		        if (obj instanceof Ripper) {
+		            ((Ripper) obj).setAreaH(areaH - 70);
+		            ((Ripper) obj).setAreaW(areaW - 70);
+		        } else if (obj instanceof Ghost) {
+		            ((Ghost) obj).setAreaH(areaH - 30);
+		            ((Ghost) obj).setAreaW(areaW - 30);
+		        } else if (obj instanceof Wisp) {
+		            ((Wisp) obj).setAreaH(areaH - 70);
+		            ((Wisp) obj).setAreaW(areaW - 70);
+		        }
+		            		     	        
+		        obj.update(0.016); 
 
 		        if (obj instanceof Token) {
 		            if (hunter.checkCollision(obj)) {
@@ -314,7 +332,7 @@ public class GameEngine {
 					break;
 				}
 				case SPACE: {
-		            hunter.getScanner().deactivate();
+		            hunter.getScanner().deactivate(); 
 		            break;
 		        }
 				//Add cheat key
@@ -418,10 +436,10 @@ public class GameEngine {
 		}
 		
 		//Fixed coordinates
-		double minX = hunter.getAreaX();
-		double minY = hunter.getAreaY();
-		double maxX = hunter.getAreaX() + hunter.getAreaW();
-		double maxY = hunter.getAreaY() + hunter.getAreaH();
+		double minX = borderArea.getX();
+		double minY = borderArea.getY();
+		double maxX = borderArea.getX() + borderArea.getWidth();
+		double maxY = borderArea.getY() + borderArea.getHeight();
 		
 		double hunterSize = 40.0;
 		
