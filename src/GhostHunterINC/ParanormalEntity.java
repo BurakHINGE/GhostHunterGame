@@ -19,8 +19,10 @@ public abstract class ParanormalEntity extends GameObject {
     
     @Override
     public void move(double dt) {
-        x += speedX * dt;
-        y += speedY * dt;
+    	if (!beingVacuumed) {
+            x += speedX * dt;
+            y += speedY * dt;
+        }
     }
 
     public void bounceOffWalls(double areaX, double areaY, double areaW, double areaH) {
@@ -31,18 +33,27 @@ public abstract class ParanormalEntity extends GameObject {
     }
 
     public void vacuumEffect(double dt,double hunterX,double hunterY) {
-        if (scale > 0) {
-            scale -= 0.5 * dt;
-            if (scale < 0)
-            	scale = 0;
-            sPane.setScaleX(scale);
-            sPane.setScaleY(scale);
+    	if (scale > 0.3) {
+            scale -= 0.25 * dt;
             
-            x += (hunterX - x) * dt;
-            y += (hunterY - y) * dt;
+            if (scale <= 0.3) {
+                scale = 0.3;
+            }
+            sPane.setScaleX(scale);
+            sPane.setScaleY(scale);  
+            
+            double dx = hunterX - this.x;
+            double dy = hunterY - this.y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance > 0) {
+                double pullSpeed = 80.0; 
+                this.x += (dx / distance) * pullSpeed * dt;
+                this.y += (dy / distance) * pullSpeed * dt;
+            }
         } else {
-        	captured = true;
-        	visible = false;			
+            captured = true;
+            visible = false;			
         }
     }
     public void inverseVacuuumEffect(double dt) {
