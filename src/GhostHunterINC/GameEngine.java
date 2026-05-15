@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -27,6 +29,7 @@ public class GameEngine {
 	private Timeline countdown;
 	private SceneManager sceneManager;
 	private javafx.scene.shape.Rectangle borderArea;
+	private ImageView levelView;
 	
 	//Letter direction keys
 	private boolean isWPressed = false;
@@ -66,6 +69,10 @@ public class GameEngine {
 		
 		this.sceneManager = sceneManager;
 		
+		Image level1Image = new Image("file:level1Picture.png");
+		Image level2Image = new Image("file:level2Picture.png");
+		Image level3Image = new Image("file:level3Picture.png");
+		
 		double areaX;
 		double areaY;
 		double areaW;
@@ -78,6 +85,7 @@ public class GameEngine {
 			areaW = ConfigManager.getLevel1PlayableAreaWidth();
 			areaH = ConfigManager.getLevel1PlayableAreaHeight();
 			remainingTime = ConfigManager.getLevel1Time();
+			this.levelView = new ImageView(level1Image);
 		}
 		else if (level == 2) {
 			areaX = ConfigManager.getLevel2PlayableAreaX();
@@ -85,6 +93,7 @@ public class GameEngine {
 			areaW = ConfigManager.getLevel2PlayableAreaWidth();
 			areaH = ConfigManager.getLevel2PlayableAreaHeight();
 			remainingTime = ConfigManager.getLevel2Time();
+			this.levelView = new ImageView(level2Image);
 		}
 		else { //Level 3
 			areaX = ConfigManager.getLevel3PlayableAreaX();
@@ -92,7 +101,12 @@ public class GameEngine {
 			areaW = ConfigManager.getLevel3PlayableAreaWidth();
 			areaH = ConfigManager.getLevel3PlayableAreaHeight();
 			remainingTime = ConfigManager.getLevel3Time();
+			this.levelView = new ImageView(level3Image);
 		}
+		
+		
+		levelView.fitWidthProperty().bind(stage.widthProperty());
+		levelView.fitHeightProperty().bind(stage.heightProperty());
 		
 		//Set hunter's start position
 		double startX = areaX + (areaW / 2);
@@ -124,7 +138,7 @@ public class GameEngine {
 		hudPane.prefHeightProperty().bind(stage.heightProperty());
 		
 		StackPane levelPane = new StackPane();
-		levelPane.getChildren().addAll(this.gameObjects, hudPane);
+		levelPane.getChildren().addAll(levelView, this.gameObjects, hudPane);
 		StackPane.setAlignment(this.gameObjects, Pos.TOP_LEFT);
 		
 		this.gameScene = new Scene(levelPane, stage.getWidth(), stage.getHeight());
