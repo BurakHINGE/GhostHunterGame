@@ -168,6 +168,7 @@ public class GameEngine {
 			hunter.getScanner().updatePosition(); 
 		    hunter.getScanner().update(0.016);
 			hudManager.updateHealthBar(hunter.getHealth(), 100);
+			hudManager.updateVacuumBar(hunter.getScanner().getEnergy(), hunter.getScanner().getMaxEnergy());
 			hudManager.updateTime(remainingTime);
 			boolean isTouching = false;
 			
@@ -200,8 +201,7 @@ public class GameEngine {
 		            }
 		        }
 		        
-		        else if (obj instanceof ParanormalEntity) 
-
+		        else if (obj instanceof ParanormalEntity) {
 		        	if(obj.getShape().getScaleX() <= 0.30) {
 		        		gameObjects.getChildren().remove(obj.getShape());
 		        		iterator.remove();
@@ -228,9 +228,10 @@ public class GameEngine {
 	            		((ParanormalEntity) obj).setBeingVacuumed(false);
 //	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
 	            	}
+		        }
+		        	
 		        
-		        }   
-		    
+		        }
 	        
 		}));
 
