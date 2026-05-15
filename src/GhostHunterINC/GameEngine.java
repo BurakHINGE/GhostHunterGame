@@ -238,6 +238,14 @@ public class GameEngine {
 		        }
 		    }
 		    
+		    if(hunter.getHealth() <= 0) {
+		    	stopGame();
+		    	Stage Stage = (Stage)gameScene.getWindow();
+		    	
+		    	Stage.setScene(sceneManager.losePanel());
+		    	return;
+		    }
+		    
 		    boolean isGhostLeft = false;
 		    
 		    for(GameObject obj: allEntities) {
@@ -520,6 +528,9 @@ public class GameEngine {
 			if(remainingTime <= 0) {
 				countdown.stop();
 				stopGame();
+				
+				Stage Stage = (Stage)gameScene.getWindow();
+				Stage.setScene(sceneManager.losePanel());
 			}
 		}));
 		
