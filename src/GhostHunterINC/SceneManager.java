@@ -218,9 +218,16 @@ public class SceneManager {
 		Button retryButton = new Button("Play Again");
 		Button returnMainMenuButton = new Button("Main Menu");
 		
-		winText.setPrefSize(200, 75);
-		retryButton.setPrefSize(100, 50);
-		returnMainMenuButton.setPrefSize(100, 50);
+		retryButton.setStyle(BUTTON_STYLE);
+		returnMainMenuButton.setStyle(BUTTON_STYLE);
+		
+		retryButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
+		retryButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+		
+		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
+		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+		
+		applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
 		
 		layout.getChildren().addAll(winText, retryButton, returnMainMenuButton);
 		
@@ -240,9 +247,16 @@ public class SceneManager {
 		Button retryButton = new Button("Try Again");
 		Button returnMainMenuButton = new Button("Main Menu");
 		
-		loseText.setPrefSize(200, 75);
-		retryButton.setPrefSize(100, 50);
-		returnMainMenuButton.setPrefSize(100, 50);
+		retryButton.setStyle(BUTTON_STYLE);
+		returnMainMenuButton.setStyle(BUTTON_STYLE);
+		
+		retryButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
+		retryButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+		
+		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
+		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+		
+		applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
 		
 		layout.getChildren().addAll(loseText, retryButton, returnMainMenuButton);
 		
