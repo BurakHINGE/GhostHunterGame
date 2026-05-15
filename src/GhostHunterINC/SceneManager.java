@@ -36,6 +36,9 @@ public class SceneManager {
 		this.stage = stage;
 		this.gameEngine = gameEngine;
 		
+		this.stage.setFullScreen(true);
+		this.stage.setFullScreenExitHint("");
+		
 		String fontPath = "file:resources/fonts/Creepster-Regular.ttf";
 
 	    try {

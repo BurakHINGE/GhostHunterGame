@@ -151,6 +151,7 @@ public class GameEngine {
 		startCountdown();
 		handleInput();
 		stage.setScene(this.gameScene);
+		stage.setFullScreen(true);
 		
 		levelPane.requestFocus();
 		
