@@ -249,7 +249,7 @@ public class LevelManager {
 				token = new HealthToken(randX, randY);
 				break;
 			case 2:
-				token = new EyeToken(randX, randY);
+				token = new EyeToken(randX, randY, allEntities);
 				break;
 			case 3:
 				token = new RangeToken(randX, randY);

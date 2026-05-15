@@ -1,17 +1,24 @@
 package GhostHunterINC;
 
 import javafx.scene.shape.*;
+import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.StackPane;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
+import java.util.ArrayList;
 
 public class EyeToken extends Token {
 	double x,y;
 	StackPane shape = new StackPane();
+	private ArrayList<GameObject> allEntities;
 	
-	public EyeToken(double x, double y) {
+	public EyeToken(double x, double y, ArrayList<GameObject> allEntities) {
 		this.x = x;
 		this.y = y;
+		this.allEntities = allEntities;
 		
 		Circle background = new Circle(15);
 		background.setFill(Color.DARKGREEN);
@@ -41,7 +48,23 @@ public class EyeToken extends Token {
 	void applyEffect(Hunter hunter) {
 		int time = ConfigManager.getEyeTokenDuration();
 		
-		//Make all entities visible for given time	
+		//Make all entities visible for given time
+		for(GameObject obj : allEntities) {
+			if(obj instanceof ParanormalEntity) {
+				obj.getShape().setVisible(true);
+			}
+		}
+		
+		PauseTransition duration = new PauseTransition(Duration.seconds(time));
+		
+		duration.setOnFinished(e -> {
+			for(GameObject obj : allEntities) {
+				if(obj instanceof ParanormalEntity) {
+					obj.getShape().setVisible(false);
+				}
+			}
+		});
+		duration.play();
 	}
 
 	@Override

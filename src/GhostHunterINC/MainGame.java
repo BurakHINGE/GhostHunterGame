@@ -22,7 +22,7 @@ public class MainGame extends Application {
 		ArrayList<GameObject> allEntities = new ArrayList<>();
 		LevelManager levelManager = new LevelManager(gameObjects, allEntities);
 		
-		GameEngine gameEngine = new GameEngine(gameObjects, gameScene, levelManager, hunter, allEntities);
+		GameEngine gameEngine = new GameEngine(gameObjects, gameScene, levelManager, hunter,allEntities);
 		
 		SceneManager sceneManager = new SceneManager(primaryStage, gameEngine);
 		primaryStage.setScene(sceneManager.mainMenu());

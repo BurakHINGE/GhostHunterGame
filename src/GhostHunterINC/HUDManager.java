@@ -21,11 +21,25 @@ public class HUDManager {
 	private Text vacuumLabel;
 	private DoubleProperty healthPercentage = new SimpleDoubleProperty(1.0);
 	private DoubleProperty vacuumPercentage = new SimpleDoubleProperty(1.0);
+	Font loadedFont;
 	
 	public HUDManager(int level) {
 		hudPane = new Pane();
 		//Allows player to click behind the HUD
 		hudPane.setPickOnBounds(false);
+		
+		String fontPath = "file:resources/fonts/Creepster-Regular.ttf";
+
+	    try {
+	        loadedFont = Font.loadFont(fontPath, 14);
+	        if (loadedFont != null) {
+	            System.out.println("Font Yüklendi: " + loadedFont.getFamily());
+	        } else {
+	            System.out.println("Font bulunamadı, yol yanlış olabilir: " + fontPath);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 		
 		startUI(level);
 	}
@@ -37,7 +51,7 @@ public class HUDManager {
 		
 		scoreText.xProperty().bind(hudPane.widthProperty().divide(2).subtract(50));
 		scoreText.yProperty().bind(hudPane.heightProperty().multiply(0.05));
-		//score.setFont(Font.loadFont()); Choose a spooky font and set it 
+		scoreText.setFont(loadedFont);
 		
 		//Set the time according to your level and config.txt
 		switch (level){
@@ -65,6 +79,7 @@ public class HUDManager {
 		//Change the x and y coordinates of time text as you like
 		timeText.xProperty().bind(hudPane.widthProperty().divide(2).subtract(30));
 		timeText.yProperty().bind(scoreText.yProperty().add(25));
+		timeText.setFont(loadedFont);
 		
 		//Set health bar
 		healthBarOuter = new Rectangle();
@@ -89,6 +104,7 @@ public class HUDManager {
 		healthLabel.setFill(Color.BLACK);
 		healthLabel.xProperty().bind(healthBarOuter.xProperty().subtract(5));
 		healthLabel.yProperty().bind(healthBarOuter.yProperty().subtract(10));
+		healthLabel.setFont(loadedFont);
 		
 		//Set vacuum bar
 		vacuumBarOuter = new Rectangle();
@@ -113,20 +129,21 @@ public class HUDManager {
 		vacuumLabel.setFill(Color.BLACK);
 		vacuumLabel.xProperty().bind(vacuumBarOuter.xProperty().subtract(5));
 		vacuumLabel.yProperty().bind(vacuumBarOuter.yProperty().subtract(10));
+		vacuumLabel.setFont(loadedFont);
 		
 		//Add everything to hud pane 
-		hudPane.getChildren().addAll(scoreText,timeText,healthBar,healthBarOuter, vacuumBar, vacuumBarOuter);
+		hudPane.getChildren().addAll(scoreText,timeText,healthBar,healthBarOuter, healthLabel, vacuumBar, vacuumBarOuter, vacuumLabel);
 		
 	}
 	
-	void updatedHealthBar(int currentHealth, int maxHealth) {
+	void updateHealthBar(double currentHealth, double maxHealth) {
 		//Calculate the current health percentage and change the height of the health bar
-		healthPercentage.set((double) currentHealth / maxHealth);
+		healthPercentage.set(currentHealth / maxHealth);
 	}
 	
-	void updateVacuumBar(int currentEnergy, int maxEnergy) {
+	void updateVacuumBar(double currentEnergy, double maxEnergy) {
 		//Calculate the current vacuum percentage and change the height of the vacuum bar
-		vacuumPercentage.set((double) currentEnergy / maxEnergy);
+		vacuumPercentage.set(currentEnergy / maxEnergy);
 	}
 	
 	void updateScore(int score) {
