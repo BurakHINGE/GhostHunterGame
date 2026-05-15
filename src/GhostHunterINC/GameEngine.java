@@ -183,7 +183,15 @@ public class GameEngine {
 		        }
 		        
 		        else if (obj instanceof ParanormalEntity) {
-		            if (hunter.checkCollision(obj)) {
+		        	if(obj.getShape().getScaleX() <= 0.30) {
+		        		gameObjects.getChildren().remove(obj.getShape());
+		        		iterator.remove();
+		        		
+		        		hunter.addScore(100);
+		        		hudManager.updateScore(hunter.getScore());
+		        		
+		        	}
+		        	else if (hunter.checkCollision(obj)) {
 		                isTouching = true; 
 		                hunter.takeDamage(2); 
 		            }

@@ -1,6 +1,7 @@
 package GhostHunterINC;
 
 import javafx.scene.shape.*;
+import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.StackPane;
@@ -45,7 +46,7 @@ public class RangeToken extends Token {
 		
 		//Increase the range with the given amount
 		hunter.getScanner().expandRange(increase_amount);
-		
+			
 	}
 
 	@Override
