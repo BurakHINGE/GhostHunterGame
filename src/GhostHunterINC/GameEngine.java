@@ -168,6 +168,7 @@ public class GameEngine {
 			hunter.getScanner().updatePosition(); 
 		    hunter.getScanner().update(0.016);
 			hudManager.updateHealthBar(hunter.getHealth(), 100);
+			hudManager.updateVacuumBar(hunter.getScanner().getEnergy(), hunter.getScanner().getMaxEnergy());
 			hudManager.updateTime(remainingTime);
 			boolean isTouching = false;
 			
