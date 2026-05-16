@@ -11,6 +11,7 @@ public class LevelManager {
 	Pane enemies;
 	ArrayList<GameObject> allEntities;
 	private Timeline tokenTimeline;
+	double areaX, areaY, areaW, areaH, randX, randY;
 	
 	LevelManager(Pane enemies, ArrayList allEntities){
 		this.enemies = enemies;
@@ -30,11 +31,11 @@ public class LevelManager {
 			//Load the entities.
 			for(int i = 0; i < ghost ; i++) {
 				//Load the ghosts
-				double areaW = ConfigManager.level1PlayableAreaWidth;
-			    double areaH = ConfigManager.level1PlayableAreaHeight;
+				areaW = ConfigManager.level1PlayableAreaWidth;
+			    areaH = ConfigManager.level1PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Ghost newGhost = new Ghost(randX, randY, 0, 0, areaW, areaH);
 				newGhost.getShape().setVisible(false);
@@ -44,11 +45,11 @@ public class LevelManager {
 			
 			for(int i = 0; i < ripper ; i++) {
 				//Load the rippers
-				double areaW = ConfigManager.level1PlayableAreaWidth;
-			    double areaH = ConfigManager.level1PlayableAreaHeight;
+				areaW = ConfigManager.level1PlayableAreaWidth;
+			    areaH = ConfigManager.level1PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Ripper newRipper = new Ripper(randX, randY, 0, 0, areaW, areaH);
 				newRipper.getShape().setVisible(false);
@@ -58,11 +59,11 @@ public class LevelManager {
 			
 			for(int i = 0; i < wisp ; i++) {
 				//Load the wisps
-				double areaW = ConfigManager.level1PlayableAreaWidth;
-			    double areaH = ConfigManager.level1PlayableAreaHeight;
+				areaW = ConfigManager.level1PlayableAreaWidth;
+			    areaH = ConfigManager.level1PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Wisp newWisp = new Wisp(randX, randY, 0, 0, areaW, areaH);
 				newWisp.getShape().setVisible(false);
@@ -79,11 +80,11 @@ public class LevelManager {
 			//Load the entities.
 			for(int i = 0; i < ghost ; i++) {
 				//Load the ghosts
-				double areaW = ConfigManager.level2PlayableAreaWidth;
-			    double areaH = ConfigManager.level2PlayableAreaHeight;
+				areaW = ConfigManager.level2PlayableAreaWidth;
+			    areaH = ConfigManager.level2PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Ghost newGhost = new Ghost(randX, randY, 0, 0, areaW, areaH);
 				newGhost.getShape().setVisible(false);
@@ -93,11 +94,11 @@ public class LevelManager {
 			
 			for(int i = 0; i < ripper ; i++) {
 				//Load the rippers
-				double areaW = ConfigManager.level2PlayableAreaWidth;
-			    double areaH = ConfigManager.level2PlayableAreaHeight;
+				areaW = ConfigManager.level2PlayableAreaWidth;
+			    areaH = ConfigManager.level2PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Ripper newRipper = new Ripper(randX, randY, 0, 0, areaW, areaH);
 				newRipper.getShape().setVisible(false);
@@ -107,11 +108,11 @@ public class LevelManager {
 			
 			for(int i = 0; i < wisp ; i++) {
 				//Load the wisps
-				double areaW = ConfigManager.level2PlayableAreaWidth;
-			    double areaH = ConfigManager.level2PlayableAreaHeight;
+				areaW = ConfigManager.level2PlayableAreaWidth;
+			    areaH = ConfigManager.level2PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Wisp newWisp = new Wisp(randX, randY, 0, 0, areaW, areaH);
 				newWisp.getShape().setVisible(false);
@@ -128,11 +129,11 @@ public class LevelManager {
 			//Load the entities.
 			for(int i = 0; i < ghost ; i++) {
 				//Load the ghosts
-				double areaW = ConfigManager.level3PlayableAreaWidth;
-			    double areaH = ConfigManager.level3PlayableAreaHeight;
+				areaW = ConfigManager.level3PlayableAreaWidth;
+			    areaH = ConfigManager.level3PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Ghost newGhost = new Ghost(randX, randY, 0, 0, areaW, areaH);
 				newGhost.getShape().setVisible(false);
@@ -142,11 +143,11 @@ public class LevelManager {
 			
 			for(int i = 0; i < ripper ; i++) {
 				//Load the rippers
-				double areaW = ConfigManager.level3PlayableAreaWidth;
-			    double areaH = ConfigManager.level3PlayableAreaHeight;
+				areaW = ConfigManager.level3PlayableAreaWidth;
+			    areaH = ConfigManager.level3PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Ripper newRipper = new Ripper(randX, randY, 0, 0, areaW, areaH);
 				newRipper.getShape().setVisible(false);
@@ -156,11 +157,11 @@ public class LevelManager {
 			
 			for(int i = 0; i < wisp ; i++) {
 				//Load the wisps
-				double areaW = ConfigManager.level3PlayableAreaWidth;
-			    double areaH = ConfigManager.level3PlayableAreaHeight;
+				areaW = ConfigManager.level3PlayableAreaWidth;
+			    areaH = ConfigManager.level3PlayableAreaHeight;
 			    
-			    double randX = Math.random() * (areaW - 150) + 50; 
-			    double randY = Math.random() * (areaH - 150) + 50;
+			    randX = Math.random() * (areaW - 150) + 50; 
+			    randY = Math.random() * (areaH - 150) + 50;
 				
 			    Wisp newWisp = new Wisp(randX, randY, 0, 0, areaW, areaH);
 				newWisp.getShape().setVisible(false);
@@ -226,23 +227,29 @@ public class LevelManager {
 		Token token = null;
 		
 		if(level == 1) { 
-	        areaW = ConfigManager.level1PlayableAreaWidth; 
-	        areaH = ConfigManager.level1PlayableAreaHeight; 
+	        areaW = ConfigManager.getLevel1PlayableAreaWidth(); 
+	        areaH = ConfigManager.getLevel1PlayableAreaHeight();
+	        areaX = ConfigManager.getLevel1PlayableAreaX();
+	        areaY = ConfigManager.getLevel1PlayableAreaY();
 	    }
 		else if (level == 2) {
-			areaW = ConfigManager.level2PlayableAreaWidth; 
-	        areaH = ConfigManager.level2PlayableAreaHeight; 
+			areaW = ConfigManager.getLevel2PlayableAreaWidth(); 
+	        areaH = ConfigManager.getLevel2PlayableAreaHeight();
+	        areaX = ConfigManager.getLevel2PlayableAreaX();
+	        areaY = ConfigManager.getLevel2PlayableAreaY();
 		}
 		else {
-			areaW = ConfigManager.level3PlayableAreaWidth; 
-	        areaH = ConfigManager.level3PlayableAreaHeight; 
+			areaW = ConfigManager.getLevel3PlayableAreaWidth(); 
+	        areaH = ConfigManager.getLevel3PlayableAreaHeight();
+	        areaX = ConfigManager.getLevel3PlayableAreaX();
+	        areaY = ConfigManager.getLevel3PlayableAreaY();
 		}
 		
-		double randX = Math.random() * (areaW - 80) + 40;
-	    double randY = Math.random() * (areaH - 80) + 40;
+		randX = Math.random() * (areaW - 40);
+		randY = Math.random() * (areaH - 40);
 		
 		//Choose a random token type to generate.
-		int tokenType = (int)(Math.random() * 3) + 1;
+		int tokenType = (int)(Math.random() * 4) + 1;
 		
 		switch(tokenType) {
 			case 1:
@@ -253,6 +260,9 @@ public class LevelManager {
 				break;
 			case 3:
 				token = new RangeToken(randX, randY);
+				break;
+			case 4:
+				token = new TrapToken(randX, randY);
 				break;
 		}
 		

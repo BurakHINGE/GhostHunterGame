@@ -7,7 +7,7 @@ public abstract class ParanormalEntity extends GameObject {
     private boolean beingVacuumed,captured;
     private static final double DEFAULT_RANGE =1.0;
     private boolean revealedByToken = false;
-    private boolean isStunned;
+    private boolean isStunned = false;
 
     public ParanormalEntity(double speedX, double speedY) {
         this.speedX = speedX;
@@ -33,15 +33,10 @@ public abstract class ParanormalEntity extends GameObject {
     }
     
     abstract void applyWithering();
-	abstract void revertWithering();
+    
+    abstract void revertWithering();
 
     public void vacuumEffect(double dt,double hunterX,double hunterY) {
-    	
-    	if (sPane.getOpacity() != 0.4) {
-            sPane.setOpacity(0.4);
-            applyWithering();
-    	}
-        
     	if (scale > 0.3) {
             scale -= 0.25 * dt;
             
@@ -66,9 +61,12 @@ public abstract class ParanormalEntity extends GameObject {
         }
     }
     public void inverseVacuuumEffect(double dt) {
-    	if (sPane.getOpacity() != 1.0) {
-            sPane.setOpacity(1.0);
-            revertWithering();
+    	if (scale <1.0) {
+    		scale += 0.5 * dt;
+    		if (scale >1.0)
+    			scale = 1.0;
+    		sPane.setScaleX(scale);
+    		sPane.setScaleY(scale);
     	}
     }
     
@@ -127,15 +125,13 @@ public abstract class ParanormalEntity extends GameObject {
 	public void setRevealedByToken(boolean revealedByToken) {
 	    this.revealedByToken = revealedByToken;
 	}
-
+	
 	public boolean isStunned() {
 		return isStunned;
 	}
-
-	public void setStunned(boolean isStunned) {
-		this.isStunned = isStunned;
+	
+	public void setStunned(boolean stunned) {
+		this.isStunned = stunned;
 	}
-
-
     
 }

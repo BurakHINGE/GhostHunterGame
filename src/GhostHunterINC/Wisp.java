@@ -73,6 +73,10 @@ public class Wisp extends ParanormalEntity {
  
     @Override
     public void update(double dt) {
+    	if(this.isStunned()) {
+    		return;
+    	}
+    	
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
         rotationAngle += 100 * dt;

@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
 
 public class Hunter extends GameObject {
  
-    private int health, maxHealth, score;
+    private int health, maxHealth, score, trapCount;
     private double areaX, areaY, areaW, areaH, speed;
     private boolean movingUp, movingDown, movingLeft, movingRight;
     private Scanner scanner;
@@ -36,6 +36,18 @@ public class Hunter extends GameObject {
         body = new Circle(20, 20, 20, Color.ORANGE);
         sPane = new StackPane(body);
         sPane.setPrefSize(40, 40);
+    }
+    
+    public void addTraps(int amount) {
+    	this.trapCount += amount;
+    }
+    
+    public Trap placeTrap() {
+    	if(trapCount > 0) {
+    		trapCount--;
+    		return new Trap(this.x, this.y);
+    	}
+    	return null;
     }
  
     @Override
@@ -184,6 +196,10 @@ public class Hunter extends GameObject {
 
 	public void setBody(Circle body) {
 		this.body = body;
+	}
+	
+	public int getTrapCount() {
+		return trapCount;
 	}
 
 	@Override
