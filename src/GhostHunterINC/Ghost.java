@@ -35,6 +35,7 @@ public class Ghost extends ParanormalEntity {
         head.setFill(Color.WHITE);
         head.setStroke(Color.DARKGRAY);
         head.setStrokeWidth(1);
+        head.setOpacity(0.7);
         
         Polygon bottom = new Polygon(
         		0.0,  15.0,
@@ -50,16 +51,21 @@ public class Ghost extends ParanormalEntity {
         bottom.setFill(Color.WHITE);
         bottom.setStroke(Color.DARKGRAY);
         bottom.setStrokeWidth(1);
+        bottom.setOpacity(0.7);
 
         Circle leftEyeOuter  = new Circle(9, 14, 5, Color.WHITE);
         leftEyeOuter.setStroke(Color.DARKGRAY);
         leftEyeOuter.setStrokeWidth(1);
+        leftEyeOuter.setOpacity(0.7);
         Circle leftEyeInner  = new Circle(9, 14, 2.5, Color.BLACK);
+        leftEyeInner.setOpacity(0.7);
         
         Circle rightEyeOuter = new Circle(21, 14, 5, Color.WHITE);
         rightEyeOuter.setStroke(Color.DARKGRAY);
         rightEyeOuter.setStrokeWidth(1);
+        rightEyeOuter.setOpacity(0.7);
         Circle rightEyeInner = new Circle(21, 14, 2.5, Color.BLACK);
+        rightEyeInner.setOpacity(0.7);
 
         ghostShape.getChildren().addAll(bottom, head, leftEyeOuter, leftEyeInner, rightEyeOuter, rightEyeInner);
         
