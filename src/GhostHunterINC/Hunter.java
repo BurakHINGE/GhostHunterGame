@@ -6,15 +6,19 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 
 
 public class Hunter extends GameObject {
  
-    private int health, maxHealth, score, trapCount;
-    private double areaX, areaY, areaW, areaH, speed;
+    private int score;
+    private double areaX, areaY, areaW, areaH, speed, health, maxHealth;
     private boolean movingUp, movingDown, movingLeft, movingRight;
     private Scanner scanner;
     private Circle body;
+    private Circle hat;
+    private Polygon badge;
+    private Pane hunterPane;
  
     public Hunter(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         this.x = x;
@@ -33,21 +37,22 @@ public class Hunter extends GameObject {
     }
  
     private void createHunter() {
-        body = new Circle(20, 20, 20, Color.ORANGE);
-        sPane = new StackPane(body);
+        body = new Circle(20.0, 20.0, 20.0, Color.ORANGE);
+        hat = new Circle(20.0, 20.0, 17.0);
+        hat.setFill(Color.BLACK);
+        badge = new Polygon();
+        double centerX = 20.0,centerY = 20.0,radius = 12.0,angle,cornerX,cornerY;
+        for (int i = 0; i < 6; i++) {
+            angle = Math.toRadians(i * 60); 
+            cornerX = centerX + radius * Math.cos(angle);
+            cornerY = centerY + radius * Math.sin(angle);
+            
+            badge.getPoints().addAll(cornerX, cornerY);
+        }
+        badge.setFill(Color.GOLD);
+        sPane = new StackPane(body,hat,badge);
+        setHunterPane(new Pane(sPane));
         sPane.setPrefSize(40, 40);
-    }
-    
-    public void addTraps(int amount) {
-    	this.trapCount += amount;
-    }
-    
-    public Trap placeTrap() {
-    	if(trapCount > 0) {
-    		trapCount--;
-    		return new Trap(this.x, this.y);
-    	}
-    	return null;
     }
  
     @Override
@@ -69,15 +74,19 @@ public class Hunter extends GameObject {
     public void takeDamage(int amount) {
         health -= amount;
         body.setFill(Color.RED);
+        hat.setFill(Color.RED);
+        badge.setFill(Color.RED);
         if (health <= 0) 
         	health = 0;
     }
  
     public void resetColor() {
         body.setFill(Color.ORANGE);
+        hat.setFill(Color.BLACK);
+        badge.setFill(Color.GOLD);
     }
  
-    public void heal(int amount) {
+    public void heal(double amount) {
         health += amount;
         if (health > maxHealth) health = maxHealth;
     }
@@ -86,7 +95,7 @@ public class Hunter extends GameObject {
         score += points;
     }
  
-    public int getHealth() {
+    public double getHealth() {
 		return health;
 	}
 
@@ -94,7 +103,7 @@ public class Hunter extends GameObject {
 		this.health = health;
 	}
 
-	public int getMaxHealth() {
+	public double getMaxHealth() {
 		return maxHealth;
 	}
 
@@ -197,14 +206,19 @@ public class Hunter extends GameObject {
 	public void setBody(Circle body) {
 		this.body = body;
 	}
-	
-	public int getTrapCount() {
-		return trapCount;
-	}
 
 	@Override
     public Node getShape() { 
     	return sPane; 
     }
+
+	public Pane getHunterPane() {
+		return hunterPane;
+	}
+
+	public void setHunterPane(Pane hunterPane) {
+		this.hunterPane = hunterPane;
+	}
+	
 }
  
