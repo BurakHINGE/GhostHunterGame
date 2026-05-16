@@ -410,58 +410,54 @@ public class SceneManager {
 	    return new Scene(mainPane, stage.getWidth(), stage.getHeight());        
 	}
 
-	public Scene stopGamePanel() { //Stopped game menu
-		
-		StackPane mainPane = new StackPane();
-		
-		Image pauseGamePicture = new Image("file:pauseMenuPicture.png");
-		ImageView pauseMenuView = new ImageView(pauseGamePicture);
-		pauseMenuView.fitWidthProperty().bind(stage.widthProperty());
-		pauseMenuView.fitHeightProperty().bind(stage.heightProperty());
-		pauseMenuView.setPreserveRatio(false);
-		
-		VBox layout = new VBox(10);
-		
-		layout.setAlignment(Pos.CENTER);
-		
-		Label pauseText = new Label("GAME PAUSED");
-		
-		HBox buttonLayout = new HBox(10);
-		
-		buttonLayout.setAlignment(Pos.CENTER);
-		
-		Button resumeButton = new Button("Resume");
-		Button returnMainMenuButton = new Button("Main Menu");
-		
-		resumeButton.setStyle(BUTTON_STYLE);
-		returnMainMenuButton.setStyle(BUTTON_STYLE);
-		
-		resumeButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
-		resumeButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-		
-		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
-		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-		
-		applyButtonStyles(stage.getWidth(), resumeButton, returnMainMenuButton);
-		
-		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			applyButtonStyles(newVal.doubleValue(), resumeButton, returnMainMenuButton);
-		});
-		
-		buttonLayout.getChildren().addAll(resumeButton, returnMainMenuButton);
-		
-		layout.getChildren().addAll(pauseText, buttonLayout);
-		
-		mainPane.getChildren().addAll(pauseMenuView, layout);
-		
-		resumeButton.setOnAction(e -> { //Game resume from the same time
-			switchScene(gameEngine.getGameScene());
-			
-			gameEngine.resumeGame();
-		});
-		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); //Return to main menu from stopped game menu
-		
-		return new Scene(mainPane, stage.getWidth(), stage.getHeight());
+	public VBox stopGamePanel() {
+	    VBox overlay = new VBox();
+	    overlay.setAlignment(Pos.CENTER);
+	    overlay.setStyle("-fx-background-color: rgba(5, 15, 10, 0.8);");
+	    overlay.prefWidthProperty().bind(stage.widthProperty());
+	    overlay.prefHeightProperty().bind(stage.heightProperty());
+
+	    VBox box = new VBox(25);
+	    box.setMaxSize(600, 450);
+	    box.setAlignment(Pos.CENTER);
+	    box.setStyle("-fx-background-color: rgba(10, 30, 20, 0.95); " +
+	                 "-fx-border-color: #4dfa9a; " +
+	                 "-fx-border-width: 4px;");
+	    box.setPadding(new Insets(40));
+
+	    Label pauseText = new Label("GAME PAUSED");
+	    pauseText.setTextFill(Color.web("#4dfa9a"));
+	    pauseText.setStyle("-fx-font-family: Creepster; -fx-font-size: 50px; -fx-font-weight: bold;");
+
+	    Button resumeButton = new Button("RESUME");
+	    Button returnMainMenuButton = new Button("MAIN MENU");
+
+	    resumeButton.setStyle(BUTTON_STYLE);
+	    returnMainMenuButton.setStyle(BUTTON_STYLE);
+	    
+	    resumeButton.setPrefSize(280, 60);
+	    returnMainMenuButton.setPrefSize(280, 60);
+
+	    applyButtonStyles(stage.getWidth(), resumeButton, returnMainMenuButton);
+
+	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+	        applyButtonStyles(newVal.doubleValue(), resumeButton, returnMainMenuButton);
+	    });
+
+	    resumeButton.setOnAction(e -> { 
+	        gameEngine.resumeGame(); 
+	    });
+	    
+	    returnMainMenuButton.setOnAction(e -> {
+	        switchScene(mainMenu());
+	        stage.setFullScreen(true);
+	    });
+
+	    // 6. Elemanları İç Kutuya ve Ana Overlay'e Ekleme
+	    box.getChildren().addAll(pauseText, resumeButton, returnMainMenuButton);
+	    overlay.getChildren().add(box);
+
+	    return overlay;
 	}
 	
 	public VBox winPanel(int finalScore) {
