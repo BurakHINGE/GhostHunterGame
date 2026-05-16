@@ -251,21 +251,26 @@ public class GameEngine {
 		            if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
 		                entity.setBeingVacuumed(true);
 		                entity.getShape().setVisible(true);
+		                entity.getShape().toFront();
 		                entity.vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
 		            } else {
 		                if(!visibilityCheat && !entity.isRevealedByToken()) {
 		                    obj.getShape().setVisible(false);
 		                }
 		                entity.setBeingVacuumed(false);
+		                entity.inverseVacuuumEffect(0.016);
 		            }
 		        }
 		        
 		        if (isTouching) {
 		            hunter.getBody().setFill(Color.RED);
+		            hunter.getHat().setFill(Color.RED);
+		            hunter.getBadge().setFill(Color.RED);
 		        } else {
 		            hunter.resetColor();
 		        }
 		    }
+		    hunter.getShape().toFront();
 		    
 		    if(hunter.getHealth() <= 0) {
 		    	stopGame();

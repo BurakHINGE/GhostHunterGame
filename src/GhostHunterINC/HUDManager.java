@@ -31,7 +31,7 @@ public class HUDManager {
 		String fontPath = "file:resources/fonts/Creepster-Regular.ttf";
 
 	    try {
-	        loadedFont = Font.loadFont(fontPath, 14);
+	        loadedFont = Font.loadFont(fontPath, 25);
 	        if (loadedFont != null) {
 	            System.out.println("Font Yüklendi: " + loadedFont.getFamily());
 	        } else {
