@@ -70,28 +70,32 @@ public class SceneManager {
 		
 		Button startGameButton = new Button("Start Hunting");
 		Button selectLevelButton = new Button("Select Level");
+		Button controlButton = new Button("Controls");
 		Button exitButton = new Button("Exit");
 		
 		startGameButton.setStyle(BUTTON_STYLE);
 		selectLevelButton.setStyle(BUTTON_STYLE);
+		controlButton.setStyle(BUTTON_STYLE);
 		exitButton.setStyle(BUTTON_STYLE);
 
 		//Set button sizes according to stage size
 		startGameButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
         selectLevelButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+        controlButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
         exitButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
 
         startGameButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
         selectLevelButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+        controlButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
         exitButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
-		applyButtonStyles(stage.getWidth(), startGameButton, selectLevelButton, exitButton);
+		applyButtonStyles(stage.getWidth(), startGameButton, selectLevelButton, controlButton, exitButton);
 		
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			applyButtonStyles(newVal.doubleValue(), startGameButton, selectLevelButton, exitButton);
+			applyButtonStyles(newVal.doubleValue(), startGameButton, selectLevelButton, controlButton, exitButton);
 		});
 		
-		layout.getChildren().addAll(startGameButton, selectLevelButton, exitButton);
+		layout.getChildren().addAll(startGameButton, selectLevelButton, controlButton, exitButton);
 		
 		mainPane.getChildren().addAll(mainMenuView, layout);
 		
