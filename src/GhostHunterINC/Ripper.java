@@ -55,7 +55,11 @@ public class Ripper extends ParanormalEntity {
     }
 
     @Override
-    public void update(double dt) {
+    public void update(double dt) { 
+    	if(this.isStunned()) {
+    		return;
+    	}
+    	
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
         sPane.setLayoutX(x);

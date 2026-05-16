@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.animation.PauseTransition;
 
 public class GameEngine {
 	
@@ -193,8 +194,16 @@ public class GameEngine {
 		        }
 		            		     	        
 		        obj.update(0.016); 
+		        
+		        if(obj instanceof Trap) {
+		        	if(((Trap)obj).isExpired()) {
+		        		gameObjects.getChildren().remove(obj.getShape());
+		        		iterator.remove();
+		        		continue;
+		        	}
+		        }
 
-		        if (obj instanceof Token) {
+		        else if (obj instanceof Token) {
 		            if (hunter.checkCollision(obj)) {
 		            	((Token)obj).applyEffect(hunter);
 		                gameObjects.getChildren().remove(obj.getShape());
@@ -203,38 +212,58 @@ public class GameEngine {
 		        }
 		        
 		        else if (obj instanceof ParanormalEntity) {
-		        	if(obj.getShape().getScaleX() <= 0.30) {
-		        		gameObjects.getChildren().remove(obj.getShape());
-		        		iterator.remove();
-		        		
-		        		hunter.addScore(100);
-		        		hudManager.updateScore(hunter.getScore());
-		        		
-		        	}
-		        	else if(hunter.checkCollision(obj)){
+		            ParanormalEntity entity = (ParanormalEntity) obj;
+		            
+		            if(obj.getShape().getScaleX() <= 0.30) {
+		                gameObjects.getChildren().remove(obj.getShape());
+		                iterator.remove();
+		                hunter.addScore(100);
+		                hudManager.updateScore(hunter.getScore());
+		                continue; 
+		            }
+
+		            if(!entity.isStunned()) {
+		                for(GameObject x: allEntities) {
+		                    if(x instanceof Trap) {
+		                        Trap trap = (Trap) x;
+		                        if(!trap.isTriggered() && entity.getShape().getBoundsInParent().intersects(trap.getShape().getBoundsInParent())) {
+		                            trap.trigger();
+		                            entity.setStunned(true);
+		                            
+		                            entity.setRevealedByToken(true);
+		                            entity.getShape().setVisible(true);
+		                            
+		                            PauseTransition stunTimer = new PauseTransition(Duration.seconds(3));
+		                            stunTimer.setOnFinished(ey -> {
+		                                entity.setStunned(false);
+		                                entity.setRevealedByToken(false);
+		                                trap.setExpired(true);
+		                            });
+		                            stunTimer.play();
+		                        }
+		                    }
+		                }
+		            }
+		            if(hunter.checkCollision(obj)) {
 		                isTouching = true; 
 		                hunter.takeDamage(2); 
 		            }
+		            if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
+		                entity.setBeingVacuumed(true);
+		                entity.getShape().setVisible(true);
+		                entity.vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
+		            } else {
+		                if(!visibilityCheat && !entity.isRevealedByToken()) {
+		                    obj.getShape().setVisible(false);
+		                }
+		                entity.setBeingVacuumed(false);
+		            }
+		        }
 		        
-			        if (isTouching) {
-			            hunter.getBody().setFill(Color.RED);
-			        } else {
-			            hunter.resetColor();
-			        }
-			        
-			        if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
-	            		((ParanormalEntity) obj).setBeingVacuumed(true);
-	            		((ParanormalEntity) obj).getShape().setVisible(true);
-	            		((ParanormalEntity) obj).vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
-	            	} else {
-	            		
-	            		if(!visibilityCheat && !((ParanormalEntity)obj).isRevealedByToken()) {
-	            			obj.getShape().setVisible(false);
-	            		}
-	            		
-	            		((ParanormalEntity) obj).setBeingVacuumed(false);
-//	            		((ParanormalEntity) obj).inverseVacuuumEffect(0.016);
-	            	}
+		        if (isTouching) {
+		            hunter.getBody().setFill(Color.RED);
+		        } else {
+		            hunter.resetColor();
 		        }
 		    }
 		    
@@ -336,7 +365,20 @@ public class GameEngine {
 					borderArea.setVisible(borderCheat);
 					break;
 				}
-				//Add cheat key
+				case R: {
+					Trap newTrap = hunter.placeTrap();
+					if(newTrap != null) {
+						allEntities.add(newTrap);
+						gameObjects.getChildren().add(newTrap.getShape());
+						
+						newTrap.getShape().toBack();
+						borderArea.toBack();
+						
+						hunter.getShape().toFront();
+						hunter.getScanner().getScanner().toFront();
+					}
+					break;
+				}
 			}			
 		});
 		
