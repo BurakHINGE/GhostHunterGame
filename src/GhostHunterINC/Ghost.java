@@ -12,9 +12,12 @@ import javafx.scene.shape.Polygon;
 public class Ghost extends ParanormalEntity {
  
     private double areaX, areaY, areaW, areaH;
+    private Arc head;
+    private Polygon bottom;
+    Circle leftOuterEye,rightOuterEye,leftInnerEye,rightInnerEye;
     
     public Ghost(double x, double y, double areaX, double areaY, double areaW, double areaH) {
-        super((Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1), 10);
+        super((Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 100 + 50) * (Math.random() < 0.5 ? 1 : -1));
         this.x = x;
         this.y = y;
         this.areaX = areaX;
@@ -37,7 +40,7 @@ public class Ghost extends ParanormalEntity {
         head.setStrokeWidth(1);
         head.setOpacity(0.7);
         
-        Polygon bottom = new Polygon(
+        bottom = new Polygon(
         		0.0,  15.0,
                 0.0,  30.0,
                 5.0,  23.5,
@@ -53,21 +56,22 @@ public class Ghost extends ParanormalEntity {
         bottom.setStrokeWidth(1);
         bottom.setOpacity(0.7);
 
-        Circle leftEyeOuter  = new Circle(9, 14, 5, Color.WHITE);
-        leftEyeOuter.setStroke(Color.DARKGRAY);
-        leftEyeOuter.setStrokeWidth(1);
-        leftEyeOuter.setOpacity(0.7);
-        Circle leftEyeInner  = new Circle(9, 14, 2.5, Color.BLACK);
-        leftEyeInner.setOpacity(0.7);
+        leftOuterEye = new Circle(9, 14, 5, Color.WHITE);
+        leftOuterEye.setStroke(Color.DARKGRAY);
+        leftOuterEye.setStrokeWidth(1);
+        leftOuterEye.setOpacity(0.7);
         
-        Circle rightEyeOuter = new Circle(21, 14, 5, Color.WHITE);
-        rightEyeOuter.setStroke(Color.DARKGRAY);
-        rightEyeOuter.setStrokeWidth(1);
-        rightEyeOuter.setOpacity(0.7);
-        Circle rightEyeInner = new Circle(21, 14, 2.5, Color.BLACK);
-        rightEyeInner.setOpacity(0.7);
+        leftInnerEye = new Circle(9, 14, 2.5, Color.BLACK);
+        leftInnerEye.setOpacity(0.7);
+        
+        rightOuterEye = new Circle(21, 14, 5, Color.WHITE);
+        rightOuterEye.setStroke(Color.DARKGRAY);
+        rightOuterEye.setStrokeWidth(1);
+        rightOuterEye.setOpacity(0.7);
+        rightInnerEye = new Circle(21, 14, 2.5, Color.BLACK);
+        rightInnerEye.setOpacity(0.7);
 
-        ghostShape.getChildren().addAll(bottom, head, leftEyeOuter, leftEyeInner, rightEyeOuter, rightEyeInner);
+        ghostShape.getChildren().addAll(bottom, head, leftOuterEye, leftInnerEye, rightOuterEye, rightInnerEye);
         
         sPane = new StackPane(ghostShape);
         sPane.setPrefSize(30, 30);
@@ -93,6 +97,29 @@ public class Ghost extends ParanormalEntity {
         } else {
             pane.getChildren().remove(sPane);
         }
+    }
+    @Override
+    public void applyWithering() {
+        head.setFill(Color.LIGHTGRAY);
+        bottom.setFill(Color.LIGHTGRAY);
+        
+        leftOuterEye.setFill(Color.LIGHTGRAY);
+        rightOuterEye.setFill(Color.LIGHTGRAY);
+        
+        leftInnerEye.setFill(Color.DARKGRAY);
+        rightInnerEye.setFill(Color.DARKGRAY);
+    }
+
+    @Override
+    public void revertWithering() {
+        head.setFill(Color.WHITE);
+        bottom.setFill(Color.WHITE);
+        
+        leftOuterEye.setFill(Color.WHITE);
+        rightOuterEye.setFill(Color.WHITE);
+        
+        leftInnerEye.setFill(Color.BLACK);
+        rightInnerEye.setFill(Color.BLACK);
     }
  
     @Override

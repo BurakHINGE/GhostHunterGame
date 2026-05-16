@@ -10,9 +10,11 @@ import javafx.scene.shape.Polygon;
 public class Ripper extends ParanormalEntity {
 	
     private double areaX, areaY, areaW, areaH;
+    private Polygon spikes;
+    private Circle body,leftEye,rightEye;
 
     public Ripper(double x, double y, double areaX, double areaY, double areaW, double areaH) {
-        super((Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1), (Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1), 20 );
+        super((Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1), (Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1));
         this.x = x;
         this.y = y;
         this.areaX = areaX;
@@ -28,7 +30,7 @@ public class Ripper extends ParanormalEntity {
     	Pane ripperShape = new Pane();
     	ripperShape.setPrefSize(70, 70);
     	
-        Polygon spikes = new Polygon();
+        spikes = new Polygon();
         int numOfSpikes = 12;
         double outerRadius = 30, innerRadius = 18, centerX = 35, centerY = 35, angle = 0, radius = 0;
 
@@ -39,10 +41,10 @@ public class Ripper extends ParanormalEntity {
         }
         spikes.setFill(Color.PURPLE);
 
-        Circle body = new Circle(35, 35, 15, Color.BLACK);
+        body = new Circle(35, 35, 15, Color.BLACK);
         
-        Circle leftEye = new Circle(28, 35, 4, Color.RED);
-        Circle rightEye = new Circle(42, 35, 4, Color.RED);
+        leftEye = new Circle(28, 35, 4, Color.RED);
+        rightEye = new Circle(42, 35, 4, Color.RED);
         
         ripperShape.getChildren().addAll(spikes, body, leftEye, rightEye);
         
@@ -71,6 +73,21 @@ public class Ripper extends ParanormalEntity {
             pane.getChildren().remove(sPane);
         }
     }
+    @Override
+	void applyWithering() {
+    	spikes.setFill(Color.WHITE);
+        body.setFill(Color.LIGHTGRAY); 
+        leftEye.setFill(Color.DARKRED);
+        rightEye.setFill(Color.DARKRED);
+	}
+
+	@Override
+	void revertWithering() {
+		spikes.setFill(Color.PURPLE);;
+        body.setFill(Color.BLACK);
+        leftEye.setFill(Color.RED);
+        rightEye.setFill(Color.RED);
+	}
 
 
 	@Override
@@ -109,5 +126,7 @@ public class Ripper extends ParanormalEntity {
 	public void setAreaH(double areaH) {
 		this.areaH = areaH;
 	}
+
+	
 	
 }

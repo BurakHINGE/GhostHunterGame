@@ -3,16 +3,15 @@ package GhostHunterINC;
 public abstract class ParanormalEntity extends GameObject {
 
     private double speedX,speedY;
-    private int pointValue;
     private double scale;
     private boolean beingVacuumed,captured;
     private static final double DEFAULT_RANGE =1.0;
     private boolean revealedByToken = false;
+    private boolean isStunned;
 
-    public ParanormalEntity(double speedX, double speedY, int pointValue) {
+    public ParanormalEntity(double speedX, double speedY) {
         this.speedX = speedX;
         this.speedY = speedY;
-        this.pointValue = pointValue;
         this.scale = DEFAULT_RANGE;
         this.beingVacuumed = false;
         this.visible = false; 
@@ -32,8 +31,17 @@ public abstract class ParanormalEntity extends GameObject {
         if (y <= areaY || y >= areaY + areaH) 
             speedY = -speedY;
     }
+    
+    abstract void applyWithering();
+	abstract void revertWithering();
 
     public void vacuumEffect(double dt,double hunterX,double hunterY) {
+    	
+    	if (sPane.getOpacity() != 0.4) {
+            sPane.setOpacity(0.4);
+            applyWithering();
+    	}
+        
     	if (scale > 0.3) {
             scale -= 0.25 * dt;
             
@@ -58,12 +66,9 @@ public abstract class ParanormalEntity extends GameObject {
         }
     }
     public void inverseVacuuumEffect(double dt) {
-    	if (scale <1.0) {
-    		scale += 0.5 * dt;
-    		if (scale >1.0)
-    			scale = 1.0;
-    		sPane.setScaleX(scale);
-    		sPane.setScaleY(scale);
+    	if (sPane.getOpacity() != 1.0) {
+            sPane.setOpacity(1.0);
+            revertWithering();
     	}
     }
     
@@ -99,14 +104,6 @@ public abstract class ParanormalEntity extends GameObject {
 		this.speedY = speedY;
 	}
 
-	public int getPointValue() {
-		return pointValue;
-	}
-
-	public void setPointValue(int pointValue) {
-		this.pointValue = pointValue;
-	}
-
 	public double getScale() {
 		return scale;
 	}
@@ -130,5 +127,15 @@ public abstract class ParanormalEntity extends GameObject {
 	public void setRevealedByToken(boolean revealedByToken) {
 	    this.revealedByToken = revealedByToken;
 	}
+
+	public boolean isStunned() {
+		return isStunned;
+	}
+
+	public void setStunned(boolean isStunned) {
+		this.isStunned = isStunned;
+	}
+
+
     
 }
