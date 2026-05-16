@@ -19,6 +19,7 @@ public class HUDManager {
 	private Text timeText;
 	private Text healthLabel;
 	private Text vacuumLabel;
+	private Text trapText;
 	private DoubleProperty healthPercentage = new SimpleDoubleProperty(1.0);
 	private DoubleProperty vacuumPercentage = new SimpleDoubleProperty(1.0);
 	Font loadedFont;
@@ -81,6 +82,13 @@ public class HUDManager {
 		timeText.yProperty().bind(scoreText.yProperty().add(25));
 		timeText.setFont(loadedFont);
 		
+		trapText = new Text("TRAPS: 0");
+		trapText.setFill(Color.BLACK);
+		
+		trapText.xProperty().bind(hudPane.widthProperty().divide(2).subtract(40));
+		trapText.yProperty().bind(timeText.yProperty().add(30));
+		trapText.setFont(loadedFont);
+		
 		//Set health bar
 		healthBarOuter = new Rectangle();
 		healthBarOuter.setFill(Color.TRANSPARENT);
@@ -132,7 +140,7 @@ public class HUDManager {
 		vacuumLabel.setFont(loadedFont);
 		
 		//Add everything to hud pane 
-		hudPane.getChildren().addAll(scoreText,timeText,healthBar,healthBarOuter, healthLabel, vacuumBar, vacuumBarOuter, vacuumLabel);
+		hudPane.getChildren().addAll(scoreText, timeText, trapText, healthBar, healthBarOuter, healthLabel, vacuumBar, vacuumBarOuter, vacuumLabel);
 		
 	}
 	
@@ -155,6 +163,10 @@ public class HUDManager {
 		int second = remainingSeconds % 60;
 		
 		timeText.setText(String.format("%d:%02d", minute, second));
+	}
+	
+	public void updateTrapCount(int count) {
+	    trapText.setText("TRAPS: " + count);
 	}
 	
 	public Pane getHudPane() {

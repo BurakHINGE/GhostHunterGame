@@ -248,6 +248,10 @@ public class Hunter extends GameObject {
 		this.badge = badge;
 	}
 	
+	public int getTrapCount() {
+		return trapCount;
+	}
+	
 	
 }
  
