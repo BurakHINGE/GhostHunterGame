@@ -271,8 +271,8 @@ public class GameEngine {
 		    	stopGame();
 		    	StackPane root = (StackPane) gameScene.getRoot();
 		    	
-		    	if (!root.getChildren().contains(sceneManager.losePanel())) {
-		            root.getChildren().add(sceneManager.losePanel());
+		    	if (!root.getChildren().contains(sceneManager.losePanel(1, hunter.getScore()))) {
+		            root.getChildren().add(sceneManager.losePanel(1, hunter.getScore()));
 		        }
 		        return;
 		    }
@@ -290,8 +290,8 @@ public class GameEngine {
 		    	stopGame();
 		    	StackPane root = (StackPane) gameScene.getRoot();
 		    	
-		    	if (!root.getChildren().contains(sceneManager.winPanel())) {
-		            root.getChildren().add(sceneManager.winPanel());
+		    	if (!root.getChildren().contains(sceneManager.winPanel(hunter.getScore()))) {
+		            root.getChildren().add(sceneManager.winPanel(hunter.getScore()));
 		        }	
 		    }
 		    
@@ -577,7 +577,7 @@ public class GameEngine {
 				stopGame();
 				
 				StackPane root = (StackPane) gameScene.getRoot();
-	            root.getChildren().add(sceneManager.losePanel());
+	            root.getChildren().add(sceneManager.losePanel(2, hunter.getScore()));
 			}
 		}));
 		

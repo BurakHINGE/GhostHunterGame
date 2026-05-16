@@ -44,7 +44,7 @@ public class SceneManager {
 	    try {
 	        Font loadedFont = Font.loadFont(fontPath, 14);
 	        if (loadedFont != null) {
-	            System.out.println("Font Yüklendi: " + loadedFont.getFamily());
+	            System.out.println("Font has been uploaded successfuly: " + loadedFont.getFamily());
 	        } else {
 	            System.out.println("Font bulunamadı, yol yanlış olabilir: " + fontPath);
 	        }
@@ -95,7 +95,7 @@ public class SceneManager {
 		
 		mainPane.getChildren().addAll(mainMenuView, layout);
 		
-		//startGameButton.setOnAction(e -> );
+		startGameButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
 		selectLevelButton.setOnAction(e -> switchScene(selectLevelMenu())); //Open level selection menu
 		exitButton.setOnAction(e -> System.exit(0)); //Exit to program
 		
@@ -106,31 +106,81 @@ public class SceneManager {
 		
 		StackPane mainPane = new StackPane();
 		
-		Image selectMenuImage = new Image("file:selectMenuPicture.png");
+		Image selectMenuImage = new Image("file:selectLevelPicture.png");
 		ImageView selectMenuView = new ImageView(selectMenuImage);
 		selectMenuView.fitWidthProperty().bind(stage.widthProperty());
 		selectMenuView.fitHeightProperty().bind(stage.heightProperty());
 		selectMenuView.setPreserveRatio(false);
 		
-		VBox centerLayout = new VBox(20);
-		centerLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
+		VBox mainLayout = new VBox(40);
+		mainLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
 		
-		Button levelEasyButton = new Button("Easy");
-		Button levelMediumButton = new Button("Medium");
-		Button levelHardButton = new Button("Hard");
+		Label menuTitle = new Label("CHOOSE LOCATION");
+		menuTitle.setTextFill(Color.web("#4dfa9a"));
+		menuTitle.setStyle("-fx-font-family: Creepster; -fx-font-size: 50px; -fx-font-weight: bold;");
 		
-		levelEasyButton.setStyle(BUTTON_STYLE);
-		levelMediumButton.setStyle(BUTTON_STYLE);
-		levelHardButton.setStyle(BUTTON_STYLE);
+		VBox mapsLayout = new VBox(40);
+		mapsLayout.setAlignment(Pos.CENTER);
 		
-		levelEasyButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
-	    levelMediumButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
-	    levelHardButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+		ImageView level1View = new ImageView(new Image("file:level1Picture.png"));
+		ImageView level2View = new ImageView(new Image("file:level2Picture.png"));
+		ImageView level3View = new ImageView(new Image("file:level3Picture.png"));
+		
+		ImageView[] mapViews = {level1View, level2View, level3View};
+		for (ImageView view : mapViews) {
+			view.setFitWidth(170);
+			view.setFitHeight(120);
+			view.setPreserveRatio(false);
+		}
+		
+		Label lbl1 = new Label("1");
+		Label lbl2 = new Label("2");
+		Label lbl3 = new Label("3");
+		
+		Label[] levelLabels = {lbl1, lbl2, lbl3};
+		for (Label lbl : levelLabels) {
+			lbl.setTextFill(Color.WHITE);
+			lbl.setStyle("-fx-font-family: Creepster; -fx-font-size: 75px; -fx-font-weight: bold;"
+					   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
+		}
+		
+		StackPane easyButtonContent1 = new StackPane(level1View, lbl1);
+		StackPane mediumButtonContent2 = new StackPane(level2View, lbl2);
+		StackPane hardButtonContent3 = new StackPane(level3View, lbl3);
+		
+		Button levelEasyButton = new Button();
+		Button levelMediumButton = new Button();
+		Button levelHardButton = new Button();
+		
+		levelEasyButton.setGraphic(easyButtonContent1);
+		levelMediumButton.setGraphic(mediumButtonContent2);
+		levelHardButton.setGraphic(hardButtonContent3);
+		
+		String mapButtonStyle = "-fx-background-color: rgba(0, 0, 0, 0);"
+	              + "-fx-border-color: #4dfa9a;"
+	              + "-fx-border-width: 3px;"
+	              + "-fx-padding: 0;"
+	              + "-fx-background-radius: 0;"
+	              + "-fx-border-radius: 0;";
+		
 
-	    levelEasyButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-	    levelMediumButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-	    levelHardButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+
+		levelEasyButton.setStyle(mapButtonStyle);
+		levelMediumButton.setStyle(mapButtonStyle);
+		levelHardButton.setStyle(mapButtonStyle);
 		
+		Button[] mapButtons = {levelEasyButton, levelMediumButton, levelHardButton};
+		for (Button btn : mapButtons) {
+
+			btn.setOnMouseEntered(e -> {
+				btn.setStyle(mapButtonStyle + "-fx-border-color: #ffffff; -fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
+			});
+
+			btn.setOnMouseExited(e -> {
+				btn.setStyle(mapButtonStyle);
+			});
+		}
+
 		Button returnMainMenuButton = new Button("Main Menu");
 		
 		returnMainMenuButton.setStyle(BUTTON_STYLE);
@@ -138,18 +188,22 @@ public class SceneManager {
 		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
 		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
-		applyButtonStyles(stage.getWidth(), levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+		applyButtonStyles(stage.getWidth(), returnMainMenuButton);
 		
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			applyButtonStyles(newVal.doubleValue(), levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+			applyButtonStyles(newVal.doubleValue(), returnMainMenuButton);
 		});
 	    
-	    centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+	    mapsLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);
+	    mainLayout.getChildren().add(mapsLayout);
 		
-	    mainPane.getChildren().addAll(selectMenuView, centerLayout);
+	    mainPane.getChildren().addAll(selectMenuView, mainLayout, returnMainMenuButton, menuTitle);
+	    
+		StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT); //Align the main menu button in the right (bottom) of border pane
+		StackPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
 		
-		BorderPane.setAlignment(returnMainMenuButton, Pos.CENTER_RIGHT); //Align the main menu button in the right (bottom) of border pane
-		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
+		StackPane.setAlignment(menuTitle, Pos.TOP_CENTER);
+		StackPane.setMargin(menuTitle, new Insets(130));
 		
 		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); //Return to main menu from Level Selection Menu
 		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
@@ -213,7 +267,7 @@ public class SceneManager {
 		return new Scene(mainPane, stage.getWidth(), stage.getHeight());
 	}
 	
-	public VBox winPanel() {
+	public VBox winPanel(int finalScore) {
 
 	    VBox overlay = new VBox();
 	    overlay.setAlignment(Pos.CENTER);
@@ -222,42 +276,69 @@ public class SceneManager {
 	    overlay.prefHeightProperty().bind(stage.heightProperty());
 
 	    VBox box = new VBox(25);
-	    box.setMaxSize(500, 350);
+	    box.setMaxSize(600, 650);
 	    box.setAlignment(Pos.CENTER);
 	    box.setStyle("-fx-background-color: rgba(10, 30, 20, 0.95); " +
 	                 "-fx-border-color: #4dfa9a; " +
 	                 "-fx-border-width: 4px;");
 	    box.setPadding(new Insets(40));
+	    
+	    String winMessage = "ALL GHOSTS VACUUMED";
+	    if (gameEngine.getCurrentLevel() == 3) {
+	    	winMessage = "HUNT COMPLETED";
+	    }
 
-	    Label winText = new Label("MISSION ACCOMPLISHED");
-	    winText.setFont(Font.font("Creepster", 45));
+	    Label winText = new Label(winMessage);
 	    winText.setTextFill(Color.web("#4dfa9a"));
-	    winText.setStyle("-fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
+	    winText.setStyle("-fx-font-family: Creepster; " +
+                "-fx-font-size: 50px; " + 
+                "-fx-font-weight: bold;");
+	    
+	    Label scoreText = new Label("FINAL SCORE: " + finalScore);
+	    scoreText.setTextFill(Color.web("#4dfa9a"));
+	    scoreText.setStyle("-fx-font-family: Creepster; -fx-font-size: 32px; -fx-font-weight: bold;");
+	    scoreText.setCache(false);
 
-	    Button retryButton = new Button("NEXT HUNT");
+	    Button nextlevelButton = new Button("NEXT HUNT");
 	    Button returnMainMenuButton = new Button("MAIN MENU");
 
-	    retryButton.setStyle(BUTTON_STYLE);
+	    nextlevelButton.setStyle(BUTTON_STYLE);
 	    returnMainMenuButton.setStyle(BUTTON_STYLE);
 	    
-	    retryButton.setPrefSize(280, 60);
+	    nextlevelButton.setPrefSize(280, 60);
 	    returnMainMenuButton.setPrefSize(280, 60);
 
-	    applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
+	    applyButtonStyles(stage.getWidth(), nextlevelButton, returnMainMenuButton);
 
-	    retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this));
+	    nextlevelButton.setOnAction(e -> {
+	    	int currentLevel = gameEngine.getCurrentLevel() + 1;
+	    	
+	    	if (currentLevel <= 3) {
+	    		gameEngine.startGame(currentLevel, stage, this);
+	    	}
+	    	else {
+	    		switchScene(mainMenu());
+	    	}	
+	    });
 	    returnMainMenuButton.setOnAction(e -> {
 	    	switchScene(mainMenu());
 	        stage.setFullScreen(true);
 	    });
+	    
+	    box.getChildren().addAll(winText, scoreText);
 
-	    box.getChildren().addAll(winText, retryButton, returnMainMenuButton);
+	    if (gameEngine.getCurrentLevel() < 3) {
+	        box.getChildren().add(nextlevelButton);
+	    }
+	    
+	    box.getChildren().add(returnMainMenuButton);
+	    
 	    overlay.getChildren().add(box);
 
 	    return overlay;
 	}
 	
-	public VBox losePanel() {
+	public VBox losePanel(int reason, int finalScore) {
 	    VBox overlay = new VBox();
 	    overlay.setAlignment(Pos.CENTER);
 	    overlay.setStyle("-fx-background-color: rgba(15, 5, 5, 0.8);");
@@ -265,35 +346,79 @@ public class SceneManager {
 	    overlay.prefHeightProperty().bind(stage.heightProperty());
 
 	    VBox box = new VBox(25);
-	    box.setMaxSize(500, 350);
+	    box.setMaxSize(600, 600);
 	    box.setAlignment(Pos.CENTER);
 	    box.setStyle("-fx-background-color: rgba(20, 10, 10, 0.95); " +
 	                 "-fx-border-color: #ff4d4d; " + 
-	                 "-fx-border-width: 4px;");
+	                 "-fx-border-width: 4px;" +
+	                 "-fx-border-radius: 0;");
 	    box.setPadding(new Insets(40));
+	    
+	    String deathMessage = "FAIL";
+	    
+	    if (reason == 1) {
+	    	deathMessage = "Hunter Destroyed";
+	    }
+	    else if (reason == 2){
+	    	deathMessage = "Time Expired";
+	    }
 
-	    Label loseText = new Label("SYSTEM FAILURE");
+	    Label gameOverMessage = new Label("Game Over");
+	    gameOverMessage.setFont(Font.font("Creepster", 45));
+	    gameOverMessage.setTextFill(Color.web("#ff4d4d"));
+	    
+	    gameOverMessage.setStyle("-fx-font-family: Creepster; " +
+                "-fx-font-size: 50px; " + 
+                "-fx-font-weight: bold;");
+	    
+	    Label loseText = new Label(deathMessage);
 	    loseText.setFont(Font.font("Creepster", 45));
 	    loseText.setTextFill(Color.web("#ff4d4d"));
 
-	    Button retryButton = new Button("REBOOT SYSTEM");
-	    Button returnMainMenuButton = new Button("ABORT MISSION");
+	    loseText.setStyle("-fx-font-family: Creepster; " +
+                "-fx-font-size: 50px; " + 
+                "-fx-font-weight: bold;");
+	    
+	    Label scoreText = new Label("FINAL SCORE: " + finalScore);
+	    scoreText.setTextFill(Color.web("#ff4d4d"));
+	    scoreText.setStyle("-fx-font-family: Creepster; -fx-font-size: 32px; -fx-font-weight: bold;");
+	    scoreText.setCache(false);
 
-	    retryButton.setStyle(BUTTON_STYLE);
-	    returnMainMenuButton.setStyle(BUTTON_STYLE);
+	    Button retryButton = new Button("TRY AGAIN");
+	    Button returnMainMenuButton = new Button("RETURN MENU");
+
+	    double validWidth = Double.isNaN(stage.getWidth()) ? 800 : stage.getWidth(); 
+	    double fontSize = Math.max(12, validWidth / 45);
+
+	    String redButtonStyle = "-fx-background-color: rgba(30, 10, 10, 0.8);"
+	                          + "-fx-border-color: #ff4d4d;"
+	                          + "-fx-border-width: 2px;"
+	                          + "-fx-text-fill: #ff4d4d;"
+	                          + "-fx-font-family: 'Creepster';"
+	                          + "-fx-font-weight: bold;"
+	                          + "-fx-background-radius: 0;"
+	                          + "-fx-border-radius: 0;"
+	                          + "-fx-font-size: " + fontSize + "px;";
+
+	    retryButton.setStyle(redButtonStyle);
+	    returnMainMenuButton.setStyle(redButtonStyle);
 	    
 	    retryButton.setPrefSize(280, 60);
 	    returnMainMenuButton.setPrefSize(280, 60);
 
-	    applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
+	    Button[] redButtons = {retryButton, returnMainMenuButton};
+	    for (Button btn : redButtons) {
+	        btn.setOnMouseEntered(e -> btn.setStyle(redButtonStyle + "-fx-background-color: #ff4d4d; -fx-text-fill: black;"));
+	        btn.setOnMouseExited(e -> btn.setStyle(redButtonStyle));
+	    }
 
 	    retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this));
 	    returnMainMenuButton.setOnAction(e -> {
-	    	switchScene(mainMenu());
+	        switchScene(mainMenu());
 	        stage.setFullScreen(true);
 	    });
 
-	    box.getChildren().addAll(loseText, retryButton, returnMainMenuButton);
+	    box.getChildren().addAll(gameOverMessage, loseText, scoreText, retryButton, returnMainMenuButton);
 	    overlay.getChildren().add(box);
 
 	    return overlay;

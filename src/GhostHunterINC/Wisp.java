@@ -12,9 +12,11 @@ public class Wisp extends ParanormalEntity {
     
     private double areaX, areaY, areaW, areaH, rotationAngle;
     private Group rotatingRects;
+    private Circle membrane,plazma,core,leftOuterEye,rightOuterEye,leftInnerEye,rightInnerEye;
+    private Rectangle rect;
  
     public Wisp(double x, double y, double areaX, double areaY, double areaW, double areaH) {
-        super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1), 30);
+        super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1));
         this.x = x;
         this.y = y;
         this.areaX = areaX;
@@ -26,38 +28,43 @@ public class Wisp extends ParanormalEntity {
     }
  
     private void createWisp() {
-    	double centerX = 50;
-        double centerY = 50;
-        double scale = 0.75;
+    	
+    	double centerX = 50, centerY = 50, scale = 0.75;
         centerX *= scale;
         centerY *= scale;
         
         Pane wispShape = new Pane();
         wispShape.setPrefSize(100 * scale, 100 * scale);
         
-        Circle membrane = new Circle(centerX, centerY, 26 * scale, Color.RED);
-        membrane.setOpacity(0.2);
-        Circle glow  = new Circle(centerX, centerY, 18 * scale, Color.RED);
-        glow.setOpacity(0.7);
-        Circle core = new Circle(centerX, centerY, 10 * scale, Color.RED);
-        Circle leftEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
-        Circle rightEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
+        membrane = new Circle(centerX, centerY, 26 * scale, Color.RED);
+        membrane.setOpacity(0.4);
+        plazma  = new Circle(centerX, centerY, 18 * scale, Color.RED);
+        plazma.setOpacity(0.7);
+        core = new Circle(centerX, centerY, 10 * scale, Color.RED);
+        leftOuterEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
+        leftOuterEye.setOpacity(0.6);
+        rightOuterEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
+        rightOuterEye.setOpacity(0.6);
+        leftInnerEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
+        rightInnerEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
+        
  
         rotatingRects = new Group();
         int rectCount = 6;
+        double angle = 0, radius = 0;
         for (int i = 0; i < rectCount; i++) {
-            Rectangle rect = new Rectangle(8 * scale, 20 * scale, Color.RED);
+            rect = new Rectangle(8 * scale, 20 * scale, Color.RED);
             rect.setArcWidth(3 * scale);
             rect.setArcHeight(3 * scale);
-            double angle = (2 * Math.PI / rectCount) * i;
-            double radius = 35 * scale;
+            angle = (2 * Math.PI / rectCount) * i;
+            radius = 35 * scale;
             rect.setX(centerX + Math.cos(angle) * radius - 4 * scale);
             rect.setY(centerY + Math.sin(angle) * radius - 10 * scale);
             rect.setRotate(Math.toDegrees(angle) + 90);
             rotatingRects.getChildren().add(rect);
         }
  
-        wispShape.getChildren().addAll(core, glow, membrane, rotatingRects, leftEye, rightEye);
+        wispShape.getChildren().addAll(core, plazma, membrane, leftOuterEye, rightOuterEye, leftInnerEye, rightInnerEye, rotatingRects);
         
         sPane = new StackPane(wispShape);
         sPane.setPrefSize(100 * scale, 100 * scale);
@@ -91,6 +98,37 @@ public class Wisp extends ParanormalEntity {
             pane.getChildren().remove(sPane);
         }
     }
+    @Override
+	void applyWithering() {
+    	
+        membrane.setFill(Color.LIGHTGRAY); 
+        plazma.setFill(Color.LIGHTGRAY);
+        core.setFill(Color.LIGHTGRAY);
+        leftInnerEye.setFill(Color.LIGHTYELLOW);
+        rightInnerEye.setFill(Color.LIGHTYELLOW);
+        leftOuterEye.setFill(Color.DARKRED);
+        rightOuterEye.setFill(Color.DARKRED);
+        
+        for (Node node:rotatingRects.getChildren()) 
+        	if (node instanceof Rectangle)
+        		((Rectangle) node).setFill(Color.LIGHTGRAY);
+        
+	}
+
+	@Override
+	void revertWithering() {
+        membrane.setFill(Color.RED); 
+        plazma.setFill(Color.RED);
+        core.setFill(Color.RED);
+        leftInnerEye.setFill(Color.YELLOW);
+        rightInnerEye.setFill(Color.YELLOW);
+        leftOuterEye.setFill(Color.YELLOW);
+        rightOuterEye.setFill(Color.YELLOW);
+        
+        for (Node node:rotatingRects.getChildren()) 
+        	if (node instanceof Rectangle)
+        		((Rectangle) node).setFill(Color.RED);
+	}
  
     @Override
     public Node getShape() { 
