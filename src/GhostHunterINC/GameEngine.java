@@ -257,11 +257,14 @@ public class GameEngine {
 		                    obj.getShape().setVisible(false);
 		                }
 		                entity.setBeingVacuumed(false);
+		                entity.inverseVacuuumEffect(0.016);
 		            }
 		        }
 		        
 		        if (isTouching) {
 		            hunter.getBody().setFill(Color.RED);
+		            hunter.getHat().setFill(Color.RED);
+		            hunter.getBadge().setFill(Color.RED);
 		        } else {
 		            hunter.resetColor();
 		        }

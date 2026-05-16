@@ -231,6 +231,23 @@ public class Hunter extends GameObject {
 	public void setHunterPane(Pane hunterPane) {
 		this.hunterPane = hunterPane;
 	}
+
+	public Circle getHat() {
+		return hat;
+	}
+
+	public void setHat(Circle hat) {
+		this.hat = hat;
+	}
+
+	public Polygon getBadge() {
+		return badge;
+	}
+
+	public void setBadge(Polygon badge) {
+		this.badge = badge;
+	}
+	
 	
 }
  

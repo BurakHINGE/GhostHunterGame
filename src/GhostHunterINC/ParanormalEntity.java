@@ -37,6 +37,10 @@ public abstract class ParanormalEntity extends GameObject {
     abstract void revertWithering();
 
     public void vacuumEffect(double dt,double hunterX,double hunterY) {
+    	if (sPane.getOpacity() != 0.2) {
+            sPane.setOpacity(0.2);
+            applyWithering(); 
+        }
     	if (scale > 0.3) {
             scale -= 0.25 * dt;
             
@@ -61,13 +65,10 @@ public abstract class ParanormalEntity extends GameObject {
         }
     }
     public void inverseVacuuumEffect(double dt) {
-    	if (scale <1.0) {
-    		scale += 0.5 * dt;
-    		if (scale >1.0)
-    			scale = 1.0;
-    		sPane.setScaleX(scale);
-    		sPane.setScaleY(scale);
-    	}
+    	if (sPane.getOpacity() != 1.0) {
+            sPane.setOpacity(1.0);
+            revertWithering(); 
+        }
     }
     
 	public void makeVisible() {
