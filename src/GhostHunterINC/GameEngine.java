@@ -230,13 +230,9 @@ public class GameEngine {
 		                            trap.trigger();
 		                            entity.setStunned(true);
 		                            
-		                            entity.setRevealedByToken(true);
-		                            entity.getShape().setVisible(true);
-		                            
 		                            PauseTransition stunTimer = new PauseTransition(Duration.seconds(ConfigManager.trapTokenDuration));
 		                            stunTimer.setOnFinished(ey -> {
 		                                entity.setStunned(false);
-		                                entity.setRevealedByToken(false);
 		                                trap.setExpired(true);
 		                            });
 		                            stunTimer.play();
@@ -248,18 +244,26 @@ public class GameEngine {
 		                isTouching = true; 
 		                hunter.takeDamage(0.5); 
 		            }
-		            if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
-		                entity.setBeingVacuumed(true);
-		                entity.getShape().setVisible(true);
-		                entity.getShape().toFront();
-		                entity.vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
-		            } else {
-		                if(!visibilityCheat && !entity.isRevealedByToken()) {
-		                    obj.getShape().setVisible(false);
-		                }
-		                entity.setBeingVacuumed(false);
-		                entity.inverseVacuuumEffect(0.016);
+		            
+		            boolean isInsideScanner = hunter.getScanner().isActive() && hunter.getScanner().intersects(obj);
+		            
+		            if(isInsideScanner) {
+		            	entity.setBeingVacuumed(true);
+                        entity.vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
+                        entity.getShape().toFront();
 		            }
+		            else {
+		            	entity.setBeingVacuumed(false);
+		            }
+		            
+		            boolean shouldBeVisible = false;
+                    
+                    if (visibilityCheat) shouldBeVisible = true;
+                    if (entity.isRevealedByToken()) shouldBeVisible = true;
+                    if (entity.isStunned()) shouldBeVisible = true;
+                    if (isInsideScanner) shouldBeVisible = true;
+                    
+                    entity.getShape().setVisible(shouldBeVisible);
 		        }
 		        
 		        if (isTouching) {
@@ -355,12 +359,6 @@ public class GameEngine {
 				case G: { 
 					
 					visibilityCheat = !visibilityCheat;
-					
-					for (GameObject obj : allEntities) {
-						if (obj instanceof ParanormalEntity) { 
-							obj.getShape().setVisible(visibilityCheat);
-						}
-					}
 					break;
 				}
 				case B: {
