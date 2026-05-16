@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -31,6 +32,7 @@ public class GameEngine {
 	private SceneManager sceneManager;
 	private javafx.scene.shape.Rectangle borderArea;
 	private ImageView levelView;
+	private VBox currentStopOverlay;
 	
 	//Letter direction keys
 	private boolean isWPressed = false;
@@ -172,6 +174,7 @@ public class GameEngine {
 			hudManager.updateHealthBar(hunter.getHealth(), 100);
 			hudManager.updateVacuumBar(hunter.getScanner().getEnergy(), hunter.getScanner().getMaxEnergy());
 			hudManager.updateTime(remainingTime);
+			hudManager.updateTrapCount(hunter.getTrapCount());
 			boolean isTouching = false;
 			
 			java.util.Iterator<GameObject> iterator = allEntities.iterator();
@@ -315,6 +318,15 @@ public class GameEngine {
 	public void handleInput() {
 		
 		gameScene.setOnKeyPressed(e -> { //Activate key when pressed
+			
+			StackPane root = (StackPane) gameScene.getRoot();
+			if (currentStopOverlay != null && root.getChildren().contains(currentStopOverlay)) {
+				if (e.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+					resumeGame();
+				}
+				return;
+			}
+			
 			switch (e.getCode()) {
 				case W: {
 					isWPressed = true;
@@ -449,23 +461,45 @@ public class GameEngine {
 	}
 	
 	public void pauseGame() {
-		if (gameLoop != null) {
-			gameLoop.pause(); 
-		}
-		if (countdown != null) {
-			countdown.pause();
-		}
-		if (levelManager != null) {
-			levelManager.pauseTokenSpawn(); 
+		if (sceneManager != null && gameScene != null) {
+			StackPane root = (StackPane) gameScene.getRoot();
+
+			if (currentStopOverlay != null && root.getChildren().contains(currentStopOverlay)) {
+				return; 
+			}
+
+			if (gameLoop != null) gameLoop.pause(); 
+			if (countdown != null) countdown.pause();
+			if (levelManager != null) levelManager.pauseTokenSpawn(); 
+			
+			isWPressed = false;
+			isAPressed = false;
+			isSPressed = false;
+			isDPressed = false;
+			if (hunter != null && hunter.getScanner() != null) {
+				hunter.getScanner().deactivate();
+			}
+
+			currentStopOverlay = sceneManager.stopGamePanel();
+			root.getChildren().add(currentStopOverlay);	
 		}
 		
-		if (sceneManager != null) {
-			Stage stage = (Stage) gameScene.getWindow();
-			stage.setScene(sceneManager.stopGamePanel());
+		Stage stage = (Stage) gameScene.getWindow();
+		if (stage != null) {
+			stage.setFullScreen(true);
 		}
 	}
 
 	public void resumeGame() {
+		if (gameScene != null && currentStopOverlay != null) {
+			StackPane root = (StackPane) gameScene.getRoot();
+
+			root.getChildren().remove(currentStopOverlay);
+			currentStopOverlay = null;
+			
+			root.requestFocus();
+		}
+
 		if (gameLoop != null) {
 			gameLoop.play();
 		}

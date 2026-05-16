@@ -450,10 +450,8 @@ public class SceneManager {
 	    
 	    returnMainMenuButton.setOnAction(e -> {
 	        switchScene(mainMenu());
-	        stage.setFullScreen(true);
 	    });
 
-	    // 6. Elemanları İç Kutuya ve Ana Overlay'e Ekleme
 	    box.getChildren().addAll(pauseText, resumeButton, returnMainMenuButton);
 	    overlay.getChildren().add(box);
 
