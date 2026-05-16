@@ -296,7 +296,22 @@ public class SceneManager {
 	    StackPane keySpace = new StackPane(space, labelSpace);
 	    spaceLayout.getChildren().addAll(descSpace, keySpace);
 	    
-	    Rectangle[] allRectangles = {w, a, s, d, upArrow, leftArrow, downArrow, rightArrow, space};
+	    Rectangle esc = new Rectangle();
+	    Rectangle g = new Rectangle();
+	    Rectangle b = new Rectangle();
+	    Rectangle r = new Rectangle();
+	    
+	    Label labelEsc = new Label("ESC");
+	    Label labelG = new Label("G");
+	    Label labelB = new Label("B");
+	    Label labelR = new Label("R");
+	    
+	    Label descEsc = new Label("Stop Game");
+	    Label descG = new Label("Visibility Cheat");
+	    Label descB = new Label("Border Cheat");
+	    Label descR = new Label("Put Trap");
+	    
+	    Rectangle[] allRectangles = {w, a, s, d, upArrow, leftArrow, downArrow, rightArrow, space, esc, g, b, r};
 	    for (Rectangle rect: allRectangles) {
 	        rect.widthProperty().bind(stage.widthProperty().divide(24));
 	        rect.heightProperty().bind(stage.widthProperty().divide(24));
@@ -307,13 +322,15 @@ public class SceneManager {
 	    space.heightProperty().bind(stage.widthProperty().divide(24));
 	    space.setStyle(RECTANGLE_STYLE);
 	    
+	    esc.widthProperty().bind(stage.widthProperty().divide(16));
+	    
 	    Label[] allLabels = {descW, descA, descS, descD, descUp, descLeft, descDown, descRight};
 	    for (Label desc: allLabels) {
 	        GridPane.setHalignment(desc, HPos.CENTER);
 	    }
 	    
-	    Label[] keyLabels = {labelW, labelA, labelS, labelD, labelUp, labelLeft, labelDown, labelRight, labelSpace};
-	    Label[] descLabels = {descW, descA, descS, descD, descUp, descLeft, descDown, descRight, descSpace};
+	    Label[] keyLabels = {labelW, labelA, labelS, labelD, labelUp, labelLeft, labelDown, labelRight, labelSpace, labelEsc, labelG, labelB, labelR};
+	    Label[] descLabels = {descW, descA, descS, descD, descUp, descLeft, descDown, descRight, descSpace, descEsc, descG, descB, descR};
 
 	    applyLabelStyles(stage.getWidth(), menuTitle, keyLabels, descLabels);
 	    
@@ -330,6 +347,11 @@ public class SceneManager {
 	    StackPane keyLeft = new StackPane(leftArrow, labelLeft);
 	    StackPane keyDown = new StackPane(downArrow, labelDown);
 	    StackPane keyRight = new StackPane(rightArrow, labelRight);
+	    
+	    StackPane keyEsc = new StackPane(esc, labelEsc);
+	    StackPane keyG = new StackPane(g, labelG);
+	    StackPane keyB = new StackPane(b, labelB);
+	    StackPane keyR = new StackPane(r, labelR);
 	    
 	    wasdGrid.add(descW, 2, 0);
 	    wasdGrid.add(descA, 0, 2);
@@ -351,6 +373,23 @@ public class SceneManager {
 	    
 	    directionLayouts.getChildren().addAll(wasdGrid, spaceLayout, arrowGrid);
 	    
+	    GridPane extraKeysGrid = new GridPane();
+	    extraKeysGrid.setHgap(30);
+	    extraKeysGrid.setVgap(15);
+	    extraKeysGrid.setAlignment(Pos.CENTER);
+	    
+	    extraKeysGrid.add(keyEsc, 0, 0);
+	    extraKeysGrid.add(descEsc, 1, 0);
+	    extraKeysGrid.add(keyG, 0, 1);
+	    extraKeysGrid.add(descG, 1, 1);
+	    
+	    extraKeysGrid.add(keyB, 4, 0);
+	    extraKeysGrid.add(descB, 5, 0);
+	    extraKeysGrid.add(keyR, 4, 1);
+	    extraKeysGrid.add(descR, 5, 1);
+	    
+	    VBox.setMargin(extraKeysGrid, new Insets(80, 0, 0, 0));
+	    
 	    Button returnMainMenuButton = new Button("Main Menu");
 	    returnMainMenuButton.setStyle(BUTTON_STYLE);
 	    returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));    
@@ -362,7 +401,7 @@ public class SceneManager {
 	    });
 	    returnMainMenuButton.setOnAction(e -> switchScene(mainMenu()));
 	    
-	    mainLayout.getChildren().addAll(menuTitle, directionLayouts);
+	    mainLayout.getChildren().addAll(menuTitle, directionLayouts, extraKeysGrid);
 	    mainPane.getChildren().addAll(mainLayout, returnMainMenuButton);
 	    
 	    StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT);
@@ -672,7 +711,7 @@ public class SceneManager {
 
 	    double validWidth = (Double.isNaN(width) || width <= 0) ? 1024 : width; 
 	    
-	    double keyFontSize = Math.max(16, validWidth / 65);
+	    double keyFontSize = Math.max(20, validWidth / 50);
 	    double descFontSize = Math.max(20, validWidth / 50);
 	    double titleFontSize = Math.max(32, validWidth / 30);
 
