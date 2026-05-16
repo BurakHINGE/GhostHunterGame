@@ -95,7 +95,7 @@ public class SceneManager {
 		
 		mainPane.getChildren().addAll(mainMenuView, layout);
 		
-		//startGameButton.setOnAction(e -> );
+		startGameButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
 		selectLevelButton.setOnAction(e -> switchScene(selectLevelMenu())); //Open level selection menu
 		exitButton.setOnAction(e -> System.exit(0)); //Exit to program
 		
@@ -106,7 +106,7 @@ public class SceneManager {
 		
 		StackPane mainPane = new StackPane();
 		
-		Image selectMenuImage = new Image("file:selectMenuPicture.png");
+		Image selectMenuImage = new Image("file:selectLevelPicture.png");
 		ImageView selectMenuView = new ImageView(selectMenuImage);
 		selectMenuView.fitWidthProperty().bind(stage.widthProperty());
 		selectMenuView.fitHeightProperty().bind(stage.heightProperty());
@@ -228,8 +228,13 @@ public class SceneManager {
 	                 "-fx-border-color: #4dfa9a; " +
 	                 "-fx-border-width: 4px;");
 	    box.setPadding(new Insets(40));
+	    
+	    String winMessage = "ALL GHOSTS VACUUMED";
+	    if (gameEngine.getCurrentLevel() == 3) {
+	    	winMessage = "HUNT COMPLETED";
+	    }
 
-	    Label winText = new Label("HUNT COMPLETED");
+	    Label winText = new Label(winMessage);
 	    winText.setTextFill(Color.web("#4dfa9a"));
 	    winText.setStyle("-fx-font-family: Creepster; " +
                 "-fx-font-size: 50px; " + 
@@ -240,24 +245,40 @@ public class SceneManager {
 	    scoreText.setStyle("-fx-font-family: Creepster; -fx-font-size: 32px; -fx-font-weight: bold;");
 	    scoreText.setCache(false);
 
-	    Button retryButton = new Button("NEXT HUNT");
+	    Button nextlevelButton = new Button("NEXT HUNT");
 	    Button returnMainMenuButton = new Button("MAIN MENU");
 
-	    retryButton.setStyle(BUTTON_STYLE);
+	    nextlevelButton.setStyle(BUTTON_STYLE);
 	    returnMainMenuButton.setStyle(BUTTON_STYLE);
 	    
-	    retryButton.setPrefSize(280, 60);
+	    nextlevelButton.setPrefSize(280, 60);
 	    returnMainMenuButton.setPrefSize(280, 60);
 
-	    applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
+	    applyButtonStyles(stage.getWidth(), nextlevelButton, returnMainMenuButton);
 
-	    retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this));
+	    nextlevelButton.setOnAction(e -> {
+	    	int currentLevel = gameEngine.getCurrentLevel() + 1;
+	    	
+	    	if (currentLevel <= 3) {
+	    		gameEngine.startGame(currentLevel, stage, this);
+	    	}
+	    	else {
+	    		switchScene(mainMenu());
+	    	}	
+	    });
 	    returnMainMenuButton.setOnAction(e -> {
 	    	switchScene(mainMenu());
 	        stage.setFullScreen(true);
 	    });
+	    
+	    box.getChildren().addAll(winText, scoreText);
 
-	    box.getChildren().addAll(winText, scoreText, retryButton, returnMainMenuButton);
+	    if (gameEngine.getCurrentLevel() < 3) {
+	        box.getChildren().add(nextlevelButton);
+	    }
+	    
+	    box.getChildren().add(returnMainMenuButton);
+	    
 	    overlay.getChildren().add(box);
 
 	    return overlay;
