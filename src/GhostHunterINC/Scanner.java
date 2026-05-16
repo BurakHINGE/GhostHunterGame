@@ -35,6 +35,8 @@ public class Scanner {
     private void createScanner() {
         scanner = new Polygon();
         scanner.setFill(Color.RED);
+        scanner.setStroke(Color.GOLD);
+        scanner.setStrokeWidth(2);
         scanner.setOpacity(0.5);
         scanner.setVisible(false);
     }
