@@ -44,7 +44,7 @@ public class SceneManager {
 	    try {
 	        Font loadedFont = Font.loadFont(fontPath, 14);
 	        if (loadedFont != null) {
-	            System.out.println("Font Yüklendi: " + loadedFont.getFamily());
+	            System.out.println("Font has been uploaded successfuly: " + loadedFont.getFamily());
 	        } else {
 	            System.out.println("Font bulunamadı, yol yanlış olabilir: " + fontPath);
 	        }
@@ -112,25 +112,75 @@ public class SceneManager {
 		selectMenuView.fitHeightProperty().bind(stage.heightProperty());
 		selectMenuView.setPreserveRatio(false);
 		
-		VBox centerLayout = new VBox(20);
-		centerLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
+		VBox mainLayout = new VBox(40);
+		mainLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
 		
-		Button levelEasyButton = new Button("Easy");
-		Button levelMediumButton = new Button("Medium");
-		Button levelHardButton = new Button("Hard");
+		Label menuTitle = new Label("CHOOSE LOCATION");
+		menuTitle.setTextFill(Color.web("#4dfa9a"));
+		menuTitle.setStyle("-fx-font-family: Creepster; -fx-font-size: 50px; -fx-font-weight: bold;");
 		
-		levelEasyButton.setStyle(BUTTON_STYLE);
-		levelMediumButton.setStyle(BUTTON_STYLE);
-		levelHardButton.setStyle(BUTTON_STYLE);
+		VBox mapsLayout = new VBox(40);
+		mapsLayout.setAlignment(Pos.CENTER);
 		
-		levelEasyButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
-	    levelMediumButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
-	    levelHardButton.prefWidthProperty().bind(stage.widthProperty().divide(4));
+		ImageView level1View = new ImageView(new Image("file:level1Picture.png"));
+		ImageView level2View = new ImageView(new Image("file:level2Picture.png"));
+		ImageView level3View = new ImageView(new Image("file:level3Picture.png"));
+		
+		ImageView[] mapViews = {level1View, level2View, level3View};
+		for (ImageView view : mapViews) {
+			view.setFitWidth(170);
+			view.setFitHeight(120);
+			view.setPreserveRatio(false);
+		}
+		
+		Label lbl1 = new Label("1");
+		Label lbl2 = new Label("2");
+		Label lbl3 = new Label("3");
+		
+		Label[] levelLabels = {lbl1, lbl2, lbl3};
+		for (Label lbl : levelLabels) {
+			lbl.setTextFill(Color.WHITE);
+			lbl.setStyle("-fx-font-family: Creepster; -fx-font-size: 75px; -fx-font-weight: bold;"
+					   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
+		}
+		
+		StackPane easyButtonContent1 = new StackPane(level1View, lbl1);
+		StackPane mediumButtonContent2 = new StackPane(level2View, lbl2);
+		StackPane hardButtonContent3 = new StackPane(level3View, lbl3);
+		
+		Button levelEasyButton = new Button();
+		Button levelMediumButton = new Button();
+		Button levelHardButton = new Button();
+		
+		levelEasyButton.setGraphic(easyButtonContent1);
+		levelMediumButton.setGraphic(mediumButtonContent2);
+		levelHardButton.setGraphic(hardButtonContent3);
+		
+		String mapButtonStyle = "-fx-background-color: rgba(0, 0, 0, 0);"
+	              + "-fx-border-color: #4dfa9a;"
+	              + "-fx-border-width: 3px;"
+	              + "-fx-padding: 0;"
+	              + "-fx-background-radius: 0;"
+	              + "-fx-border-radius: 0;";
+		
 
-	    levelEasyButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-	    levelMediumButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-	    levelHardButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+
+		levelEasyButton.setStyle(mapButtonStyle);
+		levelMediumButton.setStyle(mapButtonStyle);
+		levelHardButton.setStyle(mapButtonStyle);
 		
+		Button[] mapButtons = {levelEasyButton, levelMediumButton, levelHardButton};
+		for (Button btn : mapButtons) {
+
+			btn.setOnMouseEntered(e -> {
+				btn.setStyle(mapButtonStyle + "-fx-border-color: #ffffff; -fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
+			});
+
+			btn.setOnMouseExited(e -> {
+				btn.setStyle(mapButtonStyle);
+			});
+		}
+
 		Button returnMainMenuButton = new Button("Main Menu");
 		
 		returnMainMenuButton.setStyle(BUTTON_STYLE);
@@ -138,18 +188,22 @@ public class SceneManager {
 		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
 		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
-		applyButtonStyles(stage.getWidth(), levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+		applyButtonStyles(stage.getWidth(), returnMainMenuButton);
 		
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			applyButtonStyles(newVal.doubleValue(), levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+			applyButtonStyles(newVal.doubleValue(), returnMainMenuButton);
 		});
 	    
-	    centerLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton, returnMainMenuButton);
+	    mapsLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);
+	    mainLayout.getChildren().add(mapsLayout);
 		
-	    mainPane.getChildren().addAll(selectMenuView, centerLayout);
+	    mainPane.getChildren().addAll(selectMenuView, mainLayout, returnMainMenuButton, menuTitle);
+	    
+		StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT); //Align the main menu button in the right (bottom) of border pane
+		StackPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
 		
-		BorderPane.setAlignment(returnMainMenuButton, Pos.CENTER_RIGHT); //Align the main menu button in the right (bottom) of border pane
-		BorderPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
+		StackPane.setAlignment(menuTitle, Pos.TOP_CENTER);
+		StackPane.setMargin(menuTitle, new Insets(130));
 		
 		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); //Return to main menu from Level Selection Menu
 		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
