@@ -3,17 +3,15 @@ package GhostHunterINC;
 public abstract class ParanormalEntity extends GameObject {
 
     private double speedX,speedY;
-    private int pointValue;
     private double scale;
     private boolean beingVacuumed,captured;
     private static final double DEFAULT_RANGE =1.0;
     private boolean revealedByToken = false;
     private boolean isStunned = false;
 
-    public ParanormalEntity(double speedX, double speedY, int pointValue) {
+    public ParanormalEntity(double speedX, double speedY) {
         this.speedX = speedX;
         this.speedY = speedY;
-        this.pointValue = pointValue;
         this.scale = DEFAULT_RANGE;
         this.beingVacuumed = false;
         this.visible = false; 
@@ -33,6 +31,10 @@ public abstract class ParanormalEntity extends GameObject {
         if (y <= areaY || y >= areaY + areaH) 
             speedY = -speedY;
     }
+    
+    abstract void applyWithering();
+    
+    abstract void revertWithering();
 
     public void vacuumEffect(double dt,double hunterX,double hunterY) {
     	if (scale > 0.3) {
@@ -98,14 +100,6 @@ public abstract class ParanormalEntity extends GameObject {
 
 	public void setSpeedY(double speedY) {
 		this.speedY = speedY;
-	}
-
-	public int getPointValue() {
-		return pointValue;
-	}
-
-	public void setPointValue(int pointValue) {
-		this.pointValue = pointValue;
 	}
 
 	public double getScale() {
