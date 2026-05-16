@@ -251,6 +251,7 @@ public class GameEngine {
 		            if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
 		                entity.setBeingVacuumed(true);
 		                entity.getShape().setVisible(true);
+		                entity.getShape().toFront();
 		                entity.vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
 		            } else {
 		                if(!visibilityCheat && !entity.isRevealedByToken()) {
@@ -269,6 +270,7 @@ public class GameEngine {
 		            hunter.resetColor();
 		        }
 		    }
+		    hunter.getShape().toFront();
 		    
 		    if(hunter.getHealth() <= 0) {
 		    	stopGame();
