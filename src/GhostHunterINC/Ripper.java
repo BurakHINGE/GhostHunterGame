@@ -81,16 +81,16 @@ public class Ripper extends ParanormalEntity {
 	void applyWithering() {
     	spikes.setFill(Color.WHITE);
         body.setFill(Color.LIGHTGRAY); 
-        leftEye.setFill(Color.DARKRED);
-        rightEye.setFill(Color.DARKRED);
+//        leftEye.setFill(Color.DARKRED);
+//        rightEye.setFill(Color.DARKRED);
 	}
 
 	@Override
 	void revertWithering() {
 		spikes.setFill(Color.PURPLE);;
         body.setFill(Color.BLACK);
-        leftEye.setFill(Color.RED);
-        rightEye.setFill(Color.RED);
+//        leftEye.setFill(Color.RED);
+//        rightEye.setFill(Color.RED);
 	}
 
 
