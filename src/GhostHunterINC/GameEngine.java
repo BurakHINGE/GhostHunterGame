@@ -246,7 +246,7 @@ public class GameEngine {
 		            }
 		            if(hunter.checkCollision(obj)) {
 		                isTouching = true; 
-		                hunter.takeDamage(2); 
+		                hunter.takeDamage(0.5); 
 		            }
 		            if(hunter.getScanner().isActive() && hunter.getScanner().intersects(obj)) {
 		                entity.setBeingVacuumed(true);
