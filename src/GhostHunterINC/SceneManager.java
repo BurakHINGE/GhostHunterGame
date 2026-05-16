@@ -213,7 +213,7 @@ public class SceneManager {
 		return new Scene(mainPane, stage.getWidth(), stage.getHeight());
 	}
 	
-	public VBox winPanel() {
+	public VBox winPanel(int finalScore) {
 
 	    VBox overlay = new VBox();
 	    overlay.setAlignment(Pos.CENTER);
@@ -222,17 +222,23 @@ public class SceneManager {
 	    overlay.prefHeightProperty().bind(stage.heightProperty());
 
 	    VBox box = new VBox(25);
-	    box.setMaxSize(500, 350);
+	    box.setMaxSize(600, 650);
 	    box.setAlignment(Pos.CENTER);
 	    box.setStyle("-fx-background-color: rgba(10, 30, 20, 0.95); " +
 	                 "-fx-border-color: #4dfa9a; " +
 	                 "-fx-border-width: 4px;");
 	    box.setPadding(new Insets(40));
 
-	    Label winText = new Label("MISSION ACCOMPLISHED");
-	    winText.setFont(Font.font("Creepster", 45));
+	    Label winText = new Label("HUNT COMPLETED");
 	    winText.setTextFill(Color.web("#4dfa9a"));
-	    winText.setStyle("-fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
+	    winText.setStyle("-fx-font-family: Creepster; " +
+                "-fx-font-size: 50px; " + 
+                "-fx-font-weight: bold;");
+	    
+	    Label scoreText = new Label("FINAL SCORE: " + finalScore);
+	    scoreText.setTextFill(Color.web("#4dfa9a"));
+	    scoreText.setStyle("-fx-font-family: Creepster; -fx-font-size: 32px; -fx-font-weight: bold;");
+	    scoreText.setCache(false);
 
 	    Button retryButton = new Button("NEXT HUNT");
 	    Button returnMainMenuButton = new Button("MAIN MENU");
@@ -251,13 +257,13 @@ public class SceneManager {
 	        stage.setFullScreen(true);
 	    });
 
-	    box.getChildren().addAll(winText, retryButton, returnMainMenuButton);
+	    box.getChildren().addAll(winText, scoreText, retryButton, returnMainMenuButton);
 	    overlay.getChildren().add(box);
 
 	    return overlay;
 	}
 	
-	public VBox losePanel() {
+	public VBox losePanel(int reason, int finalScore) {
 	    VBox overlay = new VBox();
 	    overlay.setAlignment(Pos.CENTER);
 	    overlay.setStyle("-fx-background-color: rgba(15, 5, 5, 0.8);");
@@ -265,35 +271,79 @@ public class SceneManager {
 	    overlay.prefHeightProperty().bind(stage.heightProperty());
 
 	    VBox box = new VBox(25);
-	    box.setMaxSize(500, 350);
+	    box.setMaxSize(600, 600);
 	    box.setAlignment(Pos.CENTER);
 	    box.setStyle("-fx-background-color: rgba(20, 10, 10, 0.95); " +
 	                 "-fx-border-color: #ff4d4d; " + 
-	                 "-fx-border-width: 4px;");
+	                 "-fx-border-width: 4px;" +
+	                 "-fx-border-radius: 0;");
 	    box.setPadding(new Insets(40));
+	    
+	    String deathMessage = "FAIL";
+	    
+	    if (reason == 1) {
+	    	deathMessage = "Hunter Destroyed";
+	    }
+	    else if (reason == 2){
+	    	deathMessage = "Time Expired";
+	    }
 
-	    Label loseText = new Label("SYSTEM FAILURE");
+	    Label gameOverMessage = new Label("Game Over");
+	    gameOverMessage.setFont(Font.font("Creepster", 45));
+	    gameOverMessage.setTextFill(Color.web("#ff4d4d"));
+	    
+	    gameOverMessage.setStyle("-fx-font-family: Creepster; " +
+                "-fx-font-size: 50px; " + 
+                "-fx-font-weight: bold;");
+	    
+	    Label loseText = new Label(deathMessage);
 	    loseText.setFont(Font.font("Creepster", 45));
 	    loseText.setTextFill(Color.web("#ff4d4d"));
 
-	    Button retryButton = new Button("REBOOT SYSTEM");
-	    Button returnMainMenuButton = new Button("ABORT MISSION");
+	    loseText.setStyle("-fx-font-family: Creepster; " +
+                "-fx-font-size: 50px; " + 
+                "-fx-font-weight: bold;");
+	    
+	    Label scoreText = new Label("FINAL SCORE: " + finalScore);
+	    scoreText.setTextFill(Color.web("#ff4d4d"));
+	    scoreText.setStyle("-fx-font-family: Creepster; -fx-font-size: 32px; -fx-font-weight: bold;");
+	    scoreText.setCache(false);
 
-	    retryButton.setStyle(BUTTON_STYLE);
-	    returnMainMenuButton.setStyle(BUTTON_STYLE);
+	    Button retryButton = new Button("TRY AGAIN");
+	    Button returnMainMenuButton = new Button("RETURN MENU");
+
+	    double validWidth = Double.isNaN(stage.getWidth()) ? 800 : stage.getWidth(); 
+	    double fontSize = Math.max(12, validWidth / 45);
+
+	    String redButtonStyle = "-fx-background-color: rgba(30, 10, 10, 0.8);"
+	                          + "-fx-border-color: #ff4d4d;"
+	                          + "-fx-border-width: 2px;"
+	                          + "-fx-text-fill: #ff4d4d;"
+	                          + "-fx-font-family: 'Creepster';"
+	                          + "-fx-font-weight: bold;"
+	                          + "-fx-background-radius: 0;"
+	                          + "-fx-border-radius: 0;"
+	                          + "-fx-font-size: " + fontSize + "px;";
+
+	    retryButton.setStyle(redButtonStyle);
+	    returnMainMenuButton.setStyle(redButtonStyle);
 	    
 	    retryButton.setPrefSize(280, 60);
 	    returnMainMenuButton.setPrefSize(280, 60);
 
-	    applyButtonStyles(stage.getWidth(), retryButton, returnMainMenuButton);
+	    Button[] redButtons = {retryButton, returnMainMenuButton};
+	    for (Button btn : redButtons) {
+	        btn.setOnMouseEntered(e -> btn.setStyle(redButtonStyle + "-fx-background-color: #ff4d4d; -fx-text-fill: black;"));
+	        btn.setOnMouseExited(e -> btn.setStyle(redButtonStyle));
+	    }
 
 	    retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this));
 	    returnMainMenuButton.setOnAction(e -> {
-	    	switchScene(mainMenu());
+	        switchScene(mainMenu());
 	        stage.setFullScreen(true);
 	    });
 
-	    box.getChildren().addAll(loseText, retryButton, returnMainMenuButton);
+	    box.getChildren().addAll(gameOverMessage, loseText, scoreText, retryButton, returnMainMenuButton);
 	    overlay.getChildren().add(box);
 
 	    return overlay;
