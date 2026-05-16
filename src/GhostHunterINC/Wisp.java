@@ -103,11 +103,11 @@ public class Wisp extends ParanormalEntity {
     	
         membrane.setFill(Color.LIGHTGRAY); 
         plazma.setFill(Color.LIGHTGRAY);
-        core.setFill(Color.LIGHTGRAY);
-        leftInnerEye.setFill(Color.LIGHTYELLOW);
-        rightInnerEye.setFill(Color.LIGHTYELLOW);
-        leftOuterEye.setFill(Color.DARKRED);
-        rightOuterEye.setFill(Color.DARKRED);
+//        core.setFill(Color.DARKRED);
+//        leftInnerEye.setFill(Color.LIGHTYELLOW);
+//        rightInnerEye.setFill(Color.LIGHTYELLOW);
+//        leftOuterEye.setFill(Color.DARKRED);
+//        rightOuterEye.setFill(Color.DARKRED);
         
         for (Node node:rotatingRects.getChildren()) 
         	if (node instanceof Rectangle)
@@ -119,11 +119,11 @@ public class Wisp extends ParanormalEntity {
 	void revertWithering() {
         membrane.setFill(Color.RED); 
         plazma.setFill(Color.RED);
-        core.setFill(Color.RED);
-        leftInnerEye.setFill(Color.YELLOW);
-        rightInnerEye.setFill(Color.YELLOW);
-        leftOuterEye.setFill(Color.YELLOW);
-        rightOuterEye.setFill(Color.YELLOW);
+//        core.setFill(Color.RED);
+//        leftInnerEye.setFill(Color.YELLOW);
+//        rightInnerEye.setFill(Color.YELLOW);
+//        leftOuterEye.setFill(Color.YELLOW);
+//        rightOuterEye.setFill(Color.YELLOW);
         
         for (Node node:rotatingRects.getChildren()) 
         	if (node instanceof Rectangle)
