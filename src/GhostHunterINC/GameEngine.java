@@ -233,7 +233,7 @@ public class GameEngine {
 		                            entity.setRevealedByToken(true);
 		                            entity.getShape().setVisible(true);
 		                            
-		                            PauseTransition stunTimer = new PauseTransition(Duration.seconds(3));
+		                            PauseTransition stunTimer = new PauseTransition(Duration.seconds(ConfigManager.trapTokenDuration));
 		                            stunTimer.setOnFinished(ey -> {
 		                                entity.setStunned(false);
 		                                entity.setRevealedByToken(false);

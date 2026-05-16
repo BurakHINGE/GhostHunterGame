@@ -11,7 +11,7 @@ import javafx.scene.shape.Polygon;
 
 public class Hunter extends GameObject {
  
-    private int score;
+    private int score,trapCount;
     private double areaX, areaY, areaW, areaH, speed, health, maxHealth;
     private boolean movingUp, movingDown, movingLeft, movingRight;
     private Scanner scanner;
@@ -59,6 +59,18 @@ public class Hunter extends GameObject {
     public void update(double dt) {
         scanner.update(dt);
     }
+    
+    public void addTraps(int amount) {
+    	this.trapCount += amount;
+    }
+    
+    public Trap placeTrap() {
+    	if(trapCount > 0) {
+    		trapCount--;
+    		return new Trap(this.x, this.y);
+    	}
+    	return null;
+    }
  
     @Override
     public void render(Pane pane) {
@@ -71,7 +83,7 @@ public class Hunter extends GameObject {
     @Override
     public void move(double dt) {}
  
-    public void takeDamage(int amount) {
+    public void takeDamage(double amount) {
         health -= amount;
         body.setFill(Color.RED);
         hat.setFill(Color.RED);

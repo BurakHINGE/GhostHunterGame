@@ -47,6 +47,7 @@ public class ConfigManager {
 	public static int healthTokenIncrease;
 	public static int rangeTokenIncrease;
 	public static int eyeTokenDuration;
+	public static int trapTokenDuration;
 	
 	public static void loadConfig() { //Read configures from config.txt
 		try {
@@ -160,6 +161,9 @@ public class ConfigManager {
 				}
 				else if (configName.equals("eye_token_duration:")) {
 					eyeTokenDuration = output.nextInt();
+				}
+				else if(configName.equals("trap_token_duration:")) {
+					trapTokenDuration = output.nextInt();
 				}
 			}
 			
