@@ -1,5 +1,8 @@
 package GhostHunterINC;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class SceneManager {
 	
@@ -106,7 +110,10 @@ public class SceneManager {
 		
 		mainPane.getChildren().addAll(mainMenuView, layout);
 		
-		startGameButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
+		startGameButton.setOnAction(e -> {
+			gameEngine.startGame(1, stage, this);
+			showIntro(stage);
+		});
 		selectLevelButton.setOnAction(e -> switchScene(selectLevelMenu())); //Open level selection menu
 		controlButton.setOnAction(e -> switchScene(controlsMenu()));
 		exitButton.setOnAction(e -> System.exit(0)); //Exit to program
@@ -573,6 +580,80 @@ public class SceneManager {
 	    overlay.getChildren().add(box);
 
 	    return overlay;
+	}
+	
+	public void showIntro(Stage stage) {
+	    // 1. Fotoğraf listesini oluştur (Dosya isimlerini kendine göre güncelle)
+	    String[] introImages = {
+	        "file:intro1.png", 
+	        "file:intro2.png", 
+	        "file:intro3.png", 
+	        "file:intro4.png", 
+	        "file:intro5.png"
+	    };
+
+	    // 2. Siyah bir arka plan paneli oluştur (Sinematik atmosfer için)
+	    StackPane introRoot = new StackPane();
+	    introRoot.setStyle("-fx-background-color: black;");
+	    
+	    ImageView imageView = new ImageView();
+	    imageView.setPreserveRatio(true);
+	    // Fotoğrafın ekrana tam oturması için (Stage boyutuna bağla)
+	    imageView.fitWidthProperty().bind(stage.widthProperty());
+	    imageView.fitHeightProperty().bind(stage.heightProperty());
+	    
+	    introRoot.getChildren().add(imageView);
+	    Scene introScene = new Scene(introRoot, stage.getWidth(), stage.getHeight());
+	    switchScene(introScene);
+
+	    // 3. Sıralı Oynatma Mantığı
+	    playImageSequence(0, introImages, imageView, stage);
+	}
+
+	private void playImageSequence(int index, String[] images, ImageView imageView, Stage stage) {
+	    // Eğer tüm fotoğraflar bittiyse oyunu başlat
+	    if (index >= images.length) {
+	        GameEngine game = new GameEngine();
+	        game.startGame(1, stage, this); // 1. Bölümden başlat
+	        return;
+	    }
+
+	    // Mevcut fotoğrafı yükle
+	    Image img = new Image(images[index]);
+	    imageView.setImage(img);
+	    imageView.setOpacity(0); // Başlangıçta görünmez yap
+
+	    // A - Fade In (Belirme)
+	    FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.5), imageView);
+	    fadeIn.setFromValue(0);
+	    fadeIn.setToValue(1);
+
+	    // B - Görünür Kalma Süresi (Ekranın ortasında ne kadar duracak?)
+	    PauseTransition stayVisible = new PauseTransition(Duration.seconds(2.5));
+
+	    // C - Fade Out (Kaybolma)
+	    FadeTransition fadeOut = new FadeTransition(Duration.seconds(1.5), imageView);
+	    fadeOut.setFromValue(1);
+	    fadeOut.setToValue(0);
+
+	    // D - Zincirleme Geçiş (Sırayla çalıştır)
+	    SequentialTransition sequence = new SequentialTransition(fadeIn, stayVisible, fadeOut);
+	    
+	    sequence.setOnFinished(e -> {
+	        // Bir sonraki fotoğrafa geç (Recursive çağrı)
+	        playImageSequence(index + 1, images, imageView, stage);
+	    });
+
+	    sequence.play();
+
+	    // OPSİYONEL: Oyuncunun atlaması için bir tuşa basma özelliği ekleyebilirsin
+	    imageView.getScene().setOnKeyPressed(event -> {
+	        if (event.getCode() == javafx.scene.input.KeyCode.SPACE || event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+	            sequence.stop(); // Animasyonu durdur
+	            GameEngine game = new GameEngine();
+	            game.startGame(1, stage, this); // Hemen oyuna geç
+	        }
+	    });
 	}
 	
 	private void applyButtonStyles(double width, Button... buttons) {
