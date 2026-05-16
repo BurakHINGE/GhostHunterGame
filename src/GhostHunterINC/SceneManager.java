@@ -1,5 +1,6 @@
 package GhostHunterINC;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -225,101 +226,142 @@ public class SceneManager {
 	}
 	
 	public Scene controlsMenu() {
-		
-		StackPane mainPane = new StackPane();
-		
-		VBox mainLayout = new VBox(60);
-		mainLayout.setAlignment(Pos.CENTER);
-		
-		Label menuTitle = new Label("CONTROLS");
-		menuTitle.setTextFill(Color.web("#4dfa9a"));
-		menuTitle.setStyle("-fx-font-family: Creepster; -fx-font-size: 50px; -fx-font-weight: bold;");
-		
-		HBox directionLayouts = new HBox(150);
-		directionLayouts.setAlignment(Pos.CENTER);
-		
-		GridPane wasdGrid = new GridPane();
-		wasdGrid.setHgap(10);
-		wasdGrid.setVgap(10);
-		wasdGrid.setAlignment(Pos.CENTER);
-		
-		Rectangle w = new Rectangle(60, 60);
-		Rectangle a = new Rectangle(60, 60);
-		Rectangle s = new Rectangle(60, 60);
-		Rectangle d = new Rectangle(60, 60);
-		
-		Label labelW = new Label("W");
-		Label labelA = new Label("A");
-		Label labelS = new Label("S");
-		Label labelD = new Label("D");
-		
-		GridPane arrowGrid = new GridPane();
-		arrowGrid.setHgap(10);
-		arrowGrid.setVgap(10);
-		arrowGrid.setAlignment(Pos.CENTER);
-		
-		Rectangle upArrow = new Rectangle(60, 60);
-		Rectangle leftArrow = new Rectangle(60, 60);
-		Rectangle downArrow = new Rectangle(60, 60);
-		Rectangle rightArrow = new Rectangle(60, 60);
-		
-		Label labelUp = new Label("▲");
-		Label labelLeft = new Label("◀");
-		Label labelDown = new Label("▼");
-		Label labelRight = new Label("▶");
-		
-		Rectangle[] allRectangles = {w, a, s, d, upArrow, leftArrow, downArrow, rightArrow};
-		for (Rectangle rect: allRectangles) {
-			rect.setStyle(RECTANGLE_STYLE);
-		}
-		
-		Label[] allLabels = {labelW, labelA, labelS, labelD, labelUp, labelLeft, labelDown, labelRight};
-		for (Label labels: allLabels) {
-			labels.setTextFill(Color.web("#4dfa9a"));
-			labels.setStyle("-fx-font-family: Creepster; -fx-font-size: 24px; -fx-font-weight: bold;");
-			labels.setCache(false);
-		}
-		
-		StackPane keyW = new StackPane(w, labelW);
-		StackPane keyA = new StackPane(a, labelA);
-		StackPane keyS = new StackPane(s, labelS);
-		StackPane keyD = new StackPane(d, labelD);
-		
-		StackPane keyUp = new StackPane(upArrow, labelUp);
-		StackPane keyLeft = new StackPane(leftArrow, labelLeft);
-		StackPane keyDown = new StackPane(downArrow, labelDown);
-		StackPane keyRight = new StackPane(rightArrow, labelRight);
-		
-		wasdGrid.add(keyW, 1, 0);
-		wasdGrid.add(keyA, 0, 1);
-		wasdGrid.add(keyS, 1, 1);
-		wasdGrid.add(keyD, 2, 1);
-		
-		arrowGrid.add(keyUp, 1, 0);
-		arrowGrid.add(keyLeft, 0, 1);
-		arrowGrid.add(keyDown, 1, 1);
-		arrowGrid.add(keyRight, 2, 1);
-		
-		directionLayouts.getChildren().addAll(wasdGrid, arrowGrid);
-		
-		Button returnMainMenuButton = new Button("Main Menu");
-		returnMainMenuButton.setStyle(BUTTON_STYLE);
-		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
-		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
-		
-		applyButtonStyles(stage.getWidth(), returnMainMenuButton);
-		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			applyButtonStyles(newVal.doubleValue(), returnMainMenuButton);
-		});
-		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu()));
-		
-		mainLayout.getChildren().addAll(menuTitle, directionLayouts);
-		mainPane.getChildren().addAll(mainLayout, returnMainMenuButton);
-		
-		StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT);
-		StackPane.setMargin(returnMainMenuButton, new Insets(0, 40, 40, 0));
+	    StackPane mainPane = new StackPane();
+	    mainPane.setStyle("-fx-background-color: #050b14;");
+	    
+	    VBox mainLayout = new VBox(60);
+	    mainLayout.setAlignment(Pos.TOP_CENTER);
+	    mainLayout.setPadding(new Insets(80, 0, 0, 0));
+	    
+	    Label menuTitle = new Label("CONTROLS");
+	    
+	    HBox directionLayouts = new HBox(100);
+	    directionLayouts.setAlignment(Pos.CENTER);
+	    
+	    GridPane wasdGrid = new GridPane();
+	    wasdGrid.setHgap(10);
+	    wasdGrid.setVgap(10);
+	    wasdGrid.setAlignment(Pos.CENTER);
+	    
+	    Rectangle w = new Rectangle();
+	    Rectangle a = new Rectangle();
+	    Rectangle s = new Rectangle();
+	    Rectangle d = new Rectangle();
+	    
+	    Label labelW = new Label("W");
+	    Label labelA = new Label("A");
+	    Label labelS = new Label("S");
+	    Label labelD = new Label("D");
+	    
+	    Label descW = new Label("Up");
+	    Label descA = new Label("Left");
+	    Label descS = new Label("Down");
+	    Label descD = new Label("Right");
+	    
+	    GridPane arrowGrid = new GridPane();
+	    arrowGrid.setHgap(10);
+	    arrowGrid.setVgap(10);
+	    arrowGrid.setAlignment(Pos.CENTER);
+	    
+	    Rectangle upArrow = new Rectangle();
+	    Rectangle leftArrow = new Rectangle();
+	    Rectangle downArrow = new Rectangle();
+	    Rectangle rightArrow = new Rectangle();
+	    
+	    Label labelUp = new Label("▲");
+	    Label labelLeft = new Label("◀");
+	    Label labelDown = new Label("▼");
+	    Label labelRight = new Label("▶");
+	    
+	    Label descUp = new Label("Up");
+	    Label descLeft = new Label("Left");
+	    Label descDown = new Label("Down");
+	    Label descRight = new Label("Right");
+	    
+	    VBox spaceLayout = new VBox(10);
+	    spaceLayout.setAlignment(Pos.CENTER);
+	    
+	    Label descSpace = new Label("Scan");
+	    
+	    Rectangle space = new Rectangle();
+	    Label labelSpace = new Label("SPACE");
+	    
+	    StackPane keySpace = new StackPane(space, labelSpace);
+	    spaceLayout.getChildren().addAll(descSpace, keySpace);
+	    
+	    Rectangle[] allRectangles = {w, a, s, d, upArrow, leftArrow, downArrow, rightArrow, space};
+	    for (Rectangle rect: allRectangles) {
+	        rect.widthProperty().bind(stage.widthProperty().divide(24));
+	        rect.heightProperty().bind(stage.widthProperty().divide(24));
+	        rect.setStyle(RECTANGLE_STYLE);
+	    }
+	    
+	    space.widthProperty().bind(stage.widthProperty().divide(6));
+	    space.heightProperty().bind(stage.widthProperty().divide(24));
+	    space.setStyle(RECTANGLE_STYLE);
+	    
+	    Label[] allLabels = {descW, descA, descS, descD, descUp, descLeft, descDown, descRight};
+	    for (Label desc: allLabels) {
+	        GridPane.setHalignment(desc, HPos.CENTER);
+	    }
+	    
+	    Label[] keyLabels = {labelW, labelA, labelS, labelD, labelUp, labelLeft, labelDown, labelRight, labelSpace};
+	    Label[] descLabels = {descW, descA, descS, descD, descUp, descLeft, descDown, descRight, descSpace};
 
-		return new Scene(mainPane, stage.getWidth(), stage.getHeight());		
+	    applyLabelStyles(stage.getWidth(), menuTitle, keyLabels, descLabels);
+	    
+	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+	        applyLabelStyles(newVal.doubleValue(), menuTitle, keyLabels, descLabels);
+	    });
+	    
+	    StackPane keyW = new StackPane(w, labelW);
+	    StackPane keyA = new StackPane(a, labelA);
+	    StackPane keyS = new StackPane(s, labelS);
+	    StackPane keyD = new StackPane(d, labelD);
+	    
+	    StackPane keyUp = new StackPane(upArrow, labelUp);
+	    StackPane keyLeft = new StackPane(leftArrow, labelLeft);
+	    StackPane keyDown = new StackPane(downArrow, labelDown);
+	    StackPane keyRight = new StackPane(rightArrow, labelRight);
+	    
+	    wasdGrid.add(descW, 2, 0);
+	    wasdGrid.add(descA, 0, 2);
+	    wasdGrid.add(descS, 2, 3);
+	    wasdGrid.add(descD, 4, 2);
+	    wasdGrid.add(keyW, 2, 1);
+	    wasdGrid.add(keyA, 1, 2);
+	    wasdGrid.add(keyS, 2, 2);
+	    wasdGrid.add(keyD, 3, 2);
+	    
+	    arrowGrid.add(descUp, 2, 0);
+	    arrowGrid.add(descLeft, 0, 2);
+	    arrowGrid.add(descDown, 2, 3);
+	    arrowGrid.add(descRight, 4, 2);
+	    arrowGrid.add(keyUp, 2, 1);
+	    arrowGrid.add(keyLeft, 1, 2);
+	    arrowGrid.add(keyDown, 2, 2);
+	    arrowGrid.add(keyRight, 3, 2);
+	    
+	    directionLayouts.getChildren().addAll(wasdGrid, spaceLayout, arrowGrid);
+	    
+	    Button returnMainMenuButton = new Button("Main Menu");
+	    returnMainMenuButton.setStyle(BUTTON_STYLE);
+	    returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));    
+	    returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
+	    
+	    applyButtonStyles(stage.getWidth(), returnMainMenuButton);
+	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+	        applyButtonStyles(newVal.doubleValue(), returnMainMenuButton);
+	    });
+	    returnMainMenuButton.setOnAction(e -> switchScene(mainMenu()));
+	    
+	    mainLayout.getChildren().addAll(menuTitle, directionLayouts);
+	    mainPane.getChildren().addAll(mainLayout, returnMainMenuButton);
+	    
+	    StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT);
+	    StackPane.setMargin(returnMainMenuButton, new Insets(0, 40, 40, 0));
+
+	    return new Scene(mainPane, stage.getWidth(), stage.getHeight());        
 	}
 
 	public Scene stopGamePanel() { //Stopped game menu
@@ -543,6 +585,28 @@ public class SceneManager {
 	        btn.setOnMouseEntered(e -> btn.setStyle(dynamicStyle + "-fx-background-color: #4dfa9a; -fx-text-fill: black;"));
 	        btn.setOnMouseExited(e -> btn.setStyle(dynamicStyle));
 	    }
+	}
+	
+	private void applyLabelStyles(double width, Label menuTitle, Label[] keyLabels, Label[] descLabels) {
+
+	    double validWidth = (Double.isNaN(width) || width <= 0) ? 1024 : width; 
+	    
+	    double keyFontSize = Math.max(16, validWidth / 65);
+	    double descFontSize = Math.max(20, validWidth / 50);
+	    double titleFontSize = Math.max(32, validWidth / 30);
+
+	    for (Label lbl : keyLabels) {
+	        lbl.setTextFill(Color.web("#4dfa9a"));
+	        lbl.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + keyFontSize + "px;");
+	    }
+
+	    for (Label desc : descLabels) {
+	        desc.setTextFill(Color.WHITE); 
+	        desc.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + descFontSize + "px;");
+	    }
+	    
+	    menuTitle.setTextFill(Color.web("#4dfa9a"));
+	    menuTitle.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + titleFontSize + "px;");
 	}
 	
 	private void switchScene(Scene scene) {
