@@ -65,6 +65,11 @@ public class EyeToken extends Token {
 			}
 		}
 		
+		//Reset the timer if the player takes two eye tokens in a row
+		if(timer != null) {
+			timer.stop();
+		}
+		
 		//Start a timer to revert the changes after the duration
 		timer = new PauseTransition(Duration.seconds(time));
 		
