@@ -370,12 +370,6 @@ Scene selectLevelMenu() { //Level selection menu
 	    
 	    Label[] keyLabels = {labelW, labelA, labelS, labelD, labelUp, labelLeft, labelDown, labelRight, labelSpace, labelEsc, labelG, labelB, labelR};
 	    Label[] descLabels = {descW, descA, descS, descD, descUp, descLeft, descDown, descRight, descSpace, descEsc, descG, descB, descR};
-
-	    applyLabelStyles(stage.getWidth(), menuTitle, keyLabels, descLabels);
-	    
-	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-	        applyLabelStyles(newVal.doubleValue(), menuTitle, keyLabels, descLabels);
-	    });
 	    
 	    StackPane keyW = new StackPane(w, labelW);
 	    StackPane keyA = new StackPane(a, labelA);
@@ -435,8 +429,10 @@ Scene selectLevelMenu() { //Level selection menu
 	    returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 	    
 	    applyButtonStyles(stage.getWidth(), returnMainMenuButton);
+	    applyLabelStyles(stage.getWidth(), menuTitle, keyLabels, descLabels);
 	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-	        applyButtonStyles(newVal.doubleValue(), returnMainMenuButton);
+	        applyButtonStyles(newVal.doubleValue(), returnMainMenuButton); 
+	        applyLabelStyles(newVal.doubleValue(), menuTitle, keyLabels, descLabels);
 	    });
 	    returnMainMenuButton.setOnAction(e -> switchScene(mainMenu()));
 	    
@@ -449,7 +445,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    Scene controlsScene = new Scene(mainPane, stage.getWidth(), stage.getHeight());
 		
 		controlsScene.setOnKeyPressed(event -> {
-			if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+			if (event.getCode() == KeyCode.ESCAPE) {
 				switchScene(mainMenu());
 			}
 		});
