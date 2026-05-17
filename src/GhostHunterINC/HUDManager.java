@@ -7,6 +7,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class HUDManager {
 	private final double BAR_HEIGHT_RATIO = 0.33;
@@ -22,7 +26,9 @@ public class HUDManager {
 	private Text trapText;
 	private DoubleProperty healthPercentage = new SimpleDoubleProperty(1.0);
 	private DoubleProperty vacuumPercentage = new SimpleDoubleProperty(1.0);
+	private Timeline healthTimeline;
 	Font loadedFont;
+	
 	
 	public HUDManager(int level) {
 		hudPane = new Pane();
@@ -146,7 +152,20 @@ public class HUDManager {
 	
 	void updateHealthBar(double currentHealth, double maxHealth) {
 		//Calculate the current health percentage and change the height of the health bar
-		healthPercentage.set(currentHealth / maxHealth);
+		double targetHealthPercentage = currentHealth / maxHealth;
+		
+		if(healthTimeline != null) {
+			healthTimeline.stop();
+		}
+		
+		healthTimeline = new Timeline();
+		
+		KeyValue key = new KeyValue(healthPercentage, targetHealthPercentage);
+		
+		KeyFrame frame = new KeyFrame(Duration.millis(200), key);
+		
+		healthTimeline.getKeyFrames().add(frame);
+		healthTimeline.play();
 	}
 	
 	void updateVacuumBar(double currentEnergy, double maxEnergy) {
