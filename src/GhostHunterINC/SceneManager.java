@@ -42,7 +42,6 @@ public class SceneManager {
             "-fx-fill: rgba(10, 30, 20, 0.8);"
           + "-fx-stroke: #4dfa9a;"
           + "-fx-stroke-width: 2px;";
-
 	
 	public SceneManager(Stage stage, GameEngine gameEngine) {
 		this.stage = stage;
@@ -117,9 +116,11 @@ public class SceneManager {
 		});
 		selectLevelButton.setOnAction(e -> switchScene(selectLevelMenu())); //Open level selection menu
 		controlButton.setOnAction(e -> switchScene(controlsMenu()));
-		exitButton.setOnAction(e -> System.exit(0)); //Exit to program
+		exitButton.setOnAction(e -> System.exit(0));
 		
-		return new Scene(mainPane, stage.getWidth(), stage.getHeight());	//Return buttons with scene
+		Scene mainMenuScene = new Scene(mainPane, stage.getWidth(), stage.getHeight());
+		
+		return mainMenuScene;	
 	}
 	
 	Scene selectLevelMenu() { //Level selection menu
@@ -230,7 +231,15 @@ public class SceneManager {
 		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage, this));
 		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage, this));
 		
-		return new Scene(mainPane, stage.getWidth(), stage.getHeight()); //Return border pane with scene
+		Scene selectLevelScene = new Scene(mainPane, stage.getWidth(), stage.getHeight());
+		
+		selectLevelScene.setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.ESCAPE) {
+				switchScene(mainMenu());
+			}
+		});
+		
+		return selectLevelScene;
 	}
 	
 	public Scene controlsMenu() {
@@ -408,7 +417,15 @@ public class SceneManager {
 	    StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT);
 	    StackPane.setMargin(returnMainMenuButton, new Insets(0, 40, 40, 0));
 
-	    return new Scene(mainPane, stage.getWidth(), stage.getHeight());        
+	    Scene controlsScene = new Scene(mainPane, stage.getWidth(), stage.getHeight());
+		
+		controlsScene.setOnKeyPressed(event -> {
+			if (event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+				switchScene(mainMenu());
+			}
+		});
+		
+		return controlsScene;       
 	}
 
 	public VBox stopGamePanel() {
