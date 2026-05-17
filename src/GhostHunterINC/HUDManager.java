@@ -36,6 +36,16 @@ public class HUDManager {
 	// Custom font we used for text
 	Font loadedFont;
 	
+	private final static String TEXT_STYLE =
+	        "-fx-fill: linear-gradient(to bottom, #E0E6ED 0%, #8FA1B0 35%, #4A5B68 50%, #738796 65%, #A8B9C7 100%);"
+	      + "-fx-font-family: 'Creepster';"
+	      + "-fx-font-weight: bold;";
+	
+	private final static String STEEL_TEXT_STYLE =
+	        "-fx-fill: linear-gradient(to bottom, #FFFFFF 0%, #D1D9E0 40%, #768996 55%, #A2B3C0 100%);"
+	      + "-fx-font-family: 'Creepster';"
+	      + "-fx-font-weight: bold;";
+
 	// Load the font and initialize the UI components.
 	public HUDManager(int level) {
 		hudPane = new Pane();
@@ -60,12 +70,13 @@ public class HUDManager {
 	public void startUI(int level) {
 		int time ,minutes, seconds;
 		//Set score text
-		scoreText = new Text("SCORE : 0");
-		scoreText.setFill(Color.BLACK);
+		scoreText = new Text(" SCORE : 0");
+		scoreText.setFill(Color.WHITE);
+		scoreText.setFont(loadedFont);
 		
 		scoreText.xProperty().bind(hudPane.widthProperty().divide(2).subtract(50));
 		scoreText.yProperty().bind(hudPane.heightProperty().multiply(0.05));
-		scoreText.setFont(loadedFont);
+
 		
 		//Set the time text according to your level and config.txt
 		switch (level){
@@ -89,14 +100,14 @@ public class HUDManager {
 				break;
 		}
 		
-		timeText.setFill(Color.BLACK);
+		timeText.setFill(Color.WHITE);
 		timeText.xProperty().bind(hudPane.widthProperty().divide(2).subtract(30));
 		timeText.yProperty().bind(scoreText.yProperty().add(25));
 		timeText.setFont(loadedFont);
 		
 		//Set trap text
 		trapText = new Text("TRAPS: 0");
-		trapText.setFill(Color.BLACK);
+		trapText.setFill(Color.WHITE);
 		
 		trapText.xProperty().bind(hudPane.widthProperty().divide(2).subtract(40));
 		trapText.yProperty().bind(timeText.yProperty().add(30));
@@ -114,7 +125,7 @@ public class HUDManager {
 		healthBarOuter.heightProperty().bind(hudPane.heightProperty().multiply(BAR_HEIGHT_RATIO));
 		
 		healthBar = new Rectangle();
-		healthBar.setFill(Color.RED);
+		healthBar.setFill(Color.DARKRED);
 		
 		healthBar.xProperty().bind(healthBarOuter.xProperty().add(2));
 		healthBar.widthProperty().bind(healthBarOuter.widthProperty().subtract(4));
@@ -124,7 +135,7 @@ public class HUDManager {
 		healthBar.yProperty().bind(healthBarOuter.yProperty().add(healthBarOuter.heightProperty()).subtract(healthBar.heightProperty()).subtract(2));
 		
 		healthLabel = new Text("HEALTH:");
-		healthLabel.setFill(Color.BLACK);
+		healthLabel.setStyle(TEXT_STYLE);
 		healthLabel.xProperty().bind(healthBarOuter.xProperty().subtract(5));
 		healthLabel.yProperty().bind(healthBarOuter.yProperty().subtract(10));
 		healthLabel.setFont(loadedFont);
@@ -141,7 +152,7 @@ public class HUDManager {
 		vacuumBarOuter.heightProperty().bind(hudPane.heightProperty().multiply(BAR_HEIGHT_RATIO));
 		
 		vacuumBar = new Rectangle();
-		vacuumBar.setFill(Color.BLUE);
+		vacuumBar.setFill(Color.DARKBLUE);
 		
 		vacuumBar.xProperty().bind(vacuumBarOuter.xProperty().add(2));
 		vacuumBar.widthProperty().bind(vacuumBarOuter.widthProperty().subtract(4));
@@ -149,7 +160,7 @@ public class HUDManager {
 		vacuumBar.yProperty().bind(vacuumBarOuter.yProperty().add(vacuumBarOuter.heightProperty()).subtract(vacuumBar.heightProperty()).subtract(2));
 		
 		vacuumLabel = new Text("VACUUM:");
-		vacuumLabel.setFill(Color.BLACK);
+		vacuumLabel.setStyle(TEXT_STYLE);
 		vacuumLabel.xProperty().bind(vacuumBarOuter.xProperty().subtract(5));
 		vacuumLabel.yProperty().bind(vacuumBarOuter.yProperty().subtract(10));
 		vacuumLabel.setFont(loadedFont);
