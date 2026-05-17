@@ -333,13 +333,20 @@ public class GameEngine {
 		gameScene.setOnKeyPressed(e -> { //Activate key when pressed
 			
 			StackPane root = (StackPane) gameScene.getRoot();
-			if (root.getChildren().size() > 3) { 
-				if (e.getCode() == KeyCode.ESCAPE) {
-					if (currentStopOverlay != null && root.getChildren().contains(currentStopOverlay)) {
-						resumeGame();
-					}
+			if (e.getCode() == KeyCode.ESCAPE) {
+				e.consume();
+
+				if (currentStopOverlay != null && root.getChildren().contains(currentStopOverlay)) {
+					resumeGame();
+					return;
 				}
-				return;
+
+				if (root.getChildren().size() > 3) {
+					if (sceneManager != null && sceneManager.getStage() != null) {
+						sceneManager.getStage().setFullScreen(true);
+					}
+					return;
+				}
 			}
 			
 			switch (e.getCode()) {
@@ -513,6 +520,11 @@ public class GameEngine {
 			currentStopOverlay = null;
 			
 			root.requestFocus();
+		}
+		
+		if (gameScene != null && gameScene.getWindow() != null) {
+			Stage stage = (Stage) gameScene.getWindow();
+			stage.setFullScreen(true);
 		}
 
 		if (gameLoop != null) {
