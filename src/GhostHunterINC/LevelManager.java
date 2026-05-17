@@ -7,17 +7,22 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+// This class handles the spawning of enemies and tokens for every level.
 public class LevelManager {
 	Pane enemies;
 	ArrayList<GameObject> allEntities;
 	private Timeline tokenTimeline;
 	double areaX, areaY, areaW, areaH, randX, randY;
 	
-	LevelManager(Pane enemies, ArrayList allEntities){
+	// Constructor gets 2 parameters;
+	// 1- enemies : The pane where every visual we want to add on the screen added.
+	// 2- allEntities : Main list that contains all active game objects.
+	LevelManager(Pane enemies, ArrayList<GameObject> allEntities){
 		this.enemies = enemies;
 		this.allEntities = allEntities;
 	}
-
+	
+	// Load paranormal entities with random coordinates to the screen based on current level.
 	void loadEntities(int level) {
 		int ghost = 0,wisp = 0,ripper = 0;
 		
@@ -176,7 +181,7 @@ public class LevelManager {
 	}
 	
 	void startTokenSpawn(int level) {
-		//The event thats gonna start on every 5 seconds.
+		// The event thats gonna start on every 5 seconds.
 		KeyFrame frame = new KeyFrame(Duration.seconds(5), e -> {
 			int activeToken = 0;
 			
@@ -187,6 +192,7 @@ public class LevelManager {
 				}
 			}
 			
+			// Spawn new token if there are less than 2 token
 			if(activeToken < 2) {
 				spawnToken(level);
 			}
@@ -196,11 +202,6 @@ public class LevelManager {
 		tokenTimeline = new Timeline(frame);
 		tokenTimeline.setCycleCount(Timeline.INDEFINITE);
 		tokenTimeline.play();
-		
-		
-		//Check if there is less token than the number of maximum token allowed.
-		//If so check if the interval has passed since the last token spawned.
-		//If both of these are true spawn a random token.
 	}
 	
 	//Stop token generation when the game end or the player has gone to the next level.
@@ -210,18 +211,21 @@ public class LevelManager {
 		}
 	}
 	
+	// Pause token spawn when the game is paused.
 	void pauseTokenSpawn() {
 		if(tokenTimeline != null) {
 			tokenTimeline.pause();
 		}
 	}
 	
+	// Resume token spawn
 	void resumeTokenSpawn() {
 		if(tokenTimeline != null) {
 			tokenTimeline.play();
 		}
 	}
 	
+	// Create a random type of token with random coordinates.
 	void spawnToken(int level) {
 		double areaW, areaH;
 		Token token = null;

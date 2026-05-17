@@ -27,14 +27,14 @@ public class RangeToken extends Token {
 		wave1.setStrokeWidth(2);
 		
 		Circle wave2 = new Circle(7);
-		wave1.setFill(Color.TRANSPARENT);
-		wave1.setStroke(Color.CYAN);
-		wave1.setStrokeWidth(2);
+		wave2.setFill(Color.TRANSPARENT);
+		wave2.setStroke(Color.CYAN);
+		wave2.setStrokeWidth(2);
 		
 		Circle wave3 = new Circle(11);
-		wave1.setFill(Color.TRANSPARENT);
-		wave1.setStroke(Color.CYAN);
-		wave1.setStrokeWidth(2);
+		wave3.setFill(Color.TRANSPARENT);
+		wave3.setStroke(Color.CYAN);
+		wave3.setStrokeWidth(2);
 		
 		this.shape.getChildren().addAll(background, wave1, wave2, wave3);
 		
