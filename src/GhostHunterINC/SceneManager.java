@@ -12,10 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,9 +25,8 @@ import javafx.util.Duration;
 public class SceneManager {
 	
 	private Stage stage;
-	private HUDManager hud = new HUDManager(1);
 	private GameEngine gameEngine;
-	private final String BUTTON_STYLE = 
+	private final String BUTTON_STYLE = //Green button style
             "-fx-background-color: rgba(10, 30, 20, 0.8);"
           + "-fx-border-color: #4dfa9a;"
           + "-fx-border-width: 2px;"
@@ -141,7 +138,7 @@ Scene selectLevelMenu() { //Level selection menu
 		selectMenuView.setPreserveRatio(false);
 		
 		VBox mainLayout = new VBox(40);
-		mainLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
+		mainLayout.setAlignment(Pos.TOP_CENTER); //Align the buttons in the center of VBox
 		
 		Label menuTitle = new Label("CHOOSE LOCATION");
 		
@@ -227,9 +224,9 @@ Scene selectLevelMenu() { //Level selection menu
 		applyLabelStyles(stage.getWidth(), menuTitle, emptyLabels, emptyLabels);
 		
 		double initialFontSize = Math.max(20, stage.getWidth() / 50) * 2.5;
-		for (Label lbl : levelLabels) {
-			lbl.setTextFill(Color.WHITE);
-			lbl.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + initialFontSize + "px; "
+		for (Label label : levelLabels) {
+			label.setTextFill(Color.WHITE);
+			label.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + initialFontSize + "px; "
 					   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
 		}
 		
@@ -246,14 +243,13 @@ Scene selectLevelMenu() { //Level selection menu
 	    
 	    mapsLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);
 	    mainLayout.getChildren().addAll(menuTitle, mapsLayout);
+	    
+	    VBox.setMargin(menuTitle, new Insets(125, 0, 40, 0));
 		
 	    mainPane.getChildren().addAll(selectMenuView, mainLayout, returnMainMenuButton);
 	    
 		StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT); 
 		StackPane.setMargin(returnMainMenuButton, new Insets(10)); 
-		
-		StackPane.setAlignment(menuTitle, Pos.TOP_CENTER);
-		StackPane.setMargin(menuTitle, new Insets(130));
 		
 		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); 
 		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
