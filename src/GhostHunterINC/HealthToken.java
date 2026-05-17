@@ -7,7 +7,6 @@ import javafx.scene.Node;
 
 //A token that heals the hunter
 public class HealthToken extends Token {
-	StackPane shape = new StackPane();
 	
 	public HealthToken(double x, double y) {
 		this.x = x;
@@ -23,11 +22,11 @@ public class HealthToken extends Token {
 		Rectangle horizontal = new Rectangle(18, 6, Color.RED);
 		
 		//Combine all the parts of the token in the pane
-		this.shape.getChildren().addAll(background, vertical, horizontal);
+		this.sPane.getChildren().addAll(background, vertical, horizontal);
 		
 		//Set the visual position of the shape pane
-		this.shape.setTranslateX(this.x);
-		this.shape.setTranslateY(this.y);
+		this.sPane.setTranslateX(this.x);
+		this.sPane.setTranslateY(this.y);
 	}
 	
 	@Override
@@ -52,7 +51,7 @@ public class HealthToken extends Token {
 	}
 	
 	public Node getShape() {
-		return this.shape;
+		return this.sPane;
 	}
 
 	@Override

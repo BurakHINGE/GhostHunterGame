@@ -1,6 +1,7 @@
 package GhostHunterINC;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -18,6 +19,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.PauseTransition;
+
+/*
+ * General Purpose: Represent the core mechanics of the game.
+ * It handles the main loops.
+ * Including: start game loop, start timeline loop, start-stop-resume game loops, handling users input and hunter movements functions.
+ */
 
 public class GameEngine {
 	
@@ -46,7 +53,7 @@ public class GameEngine {
 	private boolean visibilityCheat = false;
 	private boolean borderCheat = false;
 	
-	//Mouse Coordinates
+	//Mouse Coordinates for scanner
 	private double mouseX = 0;
 	private double mouseY = 0;
 	
@@ -55,8 +62,9 @@ public class GameEngine {
         this.gameObjects = new Pane();
 	}
 	
-	public void startGame(int level, Stage stage, SceneManager sceneManager) {
+	public void startGame(int level, Stage stage, SceneManager sceneManager) { //Starts the levels
 		
+		//Reset cheats before the new level
 		this.visibilityCheat = false;
 		this.borderCheat = false;
 		
@@ -65,6 +73,7 @@ public class GameEngine {
 		this.gameObjects = new Pane();
 		this.sceneManager = sceneManager;
 		
+		//Load background images
 		Image level1Image = new Image("file:level1Picture.png");
 		Image level2Image = new Image("file:level2Picture.png");
 		Image level3Image = new Image("file:level3Picture.png");
@@ -100,7 +109,7 @@ public class GameEngine {
 			this.levelView = new ImageView(level3Image);
 		}
 		
-		
+		//Bind the image according to screen size
 		levelView.fitWidthProperty().bind(stage.widthProperty());
 		levelView.fitHeightProperty().bind(stage.heightProperty());
 		
@@ -108,10 +117,10 @@ public class GameEngine {
 		double startX = areaX + (areaW / 2);
 		double startY = areaY + (areaH / 2);
 		
+		//Create playable area
 		this.borderArea = new Rectangle();
 		this.borderArea.setWidth(areaW);
 		this.borderArea.setHeight(areaH);
-		
 		this.borderArea.setFill(Color.TRANSPARENT);
 		this.borderArea.setStroke(Color.WHITE);
 		this.borderArea.setStrokeWidth(4);
@@ -119,23 +128,26 @@ public class GameEngine {
 		
 		this.gameObjects.getChildren().add(borderArea);
 		
+		//Instantiate the hunter
 		this.hunter = new Hunter(startX, startY, areaX, areaY, areaW, areaH);
-		
 		this.hunter.getScanner().render(this.gameObjects);
-		
 		this.gameObjects.getChildren().add(this.hunter.getShape());
 		this.hunter.getScanner().render(this.gameObjects);
+		
+		//Initialize the managers
 		this.levelManager = new LevelManager(this.gameObjects, this.allEntities);
 		this.hudManager = new HUDManager(level);
 		
+		//Load enemies and tokens
 		this.levelManager.loadEntities(level);
-		
 		this.levelManager.startTokenSpawn(level);
 		
+		//Bind HUD elements according to screen size
 		Pane hudPane = this.hudManager.getHudPane();
 		hudPane.prefWidthProperty().bind(stage.widthProperty());
 		hudPane.prefHeightProperty().bind(stage.heightProperty());
 		
+		//Objects cannot exit from the playable area
 		this.gameObjects.setMaxSize(areaW, areaH);
 		this.gameObjects.setPrefSize(areaW, areaH);
 		
@@ -155,27 +167,34 @@ public class GameEngine {
 		startTimelineLoop();
 	}
 	
-	public void startTimelineLoop() {
+	private void startTimelineLoop() { //Handle physics, updates and collisions. Runs 60 times per second
 
+		//Prevent multiple loop
 		if (gameLoop != null) {
 			gameLoop.stop();
 		}
 		
-		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
+		gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> { 
+			
+			//Update hunter
 			hunterMovement();
 			hunter.getScanner().updatePosition(); 
 		    hunter.getScanner().update(0.016);
+		    
+		    //Update HUD manager
 			hudManager.updateHealthBar(hunter.getHealth(), 100);
 			hudManager.updateVacuumBar(hunter.getScanner().getEnergy(), hunter.getScanner().getMaxEnergy());
 			hudManager.updateTime(remainingTime);
 			hudManager.updateTrapCount(hunter.getTrapCount());
 			boolean isTouching = false;
 			
-			java.util.Iterator<GameObject> iterator = allEntities.iterator();
+			//Safely remove objects
+			Iterator<GameObject> iterator = allEntities.iterator();
 			
 			double areaW = borderArea.getWidth();
 	        double areaH = borderArea.getHeight();
 			
+	        //Process entities and keep them within bounds
 		    while (iterator.hasNext()) {
 		        GameObject obj = iterator.next();
 		        
@@ -192,6 +211,7 @@ public class GameEngine {
 		            		     	        
 		        obj.update(0.016); 
 		        
+		        //Trap
 		        if(obj instanceof Trap) {
 		        	if(((Trap)obj).isExpired()) {
 		        		gameObjects.getChildren().remove(obj.getShape());
@@ -199,7 +219,7 @@ public class GameEngine {
 		        		continue;
 		        	}
 		        }
-
+		        //Other tokens
 		        else if (obj instanceof Token) {
 		            if (hunter.checkCollision(obj)) {
 		            	((Token)obj).applyEffect(hunter);
@@ -207,10 +227,11 @@ public class GameEngine {
 		                iterator.remove(); 
 		            }
 		        }
-		        
+		        //Entities
 		        else if (obj instanceof ParanormalEntity) {
 		            ParanormalEntity entity = (ParanormalEntity) obj;
 		            
+		            //If entities shrink %30 they die
 		            if(obj.getShape().getScaleX() <= 0.30) {
 		                gameObjects.getChildren().remove(obj.getShape());
 		                iterator.remove();
@@ -228,7 +249,8 @@ public class GameEngine {
 		                hudManager.updateScore(hunter.getScore());
 		                continue; 
 		            }
-
+		            
+		            //Trap stun mechanics
 		            if(!entity.isStunned()) {
 		                for(GameObject x: allEntities) {
 		                    if(x instanceof Trap) {
@@ -247,11 +269,14 @@ public class GameEngine {
 		                    }
 		                }
 		            }
+		            
+		            //Damage mechanics
 		            if(hunter.checkCollision(obj)) {
 		                isTouching = true; 
 		                hunter.takeDamage(0.5); 
 		            }
 		            
+		            //Vacuum mechanics
 		            boolean isInsideScanner = hunter.getScanner().isActive() && hunter.getScanner().intersects(obj);
 		            
 		            if(isInsideScanner) {
@@ -264,6 +289,7 @@ public class GameEngine {
 		            	entity.inverseVacuuumEffect();
 		            }
 		            
+		            //Visibility mechanics
 		            boolean shouldBeVisible = false;
                     
                     if (visibilityCheat) shouldBeVisible = true;
@@ -274,6 +300,7 @@ public class GameEngine {
                     entity.getShape().setVisible(shouldBeVisible);
 		        }
 		        
+		        //Update hunter damage situation
 		        if (isTouching) {
 		            hunter.getBody().setFill(Color.RED);
 		            hunter.getHat().setFill(Color.RED);
@@ -282,8 +309,10 @@ public class GameEngine {
 		            hunter.resetColor();
 		        }
 		    }
+		    //Always keep the hunter rendered on top of other objects
 		    hunter.getShape().toFront();
 		    
+		    //Health mechanics
 		    if(hunter.getHealth() <= 0) {
 		    	stopGame();
 		    	StackPane root = (StackPane) gameScene.getRoot();
@@ -294,6 +323,7 @@ public class GameEngine {
 		        return;
 		    }
 		    
+		    //Check win conditions
 		    boolean isGhostLeft = false;
 		    
 		    for(GameObject obj: allEntities) {
@@ -310,29 +340,30 @@ public class GameEngine {
 		    	if (!root.getChildren().contains(sceneManager.winPanel(hunter.getScore()))) {
 		            root.getChildren().add(sceneManager.winPanel(hunter.getScore()));
 		        }	
-		    }
-		    
-	        
+		    }  
 		}));
 
 		gameLoop.setCycleCount(Timeline.INDEFINITE); 
-		
 		gameLoop.play(); 
 	}
 	
-	public void handleInput() {
+	private void handleInput() { //Handle users inputs
 		
 		gameScene.setOnKeyPressed(e -> { //Activate key when pressed
 			
 			StackPane root = (StackPane) gameScene.getRoot();
+			
+			//Escape logics
 			if (e.getCode() == KeyCode.ESCAPE) {
 				e.consume();
 
+				//If the pause menu is active, resume the game
 				if (currentStopOverlay != null && root.getChildren().contains(currentStopOverlay)) {
 					resumeGame();
 					return;
 				}
-
+				
+				//If another menu enforce the full screen
 				if (root.getChildren().size() > 3) {
 					if (sceneManager != null && sceneManager.getStage() != null) {
 						sceneManager.getStage().setFullScreen(true);
@@ -342,6 +373,8 @@ public class GameEngine {
 			}
 			
 			switch (e.getCode()) {
+			
+				//Movement keys
 				case W: {
 					isWPressed = true;
 					break;
@@ -374,6 +407,8 @@ public class GameEngine {
 					isDPressed = true;
 					break;
 				}
+				
+				//Action Keys
 				case SPACE: {
 					if (gameLoop != null && gameLoop.getStatus() == Status.RUNNING) {
 				        hunter.getScanner().activate();
@@ -382,18 +417,6 @@ public class GameEngine {
 		        }
 				case ESCAPE: {
 					pauseGame();
-					break;
-				}
-				case G: { 
-					
-					visibilityCheat = !visibilityCheat;
-					break;
-				}
-				case B: {
-					
-					borderCheat = !borderCheat;
-					
-					borderArea.setVisible(borderCheat);
 					break;
 				}
 				case R: {
@@ -412,11 +435,24 @@ public class GameEngine {
 				    }
 					break;
 				}
+				
+				//Cheat Keys
+				case G: { 
+					visibilityCheat = !visibilityCheat;
+					break;
+				}
+				case B: {
+					borderCheat = !borderCheat;
+					borderArea.setVisible(borderCheat);
+					break;
+				}
 			}			
 		});
 		
-		gameScene.setOnKeyReleased(e -> { //Deactivate key when pressed
+		gameScene.setOnKeyReleased(e -> { //Deactivate key when released
 			switch (e.getCode()) {
+				
+				//Movement keys
 				case W: {
 					isWPressed = false;
 					break;
@@ -449,14 +485,16 @@ public class GameEngine {
 					isDPressed = false;
 					break;
 				}
+				
+				//Action keys
 				case SPACE: {
 		            hunter.getScanner().deactivate(); 
 		            break;
 		        }
-				//Add cheat key
 			}			
 		});
 		
+		//Mouse listener
 		gameScene.setOnMouseMoved(e -> {
 			javafx.geometry.Point2D localMouse = gameObjects.sceneToLocal(e.getX(), e.getY());
 		    
@@ -467,6 +505,7 @@ public class GameEngine {
 		    }
 		});
 
+		//Scanner rotate to mouse even if user clicks and drags
 		gameScene.setOnMouseDragged(e -> {
 			javafx.geometry.Point2D localMouse = gameObjects.sceneToLocal(e.getX(), e.getY());
 		    
@@ -478,7 +517,9 @@ public class GameEngine {
 		});
 	}
 	
-	public void pauseGame() {
+	public void pauseGame() { //Pause the game loop
+		
+		//Prevents stacking multiple panels
 		if (sceneManager != null && gameScene != null) {
 			StackPane root = (StackPane) gameScene.getRoot();
 
@@ -486,14 +527,17 @@ public class GameEngine {
 				return; 
 			}
 
+			//Freeze game logic
 			if (gameLoop != null) gameLoop.pause(); 
 			if (countdown != null) countdown.pause();
 			if (levelManager != null) levelManager.pauseTokenSpawn(); 
 			
+			//Reset inputs the hunter when game paused
 			isWPressed = false;
 			isAPressed = false;
 			isSPressed = false;
 			isDPressed = false;
+			
 			if (hunter != null && hunter.getScanner() != null) {
 				hunter.getScanner().deactivate();
 			}
@@ -502,13 +546,15 @@ public class GameEngine {
 			root.getChildren().add(currentStopOverlay);	
 		}
 		
+		//Enforce full screen
 		Stage stage = (Stage) gameScene.getWindow();
 		if (stage != null) {
 			stage.setFullScreen(true);
 		}
 	}
 
-	public void resumeGame() {
+	public void resumeGame() { //Remove pause overlay and resumes the game loops
+		
 		if (gameScene != null && currentStopOverlay != null) {
 			StackPane root = (StackPane) gameScene.getRoot();
 
@@ -518,11 +564,13 @@ public class GameEngine {
 			root.requestFocus();
 		}
 		
+		//Enforce full screen
 		if (gameScene != null && gameScene.getWindow() != null) {
 			Stage stage = (Stage) gameScene.getWindow();
 			stage.setFullScreen(true);
 		}
 
+		//Resume game play loops
 		if (gameLoop != null) {
 			gameLoop.play();
 		}
@@ -534,8 +582,9 @@ public class GameEngine {
 		}
 	}
 	
-	public void hunterMovement() {
+	private void hunterMovement() { //Calculate hunter's movement
 		
+		//Base movement speed
 		double speed = 5.0;
 		
 		//Dynamic coordinates
@@ -543,6 +592,7 @@ public class GameEngine {
 		double newY = hunter.getY();
 		
 		//Movement
+		//Prevents extra speed when hunter is moving diagonal
 		if (isWPressed) {
 			if (isAPressed) {
 				newX -= speed / Math.sqrt(2);
@@ -616,10 +666,10 @@ public class GameEngine {
 		
 		hunter.getShape().setLayoutX(newX);
 	    hunter.getShape().setLayoutY(newY);
-		
 	}
 	
-	private void startCountdown() {
+	private void startCountdown() { //Manage levels timers
+		
 		//Clean the previous timers.
 		if(countdown != null) {
 			countdown.stop();
@@ -629,6 +679,7 @@ public class GameEngine {
 			remainingTime -= 1;
 			hudManager.updateTime(remainingTime);
 			
+			//Check timeout
 			if(remainingTime <= 0) {
 				countdown.stop();
 				stopGame();
@@ -652,7 +703,19 @@ public class GameEngine {
 		return allEntities;
 	}
 	
+	public int getRemainingTime() {
+		return remainingTime;
+	}
+	
 	public int getCurrentLevel() {
 		return currentLevel;
+	}
+	
+	public void setRemainingTime(int remainingTime) {
+		this.remainingTime = remainingTime;
+	}
+	
+	public void setCurrentlevel(int currentLevel) {
+		this.currentLevel = currentLevel;
 	}
 }
