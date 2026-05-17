@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -288,7 +289,7 @@ public class SceneManager {
 	    VBox spaceLayout = new VBox(10);
 	    spaceLayout.setAlignment(Pos.CENTER);
 	    
-	    Label descSpace = new Label("Scan");
+	    Label descSpace = new Label("Vacuum");
 	    
 	    Rectangle space = new Rectangle();
 	    Label labelSpace = new Label("SPACE");
@@ -616,7 +617,7 @@ public class SceneManager {
 	}
 	
 	public void showIntro(Stage stage) {
-	    // 1. Fotoğraf listesini oluştur (Dosya isimlerini kendine göre güncelle)
+
 	    String[] introImages = {
 	        "file:intro1.png", 
 	        "file:intro2.png", 
@@ -625,13 +626,11 @@ public class SceneManager {
 	        "file:intro5.png"
 	    };
 
-	    // 2. Siyah bir arka plan paneli oluştur (Sinematik atmosfer için)
 	    StackPane introRoot = new StackPane();
 	    introRoot.setStyle("-fx-background-color: black;");
 	    
 	    ImageView imageView = new ImageView();
 	    imageView.setPreserveRatio(true);
-	    // Fotoğrafın ekrana tam oturması için (Stage boyutuna bağla)
 	    imageView.fitWidthProperty().bind(stage.widthProperty());
 	    imageView.fitHeightProperty().bind(stage.heightProperty());
 	    
@@ -639,52 +638,44 @@ public class SceneManager {
 	    Scene introScene = new Scene(introRoot, stage.getWidth(), stage.getHeight());
 	    switchScene(introScene);
 
-	    // 3. Sıralı Oynatma Mantığı
 	    playImageSequence(0, introImages, imageView, stage);
 	}
 
 	private void playImageSequence(int index, String[] images, ImageView imageView, Stage stage) {
-	    // Eğer tüm fotoğraflar bittiyse oyunu başlat
+		
 	    if (index >= images.length) {
 	        GameEngine game = new GameEngine();
-	        game.startGame(1, stage, this); // 1. Bölümden başlat
+	        game.startGame(1, stage, this);
 	        return;
 	    }
 
-	    // Mevcut fotoğrafı yükle
 	    Image img = new Image(images[index]);
 	    imageView.setImage(img);
-	    imageView.setOpacity(0); // Başlangıçta görünmez yap
+	    imageView.setOpacity(0);
 
-	    // A - Fade In (Belirme)
 	    FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.5), imageView);
 	    fadeIn.setFromValue(0);
 	    fadeIn.setToValue(1);
 
-	    // B - Görünür Kalma Süresi (Ekranın ortasında ne kadar duracak?)
 	    PauseTransition stayVisible = new PauseTransition(Duration.seconds(2.5));
 
-	    // C - Fade Out (Kaybolma)
 	    FadeTransition fadeOut = new FadeTransition(Duration.seconds(1.5), imageView);
 	    fadeOut.setFromValue(1);
 	    fadeOut.setToValue(0);
 
-	    // D - Zincirleme Geçiş (Sırayla çalıştır)
 	    SequentialTransition sequence = new SequentialTransition(fadeIn, stayVisible, fadeOut);
 	    
 	    sequence.setOnFinished(e -> {
-	        // Bir sonraki fotoğrafa geç (Recursive çağrı)
 	        playImageSequence(index + 1, images, imageView, stage);
 	    });
 
 	    sequence.play();
 
-	    // OPSİYONEL: Oyuncunun atlaması için bir tuşa basma özelliği ekleyebilirsin
 	    imageView.getScene().setOnKeyPressed(event -> {
-	        if (event.getCode() == javafx.scene.input.KeyCode.SPACE || event.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
-	            sequence.stop(); // Animasyonu durdur
+	        if (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.ESCAPE) {
+	            sequence.stop();
 	            GameEngine game = new GameEngine();
-	            game.startGame(1, stage, this); // Hemen oyuna geç
+	            game.startGame(1, stage, this);
 	        }
 	    });
 	}
