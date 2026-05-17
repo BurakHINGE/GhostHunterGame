@@ -22,11 +22,19 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * General Purpose: This class serves as User Interface and Scene Manager for the game.
+ * It handles the styles, layouts, overlays and panels.
+ * Including: Main Menu, Level Selection Menu, Controls Menu, Win-Lose-Stop Panels, and also Intro.
+ */
+
 public class SceneManager {
 	
 	private Stage stage;
 	private GameEngine gameEngine;
-	private final String BUTTON_STYLE = //Green button style
+	
+	//Green button style with css
+	private final static String BUTTON_STYLE =
             "-fx-background-color: rgba(10, 30, 20, 0.8);"
           + "-fx-border-color: #4dfa9a;"
           + "-fx-border-width: 2px;"
@@ -35,7 +43,9 @@ public class SceneManager {
           + "-fx-font-weight: bold;"
           + "-fx-background-radius: 0;"
           + "-fx-border-radius: 0;";
-	private final String RECTANGLE_STYLE = 
+	
+	//Rectangle style with css
+	private final static String RECTANGLE_STYLE = 
             "-fx-fill: rgba(10, 30, 20, 0.8);"
           + "-fx-stroke: #4dfa9a;"
           + "-fx-stroke-width: 2px;";
@@ -44,9 +54,11 @@ public class SceneManager {
 		this.stage = stage;
 		this.gameEngine = gameEngine;
 		
+		//Open the game with full screen without message
 		this.stage.setFullScreen(true);
 		this.stage.setFullScreenExitHint("");
 		
+		//Load font
 		String fontPath = "file:resources/fonts/Creepster-Regular.ttf";
 
 	    try {
@@ -65,6 +77,7 @@ public class SceneManager {
 		
 		StackPane mainPane = new StackPane(); 
 		
+		//Set and bind properties
 		Image mainMenuImage = new Image("file:mainMenuPicture.png");
 		ImageView mainMenuView = new ImageView(mainMenuImage);
 		
@@ -97,16 +110,18 @@ public class SceneManager {
         controlButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
         exitButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
+        //apply dynamic hover styles
 		applyButtonStyles(stage.getWidth(), startGameButton, selectLevelButton, controlButton, exitButton);
 		
+		//Change sizes according to stage size with listener
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			applyButtonStyles(newVal.doubleValue(), startGameButton, selectLevelButton, controlButton, exitButton);
 		});
 		
 		layout.getChildren().addAll(startGameButton, selectLevelButton, controlButton, exitButton);
-		
 		mainPane.getChildren().addAll(mainMenuView, layout);
 		
+		//Open intro and after level 1
 		startGameButton.setOnAction(e -> {
 			gameEngine.startGame(1, stage, this);
 			showIntro(stage);
@@ -117,6 +132,7 @@ public class SceneManager {
 		
 		Scene mainMenuScene = new Scene(mainPane, stage.getWidth(), stage.getHeight());
 		
+		//Lock the screen in full screen
 		mainMenuScene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ESCAPE) {
 				event.consume();
@@ -127,7 +143,7 @@ public class SceneManager {
 		return mainMenuScene;	
 	}
 	
-Scene selectLevelMenu() { //Level selection menu
+	private Scene selectLevelMenu() { //Level selection menu UI
 		
 		StackPane mainPane = new StackPane();
 		
@@ -138,7 +154,7 @@ Scene selectLevelMenu() { //Level selection menu
 		selectMenuView.setPreserveRatio(false);
 		
 		VBox mainLayout = new VBox(40);
-		mainLayout.setAlignment(Pos.TOP_CENTER); //Align the buttons in the center of VBox
+		mainLayout.setAlignment(Pos.TOP_CENTER); //Align the buttons on the top center of VBox
 		
 		Label menuTitle = new Label("CHOOSE LOCATION");
 		
@@ -153,7 +169,7 @@ Scene selectLevelMenu() { //Level selection menu
 		for (ImageView view : mapViews) {
 			view.fitWidthProperty().bind(stage.widthProperty().divide(8));
 			view.fitHeightProperty().bind(stage.heightProperty().divide(7));
-			view.setPreserveRatio(false);
+			view.setPreserveRatio(false); //Disable original aspect ratio
 		}
 		
 		Label label1 = new Label("1");
@@ -189,10 +205,7 @@ Scene selectLevelMenu() { //Level selection menu
 		level3View.fitWidthProperty().bind(levelHardButton.prefWidthProperty());
 		level3View.fitHeightProperty().bind(levelHardButton.prefHeightProperty());
 		
-		for (ImageView view : mapViews) {
-			view.setPreserveRatio(false);
-		}
-		
+		//Map frames styles
 		String mapButtonStyle = "-fx-background-color: rgba(0, 0, 0, 0);"
 	              + "-fx-border-color: #4dfa9a;"
 	              + "-fx-border-width: 3px;"
@@ -204,12 +217,13 @@ Scene selectLevelMenu() { //Level selection menu
 		levelMediumButton.setStyle(mapButtonStyle);
 		levelHardButton.setStyle(mapButtonStyle);
 		
-		for (Button btn : mapButtons) {
-			btn.setOnMouseEntered(e -> {
-				btn.setStyle(mapButtonStyle + "-fx-border-color: #ffffff; -fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
+		//Hover effect for map buttons
+		for (Button button : mapButtons) {
+			button.setOnMouseEntered(e -> {
+				button.setStyle(mapButtonStyle + "-fx-border-color: #ffffff; -fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
 			});
-			btn.setOnMouseExited(e -> {
-				btn.setStyle(mapButtonStyle);
+			button.setOnMouseExited(e -> {
+				button.setStyle(mapButtonStyle);
 			});
 		}
 
@@ -218,11 +232,14 @@ Scene selectLevelMenu() { //Level selection menu
 		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
 		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
+		//Create empty array for method
 		Label[] emptyLabels = {};
 		
+		//Initialize styles for buttons and labels
 		applyButtonStyles(stage.getWidth(), returnMainMenuButton);
 		applyLabelStyles(stage.getWidth(), menuTitle, emptyLabels, emptyLabels);
 		
+		//Set level numbers styles
 		double initialFontSize = Math.max(20, stage.getWidth() / 50) * 2.5;
 		for (Label label : levelLabels) {
 			label.setTextFill(Color.WHITE);
@@ -230,13 +247,14 @@ Scene selectLevelMenu() { //Level selection menu
 					   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
 		}
 		
+		//Manage screen width scaling with listener
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			applyButtonStyles(newVal.doubleValue(), returnMainMenuButton);
 			applyLabelStyles(newVal.doubleValue(), menuTitle, emptyLabels, emptyLabels); 
 			
 			double dynamicFontSize = Math.max(20, newVal.doubleValue() / 50) * 2.5;
-			for (Label lbl : levelLabels) {
-				lbl.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + dynamicFontSize + "px; "
+			for (Label label : levelLabels) {
+				label.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + dynamicFontSize + "px; "
 						   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
 			}
 		});
@@ -251,6 +269,7 @@ Scene selectLevelMenu() { //Level selection menu
 		StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT); 
 		StackPane.setMargin(returnMainMenuButton, new Insets(10)); 
 		
+		//Set game initialization routes
 		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); 
 		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
 		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage, this));
@@ -258,6 +277,7 @@ Scene selectLevelMenu() { //Level selection menu
 		
 		Scene selectLevelScene = new Scene(mainPane, stage.getWidth(), stage.getHeight());
 		
+		//Return main menu when pressed ESCAPE
 		selectLevelScene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ESCAPE) {
 				switchScene(mainMenu());
@@ -267,7 +287,7 @@ Scene selectLevelMenu() { //Level selection menu
 		return selectLevelScene;
 	}
 	
-	public Scene controlsMenu() {
+	public Scene controlsMenu() { //Control Menu UI
 	    StackPane mainPane = new StackPane();
 	    mainPane.setStyle("-fx-background-color: #050b14;");
 	    
@@ -280,6 +300,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    HBox directionLayouts = new HBox(100);
 	    directionLayouts.setAlignment(Pos.CENTER);
 	    
+	    //Grid structure for WASD 
 	    GridPane wasdGrid = new GridPane();
 	    wasdGrid.setHgap(10);
 	    wasdGrid.setVgap(10);
@@ -300,6 +321,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    Label descS = new Label("Down");
 	    Label descD = new Label("Right");
 	    
+	    //Grid structure for arrows
 	    GridPane arrowGrid = new GridPane();
 	    arrowGrid.setHgap(10);
 	    arrowGrid.setVgap(10);
@@ -346,6 +368,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    Label descB = new Label("Border Cheat");
 	    Label descR = new Label("Put Trap");
 	    
+	    //Apply rectangle styles
 	    Rectangle[] allRectangles = {w, a, s, d, upArrow, leftArrow, downArrow, rightArrow, space, esc, g, b, r};
 	    for (Rectangle rect: allRectangles) {
 	        rect.widthProperty().bind(stage.widthProperty().divide(24));
@@ -353,6 +376,7 @@ Scene selectLevelMenu() { //Level selection menu
 	        rect.setStyle(RECTANGLE_STYLE);
 	    }
 	    
+	    //Apply other rectangular keys
 	    space.widthProperty().bind(stage.widthProperty().divide(6));
 	    space.heightProperty().bind(stage.widthProperty().divide(24));
 	    space.setStyle(RECTANGLE_STYLE);
@@ -382,6 +406,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    StackPane keyB = new StackPane(b, labelB);
 	    StackPane keyR = new StackPane(r, labelR);
 	    
+	    //WASD Matrix
 	    wasdGrid.add(descW, 2, 0);
 	    wasdGrid.add(descA, 0, 2);
 	    wasdGrid.add(descS, 2, 3);
@@ -391,6 +416,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    wasdGrid.add(keyS, 2, 2);
 	    wasdGrid.add(keyD, 3, 2);
 	    
+	    //Arrow Matrix
 	    arrowGrid.add(descUp, 2, 0);
 	    arrowGrid.add(descLeft, 0, 2);
 	    arrowGrid.add(descDown, 2, 3);
@@ -402,6 +428,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    
 	    directionLayouts.getChildren().addAll(wasdGrid, spaceLayout, arrowGrid);
 	    
+	    //Other keys matrix
 	    GridPane extraKeysGrid = new GridPane();
 	    extraKeysGrid.setHgap(30);
 	    extraKeysGrid.setVgap(15);
@@ -424,6 +451,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));    
 	    returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 	    
+	    //Initialize buttons and labels and check dynamically
 	    applyButtonStyles(stage.getWidth(), returnMainMenuButton);
 	    applyLabelStyles(stage.getWidth(), menuTitle, keyLabels, descLabels);
 	    stage.widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -449,13 +477,16 @@ Scene selectLevelMenu() { //Level selection menu
 		return controlsScene;       
 	}
 
-	public VBox stopGamePanel() {
+	public VBox stopGamePanel() { //Stopped game UI
+		
+		
 	    VBox overlay = new VBox();
 	    overlay.setAlignment(Pos.CENTER);
-	    overlay.setStyle("-fx-background-color: rgba(5, 15, 10, 0.8);");
+	    overlay.setStyle("-fx-background-color: rgba(5, 15, 10, 0.8);"); //semi-transparent dark overlay
 	    overlay.prefWidthProperty().bind(stage.widthProperty());
 	    overlay.prefHeightProperty().bind(stage.heightProperty());
 
+	    //Create light green panel
 	    VBox box = new VBox(25);
 	    box.setMaxSize(600, 450);
 	    box.setAlignment(Pos.CENTER);
@@ -497,18 +528,18 @@ Scene selectLevelMenu() { //Level selection menu
 	    return overlay;
 	}
 	
-	public VBox winPanel(int finalScore) {
+	public VBox winPanel(int finalScore) { //Win panel UI
 
 	    VBox overlay = new VBox();
 	    overlay.setAlignment(Pos.CENTER);
-	    overlay.setStyle("-fx-background-color: rgba(5, 15, 10, 0.8);");
+	    overlay.setStyle("-fx-background-color: rgba(5, 15, 10, 0.8);"); ////semi-transparent dark overlay
 	    overlay.prefWidthProperty().bind(stage.widthProperty());
 	    overlay.prefHeightProperty().bind(stage.heightProperty());
 
 	    VBox box = new VBox(25);
 	    box.setMaxSize(600, 650);
 	    box.setAlignment(Pos.CENTER);
-	    box.setStyle("-fx-background-color: rgba(10, 30, 20, 0.95); " +
+	    box.setStyle("-fx-background-color: rgba(10, 30, 20, 0.95); " + //dark green
 	                 "-fx-border-color: #4dfa9a; " +
 	                 "-fx-border-width: 4px;");
 	    box.setPadding(new Insets(40));
@@ -540,6 +571,7 @@ Scene selectLevelMenu() { //Level selection menu
 
 	    applyButtonStyles(stage.getWidth(), nextlevelButton, returnMainMenuButton);
 
+	    //Continue with next level
 	    nextlevelButton.setOnAction(e -> {
 	    	int currentLevel = gameEngine.getCurrentLevel() + 1;
 	    	
@@ -557,6 +589,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    
 	    box.getChildren().addAll(winText, scoreText);
 
+	    //Create next level button if it is not last level
 	    if (gameEngine.getCurrentLevel() < 3) {
 	        box.getChildren().add(nextlevelButton);
 	    }
@@ -568,13 +601,15 @@ Scene selectLevelMenu() { //Level selection menu
 	    return overlay;
 	}
 	
-	public VBox losePanel(int reason, int finalScore) {
+	public VBox losePanel(int reason, int finalScore) { //Lose panel UI
+		
 	    VBox overlay = new VBox();
 	    overlay.setAlignment(Pos.CENTER);
-	    overlay.setStyle("-fx-background-color: rgba(15, 5, 5, 0.8);");
+	    overlay.setStyle("-fx-background-color: rgba(15, 5, 5, 0.8);"); //dark red
 	    overlay.prefWidthProperty().bind(stage.widthProperty());
 	    overlay.prefHeightProperty().bind(stage.heightProperty());
 
+	    //Create red background
 	    VBox box = new VBox(25);
 	    box.setMaxSize(600, 600);
 	    box.setAlignment(Pos.CENTER);
@@ -586,6 +621,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    
 	    String deathMessage = "FAIL";
 	    
+	    //Different messages for different lose situations
 	    if (reason == 1) {
 	    	deathMessage = "Hunter Destroyed";
 	    }
@@ -594,17 +630,13 @@ Scene selectLevelMenu() { //Level selection menu
 	    }
 
 	    Label gameOverMessage = new Label("Game Over");
-	    gameOverMessage.setFont(Font.font("Creepster", 45));
 	    gameOverMessage.setTextFill(Color.web("#ff4d4d"));
-	    
 	    gameOverMessage.setStyle("-fx-font-family: Creepster; " +
                 "-fx-font-size: 50px; " + 
                 "-fx-font-weight: bold;");
 	    
 	    Label loseText = new Label(deathMessage);
-	    loseText.setFont(Font.font("Creepster", 45));
 	    loseText.setTextFill(Color.web("#ff4d4d"));
-
 	    loseText.setStyle("-fx-font-family: Creepster; " +
                 "-fx-font-size: 50px; " + 
                 "-fx-font-weight: bold;");
@@ -620,6 +652,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    double validWidth = Double.isNaN(stage.getWidth()) ? 800 : stage.getWidth(); 
 	    double fontSize = Math.max(12, validWidth / 45);
 
+	    //Create red button style
 	    String redButtonStyle = "-fx-background-color: rgba(30, 10, 10, 0.8);"
 	                          + "-fx-border-color: #ff4d4d;"
 	                          + "-fx-border-width: 2px;"
@@ -636,10 +669,11 @@ Scene selectLevelMenu() { //Level selection menu
 	    retryButton.setPrefSize(280, 60);
 	    returnMainMenuButton.setPrefSize(280, 60);
 
+	    //Apply red button style
 	    Button[] redButtons = {retryButton, returnMainMenuButton};
-	    for (Button btn : redButtons) {
-	        btn.setOnMouseEntered(e -> btn.setStyle(redButtonStyle + "-fx-background-color: #ff4d4d; -fx-text-fill: black;"));
-	        btn.setOnMouseExited(e -> btn.setStyle(redButtonStyle));
+	    for (Button button : redButtons) {
+	    	button.setOnMouseEntered(e -> button.setStyle(redButtonStyle + "-fx-background-color: #ff4d4d; -fx-text-fill: black;"));
+	    	button.setOnMouseExited(e -> button.setStyle(redButtonStyle));
 	    }
 
 	    retryButton.setOnAction(e -> gameEngine.startGame(gameEngine.getCurrentLevel(), stage, this));
@@ -654,7 +688,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    return overlay;
 	}
 	
-	public void showIntro(Stage stage) {
+	public void showIntro(Stage stage) { //Intro of the game
 
 	    String[] introImages = {
 	        "file:intro1.png", 
@@ -679,46 +713,53 @@ Scene selectLevelMenu() { //Level selection menu
 	    playImageSequence(0, introImages, imageView, stage);
 	}
 
-	private void playImageSequence(int index, String[] images, ImageView imageView, Stage stage) {
+	private void playImageSequence(int index, String[] images, ImageView imageView, Stage stage) { //Display intros images
 		
+		//Start the game after the images
 	    if (index >= images.length) {
 	        GameEngine game = new GameEngine();
 	        game.startGame(1, stage, this);
 	        return;
 	    }
 
+	    //Load current image and make it invisible
 	    Image img = new Image(images[index]);
 	    imageView.setImage(img);
 	    imageView.setOpacity(0);
 
+	    //Fade in effect
 	    FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.5), imageView);
 	    fadeIn.setFromValue(0);
 	    fadeIn.setToValue(1);
 
+	    //Wait 2.5 seconds
 	    PauseTransition stayVisible = new PauseTransition(Duration.seconds(2.5));
 
+	    //Fade out effect
 	    FadeTransition fadeOut = new FadeTransition(Duration.seconds(1.5), imageView);
 	    fadeOut.setFromValue(1);
 	    fadeOut.setToValue(0);
 
+	    //Combine transitions
 	    SequentialTransition sequence = new SequentialTransition(fadeIn, stayVisible, fadeOut);
 	    
+	    //Move next image
 	    sequence.setOnFinished(e -> {
 	        playImageSequence(index + 1, images, imageView, stage);
 	    });
 
 	    sequence.play();
 
+	    //If press ESC or space skip the intro
 	    imageView.getScene().setOnKeyPressed(event -> {
 	        if (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.ESCAPE) {
 	            sequence.stop();
-	            GameEngine game = new GameEngine();
-	            game.startGame(1, stage, this);
+	            gameEngine.startGame(1, stage, this);
 	        }
 	    });
 	}
 	
-	private void applyButtonStyles(double width, Button... buttons) {
+	private void applyButtonStyles(double width, Button... buttons) { //Main green button and hover effect styles
 	    double validWidth = Double.isNaN(width) ? 800 : width; 
 	    double fontSize = Math.max(12, validWidth / 45);
 	    String dynamicStyle = BUTTON_STYLE + "-fx-font-size: " + fontSize + "px;";
@@ -730,7 +771,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    }
 	}
 	
-	private void applyLabelStyles(double width, Label menuTitle, Label[] keyLabels, Label[] descLabels) {
+	private void applyLabelStyles(double width, Label menuTitle, Label[] keyLabels, Label[] descLabels) { //Main label styles
 
 	    double validWidth = (Double.isNaN(width) || width <= 0) ? 1024 : width; 
 	    
@@ -738,9 +779,9 @@ Scene selectLevelMenu() { //Level selection menu
 	    double descFontSize = Math.max(20, validWidth / 50);
 	    double titleFontSize = Math.max(32, validWidth / 30);
 
-	    for (Label lbl : keyLabels) {
-	        lbl.setTextFill(Color.web("#4dfa9a"));
-	        lbl.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + keyFontSize + "px;");
+	    for (Label label : keyLabels) {
+	    	label.setTextFill(Color.web("#4dfa9a"));
+	    	label.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + keyFontSize + "px;");
 	    }
 
 	    for (Label desc : descLabels) {
@@ -752,7 +793,7 @@ Scene selectLevelMenu() { //Level selection menu
 	    menuTitle.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + titleFontSize + "px;");
 	}
 	
-	private void switchScene(Scene scene) {
+	private void switchScene(Scene scene) { //Manage scene transitions and set full screen
 	    stage.setScene(scene);
 	    stage.setFullScreen(true);
 	}
@@ -764,5 +805,4 @@ Scene selectLevelMenu() { //Level selection menu
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-
 }
