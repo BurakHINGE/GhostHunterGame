@@ -70,13 +70,13 @@ public class EyeToken extends Token {
 
 	@Override
 	public void update(double dt) {
+		//Increase the time every frame
 		tick++;
 		
-		//Angle will go from -15 degrees to 15 degrees slowly
-		double angle = Math.sin(tick * 0.03) * 15;
+		//Sin function gave us a smooth curve 
+		double changeY = Math.sin(tick * 0.05) * 5;
 		
-		this.getShape().setRotate(angle);
-		
+		this.getShape().setTranslateY(this.y + changeY);
 	}
 
 	

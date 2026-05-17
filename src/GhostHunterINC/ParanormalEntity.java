@@ -54,7 +54,7 @@ public abstract class ParanormalEntity extends GameObject {
             double dy = hunterY - this.y;
             double distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance > 0) {
+            if (distance > 0 && !this.isStunned) {
                 double pullSpeed = 80.0; 
                 this.x += (dx / distance) * pullSpeed * dt;
                 this.y += (dy / distance) * pullSpeed * dt;
