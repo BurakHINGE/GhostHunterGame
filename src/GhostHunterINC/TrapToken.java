@@ -9,8 +9,6 @@ import javafx.scene.Node;
 
 // A token that adds a trap to hunters inventory
 public class TrapToken extends Token{
-	//Pane for the visuals of the trap token
-	StackPane shape = new StackPane();
 	
 	public TrapToken(double x, double y) {
 		this.x = x;
@@ -29,11 +27,11 @@ public class TrapToken extends Token{
         Circle trapCore = new Circle(3.5, Color.CYAN); 
         
         //Combine all the parts of the token in the pane
-        this.shape.getChildren().addAll(tokenBackground, trapBase, trapCore);
+        this.sPane.getChildren().addAll(tokenBackground, trapBase, trapCore);
         
         //Set the visual position of the shape pane
-        this.shape.setTranslateX(this.x);
-        this.shape.setTranslateY(this.y);
+        this.sPane.setTranslateX(this.x);
+        this.sPane.setTranslateY(this.y);
 	}
 	
 	@Override
@@ -61,7 +59,7 @@ public class TrapToken extends Token{
 
 	@Override
 	public Node getShape() {
-		return shape;
+		return sPane;
 	}
 
 }

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 //A token that temporarily reveals all the paranormal entities
 public class EyeToken extends Token {
-	StackPane shape = new StackPane();
 	//Main game object list that contains all the paranormal entities
 	private ArrayList<GameObject> allEntities;
 	
@@ -39,11 +38,11 @@ public class EyeToken extends Token {
 		pupil.setFill(Color.BLACK);
 		
 		//Combine all the parts of the token in the pane
-		this.shape.getChildren().addAll(background, eye, iris, pupil);
+		this.sPane.getChildren().addAll(background, eye, iris, pupil);
 		
 		//Set the visual position of the shape pane
-		this.shape.setTranslateX(this.x);
-		this.shape.setTranslateY(this.y);
+		this.sPane.setTranslateX(this.x);
+		this.sPane.setTranslateY(this.y);
 		
 	}
 	
@@ -87,7 +86,7 @@ public class EyeToken extends Token {
 
 	
 	public StackPane getShape() {
-		return this.shape;
+		return this.sPane;
 	}
 	
 	@Override
