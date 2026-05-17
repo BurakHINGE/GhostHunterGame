@@ -1,5 +1,5 @@
 package GhostHunterINC;
-//150124014_Mehmet_Veli_Kayikli
+//The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 public abstract class ParanormalEntity extends GameObject {
 
     private double speedX,speedY;
