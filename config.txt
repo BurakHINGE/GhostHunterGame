@@ -33,6 +33,7 @@ level_3_wisps: 2
 
 health_token_increase: 20
 range_token_increase: 20
+range_token_duration: 5
 eye_token_duration: 5
 trap_token_duration: 4
 
