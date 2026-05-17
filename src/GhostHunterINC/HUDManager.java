@@ -12,8 +12,9 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+// Displays score, time, health, vacuum, and trap count on the screen.
 public class HUDManager {
-	private final double BAR_HEIGHT_RATIO = 0.33;
+	private final double BAR_HEIGHT_RATIO = 0.33; // Ratio of the bars height relative to the screen.
 	private Pane hudPane;
 	private Rectangle healthBar;
 	private Rectangle healthBarOuter;
@@ -24,16 +25,21 @@ public class HUDManager {
 	private Text healthLabel;
 	private Text vacuumLabel;
 	private Text trapText;
+	
+	// Properties to bind the bar heights
 	private DoubleProperty healthPercentage = new SimpleDoubleProperty(1.0);
 	private DoubleProperty vacuumPercentage = new SimpleDoubleProperty(1.0);
+	
+	// Timeline for smooth health bar animation.
 	private Timeline healthTimeline;
+	
+	// Custom font we used for text
 	Font loadedFont;
 	
-	
+	// Load the font and initialize the UI components.
 	public HUDManager(int level) {
 		hudPane = new Pane();
-		//Allows player to click behind the HUD
-		hudPane.setPickOnBounds(false);
+		hudPane.setPickOnBounds(false); //Allows player to click behind the HUD
 		
 		String fontPath = "file:resources/fonts/Creepster-Regular.ttf";
 
@@ -52,7 +58,8 @@ public class HUDManager {
 	}
 	
 	public void startUI(int level) {
-		//Set score and time
+		int time ,minutes, seconds;
+		//Set score text
 		scoreText = new Text("SCORE : 0");
 		scoreText.setFill(Color.BLACK);
 		
@@ -60,12 +67,12 @@ public class HUDManager {
 		scoreText.yProperty().bind(hudPane.heightProperty().multiply(0.05));
 		scoreText.setFont(loadedFont);
 		
-		//Set the time according to your level and config.txt
+		//Set the time text according to your level and config.txt
 		switch (level){
 			case 1:
-				int time = ConfigManager.getLevel1Time();
-				int minutes = time / 60;
-				int seconds = time % 60;
+				time = ConfigManager.getLevel1Time();
+				minutes = time / 60;
+				seconds = time % 60;
 				timeText = new Text(String.format("%d:%02d", minutes, seconds));
 				break;
 			case 2:
@@ -83,11 +90,11 @@ public class HUDManager {
 		}
 		
 		timeText.setFill(Color.BLACK);
-		//Change the x and y coordinates of time text as you like
 		timeText.xProperty().bind(hudPane.widthProperty().divide(2).subtract(30));
 		timeText.yProperty().bind(scoreText.yProperty().add(25));
 		timeText.setFont(loadedFont);
 		
+		//Set trap text
 		trapText = new Text("TRAPS: 0");
 		trapText.setFill(Color.BLACK);
 		
@@ -111,7 +118,9 @@ public class HUDManager {
 		
 		healthBar.xProperty().bind(healthBarOuter.xProperty().add(2));
 		healthBar.widthProperty().bind(healthBarOuter.widthProperty().subtract(4));
+		// Bind inner height to outer height multiplied by current percentage
 		healthBar.heightProperty().bind(healthBarOuter.heightProperty().subtract(4).multiply(healthPercentage));
+		// Adjust Y position to make the bar decrease from top to bottom
 		healthBar.yProperty().bind(healthBarOuter.yProperty().add(healthBarOuter.heightProperty()).subtract(healthBar.heightProperty()).subtract(2));
 		
 		healthLabel = new Text("HEALTH:");
@@ -150,8 +159,9 @@ public class HUDManager {
 		
 	}
 	
+	// Update the health bar smoothly
 	void updateHealthBar(double currentHealth, double maxHealth) {
-		//Calculate the current health percentage and change the height of the health bar
+		//Calculate the target health percentage and change the height of the health bar
 		double targetHealthPercentage = currentHealth / maxHealth;
 		
 		if(healthTimeline != null) {
@@ -160,23 +170,26 @@ public class HUDManager {
 		
 		healthTimeline = new Timeline();
 		
+		//Make health percentage to the target with the given time interval
 		KeyValue key = new KeyValue(healthPercentage, targetHealthPercentage);
-		
 		KeyFrame frame = new KeyFrame(Duration.millis(200), key);
 		
 		healthTimeline.getKeyFrames().add(frame);
 		healthTimeline.play();
 	}
 	
+	//Update the vacuum bar
 	void updateVacuumBar(double currentEnergy, double maxEnergy) {
 		//Calculate the current vacuum percentage and change the height of the vacuum bar
 		vacuumPercentage.set(currentEnergy / maxEnergy);
 	}
 	
+	//Update the score text
 	void updateScore(int score) {
 		scoreText.setText("SCORE: " + score);
 	}
 	
+	//Update and format the remaining time 
 	void updateTime(int remainingSeconds) {
 		int minute = remainingSeconds / 60;
 		int second = remainingSeconds % 60;
@@ -184,10 +197,12 @@ public class HUDManager {
 		timeText.setText(String.format("%d:%02d", minute, second));
 	}
 	
+	//Update the trap count that hunter has
 	public void updateTrapCount(int count) {
 	    trapText.setText("TRAPS: " + count);
 	}
 	
+	//Return the pane that contains all the HUD elements
 	public Pane getHudPane() {
 		return hudPane;
 	}

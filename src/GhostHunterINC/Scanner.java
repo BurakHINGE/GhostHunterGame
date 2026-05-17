@@ -75,6 +75,7 @@ public class Scanner {
     	updatePosition();
     }
     
+    //Checks whether scanner is active or not. If it is, decrease energy of it by dt and when it comes 0, deactivates it. Else, increase energy until it's max.
     public void update(double dt) {
     	if (active) {
             energy -= decreaseRate * dt;
@@ -87,19 +88,19 @@ public class Scanner {
             if (energy > maxEnergy) energy = maxEnergy;
         }
     }
-
+    //Checks given GameObject intersects with scanner.
     public boolean intersects(GameObject gameObject) {
     	return this.scanner.getBoundsInParent().intersects(gameObject.getShape().getBoundsInParent());
     	
     }
-
+    //Expand the scanner's range and angle with given parameters.
     public void expandRange(int extraRange,double extraAngleDegrees) {
     	range += extraRange;
         double newAngle = currentScannerAngle + Math.toRadians(extraAngleDegrees);
         currentScannerAngle = Math.min(newAngle, MAX_ANGLE);
         updatePosition();
     }
-
+    //Narrows the scanner's range and angle with given parameters.
     public void revertExpand(int extraRange,double extraAngleDegrees) {
     	range -= extraRange;
         double newAngle = currentScannerAngle - Math.toRadians(extraAngleDegrees);
@@ -120,7 +121,7 @@ public class Scanner {
         rangeTime.setCycleCount(1);
         rangeTime.play();
     }
-
+    //If there is no scanner in the game, this method render the scanner.
     public void render(Pane pane) {
         if (!pane.getChildren().contains(scanner)) {
             pane.getChildren().add(scanner);
