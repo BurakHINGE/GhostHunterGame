@@ -89,19 +89,6 @@ public class Ghost extends ParanormalEntity {
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }
-    //This method render Ghost if it is not visible.
-    @Override
-    public void render(Pane pane) {
-        this.currentPane = pane;
-        if (visible) {
-            if (!pane.getChildren().contains(sPane))
-                pane.getChildren().add(sPane);
-            sPane.setLayoutX(x);
-            sPane.setLayoutY(y);
-        } else {
-            pane.getChildren().remove(sPane);
-        }
-    }
     
     //Withers Ghost's color.
     @Override

@@ -48,6 +48,7 @@ public class ConfigManager {
 	public static int rangeTokenIncrease;
 	public static int eyeTokenDuration;
 	public static int trapTokenDuration;
+	public static int rangeTokenDuration;
 	
 	//Point variables
 	public static int ghostPoints;
@@ -169,6 +170,9 @@ public class ConfigManager {
 				}
 				else if(configName.equals("trap_token_duration:")) {
 					trapTokenDuration = output.nextInt();
+				}
+				else if(configName.equals("range_token_duration:")) {
+					rangeTokenDuration = output.nextInt();
 				}
 				
 				//Point values
@@ -319,6 +323,10 @@ public class ConfigManager {
 		return eyeTokenDuration;
 	}
 	
+	public static int getRangeTokenDuration() {
+		return rangeTokenDuration;
+	}
+	
 	public static int getGhostPoints() {
 		return ghostPoints;
 	}
@@ -457,6 +465,10 @@ public class ConfigManager {
 
 	public static void setEyeTokenDuration(int eyeTokenDuration) {
 		ConfigManager.eyeTokenDuration = eyeTokenDuration;
+	}
+	
+	public static void setRangeTokenDuration(int rangeTokenDuration) {
+		ConfigManager.rangeTokenDuration = rangeTokenDuration;
 	}
 	
 	public static void setGhostPoints(int ghostPoints) {

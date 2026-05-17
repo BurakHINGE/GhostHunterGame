@@ -8,14 +8,16 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.StackPane;
 
+//A token that increases the range of the vacuum temporarily
 public class RangeToken extends Token {
-	double x,y;
+	//Pane for the visuals of the range token
 	StackPane shape = new StackPane();
 	
 	public RangeToken(double x, double y) {
 		this.x = x;
 		this.y = y;
 		
+		//Visual components of the token
 		Circle background = new Circle(15);
 		background.setFill(Color.DARKBLUE);
 		background.setStroke(Color.BLACK);
@@ -36,24 +38,30 @@ public class RangeToken extends Token {
 		wave3.setStroke(Color.CYAN);
 		wave3.setStrokeWidth(2);
 		
+		//Combine all the parts of the token in the pane
 		this.shape.getChildren().addAll(background, wave1, wave2, wave3);
 		
+		//Set the visual position of the shape pane
 		this.shape.setTranslateX(this.x);
 		this.shape.setTranslateY(this.y);
 	}
 
 	@Override
+	//Increase the range of vacuum
 	void applyEffect(Hunter hunter) {
+		//Get the increase amount and duration from the config manager.
 		int increaseAmount = ConfigManager.getRangeTokenIncrease();
-	    hunter.getScanner().rangeTimer(increaseAmount,5.0);
+		int duration = ConfigManager.getRangeTokenDuration();
+	    hunter.getScanner().rangeTimer(increaseAmount, duration);
 	}
 
 	@Override
+	//Smooth floating animation for the token
 	public void update(double dt) {
 		//Increase the time every frame
 		tick++;
 		
-		//Sin function gave us a smooth curve 
+		//We used sin function to get a smooth curve
 		double changeY = Math.sin(tick * 0.05) * 5;
 		
 		this.getShape().setTranslateY(this.y + changeY);
@@ -64,9 +72,7 @@ public class RangeToken extends Token {
 	}
 
 	@Override
-	public void move(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+	//Range token is a static item so we didn't use this method in here.
+	public void move(double dt) {}
 
 }

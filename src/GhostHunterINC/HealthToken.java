@@ -5,14 +5,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.Node;
 
+//A token that heals the hunter
 public class HealthToken extends Token {
-	double x,y;
 	StackPane shape = new StackPane();
 	
 	public HealthToken(double x, double y) {
 		this.x = x;
 		this.y = y;
 		
+		//Visual components of the token
 		Circle background = new Circle(15);
 		background.setFill(Color.PINK);
 		background.setStroke(Color.BLACK);
@@ -21,26 +22,30 @@ public class HealthToken extends Token {
 		Rectangle vertical = new Rectangle(6, 18, Color.RED);
 		Rectangle horizontal = new Rectangle(18, 6, Color.RED);
 		
-		this.shape = new StackPane();
+		//Combine all the parts of the token in the pane
 		this.shape.getChildren().addAll(background, vertical, horizontal);
 		
+		//Set the visual position of the shape pane
 		this.shape.setTranslateX(this.x);
 		this.shape.setTranslateY(this.y);
 	}
-
+	
+	@Override
+	//Increase the health of the hunter
 	public void applyEffect(Hunter hunter) {
-		//Change the getMaxHealth method with the correct one after its implemented
+		//Get the heal amount from the config manager
 		int heal_amount = ConfigManager.getHealthTokenIncrease();
 		
 		hunter.heal(heal_amount);
 	}
 
 	@Override
+	//Smooth floating animation for the token
 	public void update(double dt) {
 		//Increase the time every frame
 		tick++;
 		
-		//Sin function gave us a smooth curve 
+		//We used sin function to get a smooth curve 
 		double changeY = Math.sin(tick * 0.05) * 5;
 		
 		this.getShape().setTranslateY(this.y + changeY);
@@ -51,10 +56,8 @@ public class HealthToken extends Token {
 	}
 
 	@Override
-	public void move(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+	//Health token is a static item so we didn't use this method in here.
+	public void move(double dt) {}
 
 
 

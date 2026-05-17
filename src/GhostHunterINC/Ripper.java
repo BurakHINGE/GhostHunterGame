@@ -63,19 +63,7 @@ public class Ripper extends ParanormalEntity {
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }
-    //This method render Ripper if it is not visible.
-    @Override
-    public void render(Pane pane) {
-    	this.currentPane = pane;
-        if (visible) {
-            if (!pane.getChildren().contains(sPane))
-                pane.getChildren().add(sPane);
-            sPane.setLayoutX(x);
-            sPane.setLayoutY(y);
-        } else {
-            pane.getChildren().remove(sPane);
-        }
-    }
+    
     //Withers Ripper's color.
     @Override
 	void applyWithering() {

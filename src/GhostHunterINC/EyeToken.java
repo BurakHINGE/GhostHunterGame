@@ -10,9 +10,10 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import java.util.ArrayList;
 
+//A token that temporarily reveals all the paranormal entities
 public class EyeToken extends Token {
-	double x,y;
 	StackPane shape = new StackPane();
+	//Main game object list that contains all the paranormal entities
 	private ArrayList<GameObject> allEntities;
 	
 	public EyeToken(double x, double y, ArrayList<GameObject> allEntities) {
@@ -20,6 +21,7 @@ public class EyeToken extends Token {
 		this.y = y;
 		this.allEntities = allEntities;
 		
+		//Visual components of the token
 		Circle background = new Circle(15);
 		background.setFill(Color.DARKGREEN);
 		background.setStroke(Color.BLACK);
@@ -36,8 +38,10 @@ public class EyeToken extends Token {
 		Circle pupil = new Circle(2);
 		pupil.setFill(Color.BLACK);
 		
+		//Combine all the parts of the token in the pane
 		this.shape.getChildren().addAll(background, eye, iris, pupil);
 		
+		//Set the visual position of the shape pane
 		this.shape.setTranslateX(this.x);
 		this.shape.setTranslateY(this.y);
 		
@@ -46,16 +50,17 @@ public class EyeToken extends Token {
 	@Override
 	//Make all the entities visible for given time.
 	void applyEffect(Hunter hunter) {
+		//Get the effect duration of the token
 		int time = ConfigManager.getEyeTokenDuration();
 		
-		//Make all entities visible for given time
+		//Change the revealed by token value to true so that game engine can make the entities visible
 		for(GameObject obj : allEntities) {
 			if(obj instanceof ParanormalEntity) {
 				((ParanormalEntity) obj).setRevealedByToken(true);
-				obj.getShape().setVisible(true);
 			}
 		}
 		
+		//Start a timer to revert the changes after the duration
 		PauseTransition duration = new PauseTransition(Duration.seconds(time));
 		
 		duration.setOnFinished(e -> {
@@ -69,11 +74,12 @@ public class EyeToken extends Token {
 	}
 
 	@Override
+	//Smooth floating animation for the token
 	public void update(double dt) {
 		//Increase the time every frame
 		tick++;
 		
-		//Sin function gave us a smooth curve 
+		//We used sin function to get a smooth curve 
 		double changeY = Math.sin(tick * 0.05) * 5;
 		
 		this.getShape().setTranslateY(this.y + changeY);
@@ -85,9 +91,7 @@ public class EyeToken extends Token {
 	}
 	
 	@Override
-	public void move(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+	//Eye token is a static item so we didn't use this method in here.
+	public void move(double dt) {}
 
 }
