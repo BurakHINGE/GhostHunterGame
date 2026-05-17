@@ -12,6 +12,8 @@ public class HealthToken extends Token {
 		this.x = x;
 		this.y = y;
 		
+		StackPane shape = new StackPane();
+		
 		//Visual components of the token
 		Circle background = new Circle(15);
 		background.setFill(Color.PINK);
@@ -22,11 +24,13 @@ public class HealthToken extends Token {
 		Rectangle horizontal = new Rectangle(18, 6, Color.RED);
 		
 		//Combine all the parts of the token in the pane
-		this.sPane.getChildren().addAll(background, vertical, horizontal);
+		shape.getChildren().addAll(background, vertical, horizontal);
 		
 		//Set the visual position of the shape pane
-		this.sPane.setTranslateX(this.x);
-		this.sPane.setTranslateY(this.y);
+		shape.setTranslateX(this.x);
+		shape.setTranslateY(this.y);
+		
+		this.sPane = shape;
 	}
 	
 	@Override

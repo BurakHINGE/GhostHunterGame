@@ -20,6 +20,8 @@ public class EyeToken extends Token {
 		this.y = y;
 		this.allEntities = allEntities;
 		
+		StackPane shape = new StackPane();
+		
 		//Visual components of the token
 		Circle background = new Circle(15);
 		background.setFill(Color.DARKGREEN);
@@ -38,12 +40,13 @@ public class EyeToken extends Token {
 		pupil.setFill(Color.BLACK);
 		
 		//Combine all the parts of the token in the pane
-		this.sPane.getChildren().addAll(background, eye, iris, pupil);
+		shape.getChildren().addAll(background, eye, iris, pupil);
 		
 		//Set the visual position of the shape pane
-		this.sPane.setTranslateX(this.x);
-		this.sPane.setTranslateY(this.y);
+		shape.setTranslateX(this.x);
+		shape.setTranslateY(this.y);
 		
+		this.sPane = shape;
 	}
 	
 	@Override
@@ -85,7 +88,7 @@ public class EyeToken extends Token {
 	}
 
 	
-	public StackPane getShape() {
+	public Node getShape() {
 		return this.sPane;
 	}
 	

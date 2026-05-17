@@ -10,10 +10,11 @@ import javafx.scene.layout.StackPane;
 
 //A token that increases the range of the vacuum temporarily
 public class RangeToken extends Token {
-	
 	public RangeToken(double x, double y) {
 		this.x = x;
 		this.y = y;
+		
+		StackPane shape = new StackPane();
 		
 		//Visual components of the token
 		Circle background = new Circle(15);
@@ -37,11 +38,13 @@ public class RangeToken extends Token {
 		wave3.setStrokeWidth(2);
 		
 		//Combine all the parts of the token in the pane
-		this.sPane.getChildren().addAll(background, wave1, wave2, wave3);
+		shape.getChildren().addAll(background, wave1, wave2, wave3);
 		
 		//Set the visual position of the shape pane
-		this.sPane.setTranslateX(this.x);
-		this.sPane.setTranslateY(this.y);
+		shape.setTranslateX(this.x);
+		shape.setTranslateY(this.y);
+		
+		this.sPane = shape;
 	}
 
 	@Override
@@ -65,7 +68,7 @@ public class RangeToken extends Token {
 		this.getShape().setTranslateY(this.y + changeY);
 	}
 	
-	public StackPane getShape() {
+	public Node getShape() {
 		return sPane;
 	}
 

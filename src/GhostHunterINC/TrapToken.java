@@ -14,6 +14,8 @@ public class TrapToken extends Token{
 		this.x = x;
 		this.y = y;
 		
+		StackPane shape = new StackPane();
+		
 		//Visual components of the token
 		Circle tokenBackground = new Circle(18);
         tokenBackground.setFill(Color.web("#2b1a3a"));
@@ -27,11 +29,13 @@ public class TrapToken extends Token{
         Circle trapCore = new Circle(3.5, Color.CYAN); 
         
         //Combine all the parts of the token in the pane
-        this.sPane.getChildren().addAll(tokenBackground, trapBase, trapCore);
+        shape.getChildren().addAll(tokenBackground, trapBase, trapCore);
         
         //Set the visual position of the shape pane
-        this.sPane.setTranslateX(this.x);
-        this.sPane.setTranslateY(this.y);
+        shape.setTranslateX(this.x);
+        shape.setTranslateY(this.y);
+        
+        this.sPane = shape;
 	}
 	
 	@Override
