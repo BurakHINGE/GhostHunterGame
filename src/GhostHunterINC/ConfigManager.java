@@ -49,6 +49,11 @@ public class ConfigManager {
 	public static int eyeTokenDuration;
 	public static int trapTokenDuration;
 	
+	//Point variables
+	public static int ghostPoints;
+	public static int ripperPoints;
+	public static int wispPoints;
+	
 	public static void loadConfig() { //Read configures from config.txt
 		try {
 			File conf = new File("config.txt"); //Check file path
@@ -164,6 +169,17 @@ public class ConfigManager {
 				}
 				else if(configName.equals("trap_token_duration:")) {
 					trapTokenDuration = output.nextInt();
+				}
+				
+				//Point values
+				else if (configName.equals("ghost_points:")) {
+					ghostPoints = output.nextInt();
+				}
+				else if (configName.equals("ripper_points:")) {
+					ripperPoints = output.nextInt();
+				}
+				else if (configName.equals("wisp_points:")) {
+					wispPoints = output.nextInt();
 				}
 			}
 			
@@ -302,6 +318,18 @@ public class ConfigManager {
 	public static int getEyeTokenDuration() {
 		return eyeTokenDuration;
 	}
+	
+	public static int getGhostPoints() {
+		return ghostPoints;
+	}
+	
+	public static int getRipperPoints() {
+		return ripperPoints;
+	}
+	
+	public static int getWispPoints() {
+		return wispPoints;
+	}
 
 	public static void setMaxHealth(int maxHealth) {
 		ConfigManager.maxHealth = maxHealth;
@@ -430,4 +458,16 @@ public class ConfigManager {
 	public static void setEyeTokenDuration(int eyeTokenDuration) {
 		ConfigManager.eyeTokenDuration = eyeTokenDuration;
 	}
-}
+	
+	public static void setGhostPoints(int ghostPoints) {
+		ConfigManager.ghostPoints = ghostPoints;
+	}
+	
+	public static void setRipperPoints(int ripperPoints) {
+		ConfigManager.ripperPoints = ripperPoints;
+	}
+	
+	public static void setWispPoints(int wispPoints) {
+		ConfigManager.wispPoints = wispPoints;
+	}
+}	
