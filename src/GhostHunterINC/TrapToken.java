@@ -15,14 +15,21 @@ public class TrapToken extends Token{
 		this.x = x;
 		this.y = y;
 		
-		Polygon middle = new Polygon();
-		middle.getPoints().addAll(0.0, -10.0, 10.0, 10.0, -10.0 ,10.0);
-		middle.setFill(Color.PURPLE);
-		middle.setStroke(Color.WHITE);
-		
-		shape.getChildren().add(middle);
-		shape.setTranslateX(this.x);
-		shape.setTranslateY(this.y);
+		Circle tokenBackground = new Circle(18);
+        tokenBackground.setFill(Color.web("#2b1a3a"));
+        tokenBackground.setStroke(Color.web("#9b5de5"));
+        tokenBackground.setStrokeWidth(2.5);
+        
+        Rectangle trapBase = new Rectangle(16, 16, Color.DARKGRAY);
+        trapBase.setStroke(Color.BLACK);
+        trapBase.setStrokeWidth(1.5);
+        
+        Circle trapCore = new Circle(3.5, Color.CYAN); 
+        
+        this.shape.getChildren().addAll(tokenBackground, trapBase, trapCore);
+        
+        this.shape.setTranslateX(this.x);
+        this.shape.setTranslateY(this.y);
 	}
 	
 	@Override
