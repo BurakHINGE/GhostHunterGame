@@ -35,3 +35,7 @@ health_token_increase: 20
 range_token_increase: 20
 eye_token_duration: 5
 trap_token_duration: 4
+
+ghost_points: 10
+ripper_points: 20
+wisp_points: 30

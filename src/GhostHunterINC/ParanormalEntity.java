@@ -64,7 +64,7 @@ public abstract class ParanormalEntity extends GameObject {
             visible = false;			
         }
     }
-    public void inverseVacuuumEffect(double dt) {
+    public void inverseVacuuumEffect() {
     	if (sPane.getOpacity() != 1.0) {
             sPane.setOpacity(1.0);
             revertWithering(); 
