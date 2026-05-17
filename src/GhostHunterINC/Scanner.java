@@ -112,10 +112,10 @@ public class Scanner {
         if (rangeTime != null && rangeTime.getStatus() == Animation.Status.RUNNING) 
         	rangeTime.stop();
         else 
-        	expandRange(ConfigManager.getRangeTokenIncrease(),extraAngleDegrees);
+        	expandRange(ConfigManager.getRangeTokenIncrease()*2,extraAngleDegrees);
         //In order to provide rangeToken's effect temporary, we implement a chronometer.
         rangeTime = new Timeline(new KeyFrame(Duration.seconds(durationSeconds), e -> {
-            revertExpand(ConfigManager.getRangeTokenIncrease(),extraAngleDegrees);
+            revertExpand(ConfigManager.getRangeTokenIncrease()*2,extraAngleDegrees);
         }));
         rangeTime.setCycleCount(1);
         rangeTime.play();
