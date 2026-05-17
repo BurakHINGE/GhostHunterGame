@@ -1,5 +1,5 @@
 package GhostHunterINC;
-//150124014_Mehmet_Veli_Kayikli
+//The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -26,7 +26,7 @@ public class Wisp extends ParanormalEntity {
         
         createWisp();
     }
-    //Create Wisp.
+    //This method creates Wisp.
     private void createWisp() {
     	
     	double centerX = 50, centerY = 50, scale = 0.75;
@@ -70,13 +70,11 @@ public class Wisp extends ParanormalEntity {
         sPane.setPrefSize(100 * scale, 100 * scale);
         
     }
-    
+    //This method update Wisp's position if it is not stunted.
     @Override
     public void update(double dt) {
-    	if(this.isStunned()) {
-    		return;
-    	}
-    	
+    	if(this.isStunned()) 
+    		return;    	
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
         rotationAngle += 100 * dt;
@@ -85,7 +83,7 @@ public class Wisp extends ParanormalEntity {
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }
- 
+    //This method renders Wisp if it is not visible.
     @Override
     public void render(Pane pane) {
         this.currentPane = pane;
@@ -98,6 +96,7 @@ public class Wisp extends ParanormalEntity {
             pane.getChildren().remove(sPane);
         }
     }
+    //Withers Wisp's color.
     @Override
 	void applyWithering() {
     	
@@ -114,7 +113,7 @@ public class Wisp extends ParanormalEntity {
         		((Rectangle) node).setFill(Color.LIGHTGRAY);
         
 	}
-
+    //Makes Wisp's color vivid again.
 	@Override
 	void revertWithering() {
         membrane.setFill(Color.RED); 
@@ -129,7 +128,7 @@ public class Wisp extends ParanormalEntity {
         	if (node instanceof Rectangle)
         		((Rectangle) node).setFill(Color.RED);
 	}
- 
+    //Returns Wisp's Pane.
     @Override
     public Node getShape() { 
     	return sPane; 
