@@ -220,7 +220,17 @@ public class GameEngine {
 		            if(obj.getShape().getScaleX() <= 0.30) {
 		                gameObjects.getChildren().remove(obj.getShape());
 		                iterator.remove();
-		                hunter.addScore(100);
+		                
+		                if(obj instanceof Ghost) {
+		                	hunter.addScore(ConfigManager.ghostPoints);
+		                }
+		                else if(obj instanceof Ripper) {
+		                	hunter.addScore(ConfigManager.ripperPoints);
+		                }
+		                else if(obj instanceof Wisp) {
+		                	hunter.addScore(ConfigManager.wispPoints);
+		                }
+		                
 		                hudManager.updateScore(hunter.getScore());
 		                continue; 
 		            }
