@@ -1,5 +1,5 @@
 package GhostHunterINC;
-//150124014_Mehmet_Veli_Kayikli
+//The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -13,6 +13,7 @@ public class Ripper extends ParanormalEntity {
     private Polygon spikes;
     private Circle body,leftEye,rightEye;
 
+    //Ripper Constructor. Takes Ripper's and corners of the playable area's coordinates as parameter.
     public Ripper(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         super((Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1), (Math.random() * 150 + 75) * (Math.random() < 0.5 ? 1 : -1));
         this.x = x;
@@ -24,7 +25,7 @@ public class Ripper extends ParanormalEntity {
         
         createRipper();
     }
-
+    //This method creates Ripper.
     private void createRipper() {
     	
     	Pane ripperShape = new Pane();
@@ -52,48 +53,31 @@ public class Ripper extends ParanormalEntity {
         sPane.setPrefSize(70, 70);
     	    
     }
-
+    //This method update Ripper's position if it is not stunted.
     @Override
     public void update(double dt) { 
-    	if(this.isStunned()) {
+    	if(this.isStunned())
     		return;
-    	}
-    	
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }
     
-    @Override
-    public void render(Pane pane) {
-    	this.currentPane = pane;
-        if (visible) {
-            if (!pane.getChildren().contains(sPane))
-                pane.getChildren().add(sPane);
-            sPane.setLayoutX(x);
-            sPane.setLayoutY(y);
-        } else {
-            pane.getChildren().remove(sPane);
-        }
-    }
+    //Withers Ripper's color.
     @Override
 	void applyWithering() {
     	spikes.setFill(Color.WHITE);
-        body.setFill(Color.LIGHTGRAY); 
-//        leftEye.setFill(Color.DARKRED);
-//        rightEye.setFill(Color.DARKRED);
+        body.setFill(Color.LIGHTGRAY);
 	}
-
+    //Makes Ripper's color vivid again.
 	@Override
 	void revertWithering() {
 		spikes.setFill(Color.PURPLE);;
         body.setFill(Color.BLACK);
-//        leftEye.setFill(Color.RED);
-//        rightEye.setFill(Color.RED);
 	}
 
-
+	//Returns Ripper's Pane.
 	@Override
 	public Node getShape() {
 		return sPane;

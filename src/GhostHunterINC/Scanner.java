@@ -1,6 +1,7 @@
 package GhostHunterINC;
 //The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -8,7 +9,7 @@ import javafx.util.Duration;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 
-public class Scanner {
+public class Scanner extends GameObject {
 
 	private Polygon scanner;
     private Hunter hunter;
@@ -75,6 +76,7 @@ public class Scanner {
     	updatePosition();
     }
     
+    //Checks whether scanner is active or not. If it is, decrease energy of it by dt and when it comes 0, deactivates it. Else, increase energy until it's max.
     public void update(double dt) {
     	if (active) {
             energy -= decreaseRate * dt;
@@ -87,19 +89,19 @@ public class Scanner {
             if (energy > maxEnergy) energy = maxEnergy;
         }
     }
-
+    //Checks given GameObject intersects with scanner.
     public boolean intersects(GameObject gameObject) {
     	return this.scanner.getBoundsInParent().intersects(gameObject.getShape().getBoundsInParent());
     	
     }
-
+    //Expand the scanner's range and angle with given parameters.
     public void expandRange(int extraRange,double extraAngleDegrees) {
     	range += extraRange;
         double newAngle = currentScannerAngle + Math.toRadians(extraAngleDegrees);
         currentScannerAngle = Math.min(newAngle, MAX_ANGLE);
         updatePosition();
     }
-
+    //Narrows the scanner's range and angle with given parameters.
     public void revertExpand(int extraRange,double extraAngleDegrees) {
     	range -= extraRange;
         double newAngle = currentScannerAngle - Math.toRadians(extraAngleDegrees);
@@ -120,7 +122,7 @@ public class Scanner {
         rangeTime.setCycleCount(1);
         rangeTime.play();
     }
-
+    //If there is no scanner in the game, this method render the scanner.
     public void render(Pane pane) {
         if (!pane.getChildren().contains(scanner)) {
             pane.getChildren().add(scanner);
@@ -185,6 +187,15 @@ public class Scanner {
 
 	public void setIncreaseRate(double increaseRate) {
 		this.increaseRate = increaseRate;
+	}
+	@Override
+	public void move(double dt) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Node getShape() {
+		return scanner;
 	}
 
     

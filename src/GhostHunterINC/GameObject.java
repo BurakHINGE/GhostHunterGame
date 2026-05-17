@@ -10,11 +10,15 @@ public abstract class GameObject implements Renderable, Movable, Collidable{
 	protected StackPane sPane;
 	protected Pane currentPane;
 	
+	//The following abstract methods will be explained in subclasses where they are overriding.
 	@Override
 	public abstract void move(double dt);
 	
 	public abstract void update(double dt);
 	
+	public abstract Node getShape();
+	
+	//The aim of this method is detect check a GameObject is exist or not. If it is not, The method adds it.
 	@Override
 	public void render(Pane pane) {
 	    this.currentPane = pane;
@@ -26,13 +30,12 @@ public abstract class GameObject implements Renderable, Movable, Collidable{
 	    } else 
 	        pane.getChildren().remove(sPane);
 	}
-	public void removeFromPane() {
-	    if (currentPane != null) 
-	        currentPane.getChildren().remove(sPane);
+	//The aim of this method is checking collision between GameObjects.
+	@Override
+	public boolean checkCollision(GameObject other) {
+		return this.getShape().getBoundsInParent().intersects(other.getShape().getBoundsInParent());
 	}
-	
-	public abstract Node getShape();
-
+	//Getters & Setters.
 	public double getX() {
 		return x;
 	}
@@ -53,11 +56,6 @@ public abstract class GameObject implements Renderable, Movable, Collidable{
 	}
 	public void setVisibility(boolean visibility) {
 		this.visible = visibility;
-	}
-	
-	@Override
-	public boolean checkCollision(GameObject other) {
-		return this.getShape().getBoundsInParent().intersects(other.getShape().getBoundsInParent());
 	}
 	
 }

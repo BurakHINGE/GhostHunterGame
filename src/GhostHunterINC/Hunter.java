@@ -1,6 +1,5 @@
 package GhostHunterINC;
-
-
+//The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -19,7 +18,8 @@ public class Hunter extends GameObject {
     private Circle hat;
     private Polygon badge;
     private Pane hunterPane;
- 
+    
+    //Hunter constructor. Takes Hunter's and corners of the playable area's coordinates as parameter.
     public Hunter(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         this.x = x;
         this.y = y;
@@ -35,12 +35,15 @@ public class Hunter extends GameObject {
         this.scanner = new Scanner(this);
         createHunter();
     }
- 
+    
+    //This method creates hunter.
     private void createHunter() {
         body = new Circle(20.0, 20.0, 20.0, Color.ORANGE);
         hat = new Circle(20.0, 20.0, 17.0);
         hat.setFill(Color.BLACK);
         badge = new Polygon();
+        
+        //Since badge is a hexagon, we can easily use trigonometry.
         double centerX = 20.0,centerY = 20.0,radius = 12.0,angle,cornerX,cornerY;
         for (int i = 0; i < 6; i++) {
             angle = Math.toRadians(i * 60); 
@@ -49,21 +52,22 @@ public class Hunter extends GameObject {
             
             badge.getPoints().addAll(cornerX, cornerY);
         }
+        
         badge.setFill(Color.GOLD);
         sPane = new StackPane(body,hat,badge);
         setHunterPane(new Pane(sPane));
         sPane.setPrefSize(40, 40);
     }
- 
+    //We have to update scanner since it is connected to Hunter.
     @Override
     public void update(double dt) {
         scanner.update(dt);
     }
-    
+    //If hunter takes a TrapToken, we increment the trapCount by amount.
     public void addTraps(int amount) {
     	this.trapCount += amount;
     }
-    
+    //If trapCount is grater than 0, this method place a trap and decrement the the trapCount by one.
     public Trap placeTrap() {
     	if(trapCount > 0) {
     		trapCount--;
@@ -71,18 +75,12 @@ public class Hunter extends GameObject {
     	}
     	return null;
     }
- 
-    @Override
-    public void render(Pane pane) {
-        this.currentPane = pane;
-        if (!pane.getChildren().contains(sPane))
-            pane.getChildren().add(sPane);
-        scanner.render(pane);
-    }
- 
+    
+    //Hunter's movement will be handled in the GameEngine. Thus, this method is empty.
     @Override
     public void move(double dt) {}
- 
+    
+    //This method reduce the Hunter's health by given amount and turn it's color to red. If it's health is less than 0, it equalizes it 0.
     public void takeDamage(double amount) {
         health -= amount;
         body.setFill(Color.RED);
@@ -91,18 +89,23 @@ public class Hunter extends GameObject {
         if (health <= 0) 
         	health = 0;
     }
- 
+    //This method turn Hunter's color back.
     public void resetColor() {
         body.setFill(Color.ORANGE);
         hat.setFill(Color.BLACK);
         badge.setFill(Color.GOLD);
     }
- 
+    //This method enhance the Hunter's health by given amount.
     public void heal(double amount) {
         health += amount;
         if (health > maxHealth) health = maxHealth;
     }
- 
+    //Returns Hunter's Pane.
+    @Override
+    public Node getShape() { 
+    	return sPane; 
+    }
+    //Getters & Setters.
     public void addScore(int points) {
         score += points;
     }
@@ -218,11 +221,6 @@ public class Hunter extends GameObject {
 	public void setBody(Circle body) {
 		this.body = body;
 	}
-
-	@Override
-    public Node getShape() { 
-    	return sPane; 
-    }
 
 	public Pane getHunterPane() {
 		return hunterPane;
