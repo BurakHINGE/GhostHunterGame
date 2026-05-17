@@ -195,6 +195,7 @@ public class ConfigManager {
 		}
 	}
 
+	//Getter and setter methods
 	public static int getMaxHealth() {
 		return maxHealth;
 	}

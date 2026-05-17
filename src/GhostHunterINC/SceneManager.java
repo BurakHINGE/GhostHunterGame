@@ -66,7 +66,7 @@ public class SceneManager {
 	        if (loadedFont != null) {
 	            System.out.println("Font has been uploaded successfuly: " + loadedFont.getFamily());
 	        } else {
-	            System.out.println("Font bulunamadı, yol yanlış olabilir: " + fontPath);
+	            System.out.println("Font cannot be found: " + fontPath);
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();

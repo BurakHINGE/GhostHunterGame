@@ -37,6 +37,6 @@ range_token_duration: 5
 eye_token_duration: 5
 trap_token_duration: 4
 
-ghost_points: 100
-ripper_points: 200
-wisp_points: 300
+ghost_points: 10
+ripper_points: 20
+wisp_points: 30
