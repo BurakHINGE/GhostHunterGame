@@ -53,11 +53,10 @@ public class RangeToken extends Token {
 		//Increase the time every frame
 		tick++;
 		
-		//Change the size of the token with sin function between 0.9 and 1.1
-		double scale = 1.0 + (Math.sin(tick* 0.1) * 0.1);
+		//Sin function gave us a smooth curve 
+		double changeY = Math.sin(tick * 0.05) * 5;
 		
-		this.getShape().setScaleX(scale);
-		this.getShape().setScaleY(scale);
+		this.getShape().setTranslateY(this.y + changeY);
 	}
 	
 	public StackPane getShape() {
