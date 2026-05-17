@@ -6,6 +6,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+//A trap that hunter can place on the ground
+//When a paranormal entity steps on it the trap triggers and stuns the entity for a given time
 public class Trap extends GameObject{
 	private boolean isTriggered = false;
     private boolean isExpired = false;
@@ -15,50 +17,47 @@ public class Trap extends GameObject{
     	this.x = x;
     	this.y = y;
     	
-    	createTrap();
-    }
-    
-    private void createTrap() {
+    	//Visual components of the trap
     	Rectangle base = new Rectangle(30, 30, Color.DARKGRAY);
     	base.setStroke(Color.BLACK);
     	base.setStrokeWidth(2);
     	
     	Circle core = new Circle(6, Color.CYAN);
+    	//Combine all the parts of the trap in the pane
     	shape.getChildren().addAll(base, core);
-    	
-    	shape.setLayoutX(this.x + 5);
-    	shape.setLayoutY(this.y + 5);
+    	//Set the visual position of the shape pane
+    	shape.setTranslateX(this.x + 5);
+    	shape.setTranslateY(this.y + 5);
     }
     
+    //Activates the trap and change it color to show an entity has been captured
     public void trigger() {
     	this.isTriggered = true;
     	
     	((Circle)shape.getChildren().get(1)).setFill(Color.RED);
     }
     
+    //Checks if an entity is caught
     public boolean isTriggered() {
     	return isTriggered;
     }
     
+    //Checks if the traps duration is finished
     public boolean isExpired() {
     	return isExpired;
     }
     
+    //Makes the trap expired so we can remove it from the game
     public void setExpired(boolean expired) {
     	this.isExpired = expired;
     }
 
 	@Override
-	public void move(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+	//Traps are stationary so we didn't use this method
+	public void move(double dt) {}
 
 	@Override
-	public void update(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void update(double dt) {}
 
 	@Override
 	public Node getShape() {
