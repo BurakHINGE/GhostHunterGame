@@ -35,7 +35,7 @@ public class Ghost extends ParanormalEntity {
     	ghostShape.setPrefSize(30, 30);
     	
     	//Ghost's head.
-    	Arc head = new Arc(15, 15, 15, 15, 0, 180);
+    	head = new Arc(15, 15, 15, 15, 0, 180);
         head.setType(ArcType.OPEN);
         head.setFill(Color.WHITE);
         head.setStroke(Color.DARKGRAY);
