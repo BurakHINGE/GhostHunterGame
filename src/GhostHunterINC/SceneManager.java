@@ -120,6 +120,13 @@ public class SceneManager {
 		
 		Scene mainMenuScene = new Scene(mainPane, stage.getWidth(), stage.getHeight());
 		
+		mainMenuScene.setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.ESCAPE) {
+				event.consume();
+				stage.setFullScreen(true);
+			}
+		});
+		
 		return mainMenuScene;	
 	}
 	
