@@ -52,17 +52,7 @@ public class GameEngine {
 	
 	public GameEngine() {
 		this.allEntities = new ArrayList<>();
-	}
-	
-	public GameEngine (Pane gameObjects, Scene gameScene, LevelManager levelManager, Hunter hunter, ArrayList<GameObject> allEntities) {
-		this.gameObjects = gameObjects;
-		this.gameScene = gameScene;
-		this.hunter = hunter;
-		gameObjects = new Pane();
-		allEntities = new ArrayList<>();
-		levelManager = new LevelManager(gameObjects, allEntities);
-		
-		handleInput();
+        this.gameObjects = new Pane();
 	}
 	
 	public void startGame(int level, Stage stage, SceneManager sceneManager) {
@@ -166,7 +156,7 @@ public class GameEngine {
 	}
 	
 	public void startTimelineLoop() {
-		Stage stage = new Stage();
+
 		if (gameLoop != null) {
 			gameLoop.stop();
 		}
@@ -606,9 +596,6 @@ public class GameEngine {
 		
 		double hunterSize = 40.0;
 		
-		double hunterWidth = 40.0;
-		double hunterHeight = 40.0;
-		
 		//Check the borders
 		if (newX < minX) { 
 			newX = minX;
@@ -664,40 +651,8 @@ public class GameEngine {
 	public ArrayList<GameObject> getEnemies() {
 		return allEntities;
 	}
-
-	public Pane getGameObjects() {
-		return gameObjects;
-	}
-
-	public Scene getGameScene() {
-		return gameScene;
-	}
-
-	public Timeline getGameLoop() {
-		return gameLoop;
-	}
 	
 	public int getCurrentLevel() {
 		return currentLevel;
-	}
-
-	public void setEnemies(ArrayList<GameObject> allEntities) {
-		this.allEntities = allEntities;
-	}
-
-	public void setGameObjects(Pane gameObjects) {
-		this.gameObjects = gameObjects;
-	}
-
-	public void setGameScene(Scene gameScene) {
-		this.gameScene = gameScene;
-	}
-
-	public void setGameLoop(Timeline gameLoop) {
-		this.gameLoop = gameLoop;
-	}
-	
-	public void setCurrentLevel(int currentLevel) {
-		this.currentLevel = currentLevel;
 	}
 }
