@@ -257,6 +257,7 @@ public class GameEngine {
 		            }
 		            else {
 		            	entity.setBeingVacuumed(false);
+		            	entity.inverseVacuuumEffect();
 		            }
 		            
 		            boolean shouldBeVisible = false;
