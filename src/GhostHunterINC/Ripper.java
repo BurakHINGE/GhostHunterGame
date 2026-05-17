@@ -1,5 +1,5 @@
 package GhostHunterINC;
-
+//150124014_Mehmet_Veli_Kayikli
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -32,12 +32,12 @@ public class Ripper extends ParanormalEntity {
     	
         spikes = new Polygon();
         int numOfSpikes = 12;
-        double outerRadius = 30, innerRadius = 18, centerX = 35, centerY = 35, angle = 0, radius = 0;
+        double outerRadius = 30, innerRadius = 18, angle = 0, radius = 0;
 
         for (int i = 0; i < numOfSpikes * 2; i++) {
             angle = Math.PI / numOfSpikes * i - Math.PI / 2;
             radius = (i % 2 == 0) ? outerRadius : innerRadius;
-            spikes.getPoints().addAll(centerX + Math.cos(angle) * radius, centerY + Math.sin(angle) * radius);
+            spikes.getPoints().addAll(35 + Math.cos(angle) * radius, 35 + Math.sin(angle) * radius);
         }
         spikes.setFill(Color.PURPLE);
 
