@@ -7,12 +7,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.PauseTransition;
@@ -30,7 +30,7 @@ public class GameEngine {
 	private int remainingTime;
 	private Timeline countdown;
 	private SceneManager sceneManager;
-	private javafx.scene.shape.Rectangle borderArea;
+	private Rectangle borderArea;
 	private ImageView levelView;
 	private VBox currentStopOverlay;
 	
@@ -64,12 +64,13 @@ public class GameEngine {
 	}
 	
 	public void startGame(int level, Stage stage, SceneManager sceneManager) {
+		
+		this.visibilityCheat = false;
+		this.borderCheat = false;
+		
 		this.currentLevel = level;
-		
 		this.allEntities = new ArrayList<>();
-		
 		this.gameObjects = new Pane();
-		
 		this.sceneManager = sceneManager;
 		
 		Image level1Image = new Image("file:level1Picture.png");
@@ -115,13 +116,14 @@ public class GameEngine {
 		double startX = areaX + (areaW / 2);
 		double startY = areaY + (areaH / 2);
 		
-		this.borderArea = new javafx.scene.shape.Rectangle();
+		this.borderArea = new Rectangle();
 		this.borderArea.setWidth(areaW);
 		this.borderArea.setHeight(areaH);
 		
 		this.borderArea.setFill(Color.TRANSPARENT);
 		this.borderArea.setStroke(Color.WHITE);
 		this.borderArea.setStrokeWidth(4);
+		this.borderArea.setVisible(false);
 		
 		this.gameObjects.getChildren().add(borderArea);
 		
@@ -331,9 +333,11 @@ public class GameEngine {
 		gameScene.setOnKeyPressed(e -> { //Activate key when pressed
 			
 			StackPane root = (StackPane) gameScene.getRoot();
-			if (currentStopOverlay != null && root.getChildren().contains(currentStopOverlay)) {
-				if (e.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
-					resumeGame();
+			if (root.getChildren().size() > 3) { 
+				if (e.getCode() == KeyCode.ESCAPE) {
+					if (currentStopOverlay != null && root.getChildren().contains(currentStopOverlay)) {
+						resumeGame();
+					}
 				}
 				return;
 			}
