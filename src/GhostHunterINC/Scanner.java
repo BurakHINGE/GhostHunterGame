@@ -1,5 +1,5 @@
 package GhostHunterINC;
-//150124014_Mehmet_Veli_Kayikli
+//The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -53,7 +53,7 @@ public class Scanner {
         active = false;
         scanner.setVisible(false);
     }
-    //The reason why we implement this method is the position of scanner must be updated according to Hunter's position constantly. 
+    //The reason why we implement this method is the position of scanner must be updated with respect to Hunter's position constantly. 
     public void updatePosition() {
     	
     	double firstPointX = hunter.getX() + 20;
@@ -67,7 +67,7 @@ public class Scanner {
         
         scanner.getPoints().setAll(firstPointX,firstPointY,secondPointX + thirdPointX, secondPointY + thirdPointY,secondPointX - thirdPointX, secondPointY - thirdPointY);      
     }
-    
+    //Scanner's position must be updated with respect to mouse's coordinates to
     public void pointToMouse(double mouseX,double mouseY) {
     	double centerX = hunter.getX() + 20;
     	double centerY = hunter.getY() + 20;
