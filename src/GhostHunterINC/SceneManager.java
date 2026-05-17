@@ -130,7 +130,7 @@ public class SceneManager {
 		return mainMenuScene;	
 	}
 	
-	Scene selectLevelMenu() { //Level selection menu
+Scene selectLevelMenu() { //Level selection menu
 		
 		StackPane mainPane = new StackPane();
 		
@@ -144,8 +144,6 @@ public class SceneManager {
 		mainLayout.setAlignment(Pos.CENTER); //Align the buttons in the center of VBox
 		
 		Label menuTitle = new Label("CHOOSE LOCATION");
-		menuTitle.setTextFill(Color.web("#4dfa9a"));
-		menuTitle.setStyle("-fx-font-family: Creepster; -fx-font-size: 50px; -fx-font-weight: bold;");
 		
 		VBox mapsLayout = new VBox(40);
 		mapsLayout.setAlignment(Pos.CENTER);
@@ -153,28 +151,23 @@ public class SceneManager {
 		ImageView level1View = new ImageView(new Image("file:level1Picture.png"));
 		ImageView level2View = new ImageView(new Image("file:level2Picture.png"));
 		ImageView level3View = new ImageView(new Image("file:level3Picture.png"));
-		
+
 		ImageView[] mapViews = {level1View, level2View, level3View};
 		for (ImageView view : mapViews) {
-			view.setFitWidth(170);
-			view.setFitHeight(120);
+			view.fitWidthProperty().bind(stage.widthProperty().divide(8));
+			view.fitHeightProperty().bind(stage.heightProperty().divide(7));
 			view.setPreserveRatio(false);
 		}
 		
-		Label lbl1 = new Label("1");
-		Label lbl2 = new Label("2");
-		Label lbl3 = new Label("3");
+		Label label1 = new Label("1");
+		Label label2 = new Label("2");
+		Label label3 = new Label("3");
 		
-		Label[] levelLabels = {lbl1, lbl2, lbl3};
-		for (Label lbl : levelLabels) {
-			lbl.setTextFill(Color.WHITE);
-			lbl.setStyle("-fx-font-family: Creepster; -fx-font-size: 75px; -fx-font-weight: bold;"
-					   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
-		}
+		Label[] levelLabels = {label1, label2, label3};
 		
-		StackPane easyButtonContent1 = new StackPane(level1View, lbl1);
-		StackPane mediumButtonContent2 = new StackPane(level2View, lbl2);
-		StackPane hardButtonContent3 = new StackPane(level3View, lbl3);
+		StackPane easyButtonContent1 = new StackPane(level1View, label1);
+		StackPane mediumButtonContent2 = new StackPane(level2View, label2);
+		StackPane hardButtonContent3 = new StackPane(level3View, label3);
 		
 		Button levelEasyButton = new Button();
 		Button levelMediumButton = new Button();
@@ -184,6 +177,25 @@ public class SceneManager {
 		levelMediumButton.setGraphic(mediumButtonContent2);
 		levelHardButton.setGraphic(hardButtonContent3);
 		
+		Button[] mapButtons = {levelEasyButton, levelMediumButton, levelHardButton};
+		for (Button btn : mapButtons) {
+			btn.prefWidthProperty().bind(stage.widthProperty().divide(8));
+			btn.prefHeightProperty().bind(stage.heightProperty().divide(7));
+		}
+		
+		level1View.fitWidthProperty().bind(levelEasyButton.prefWidthProperty());
+		level1View.fitHeightProperty().bind(levelEasyButton.prefHeightProperty());
+		
+		level2View.fitWidthProperty().bind(levelMediumButton.prefWidthProperty());
+		level2View.fitHeightProperty().bind(levelMediumButton.prefHeightProperty());
+		
+		level3View.fitWidthProperty().bind(levelHardButton.prefWidthProperty());
+		level3View.fitHeightProperty().bind(levelHardButton.prefHeightProperty());
+		
+		for (ImageView view : mapViews) {
+			view.setPreserveRatio(false);
+		}
+		
 		String mapButtonStyle = "-fx-background-color: rgba(0, 0, 0, 0);"
 	              + "-fx-border-color: #4dfa9a;"
 	              + "-fx-border-width: 3px;"
@@ -191,49 +203,59 @@ public class SceneManager {
 	              + "-fx-background-radius: 0;"
 	              + "-fx-border-radius: 0;";
 		
-
-
 		levelEasyButton.setStyle(mapButtonStyle);
 		levelMediumButton.setStyle(mapButtonStyle);
 		levelHardButton.setStyle(mapButtonStyle);
 		
-		Button[] mapButtons = {levelEasyButton, levelMediumButton, levelHardButton};
 		for (Button btn : mapButtons) {
-
 			btn.setOnMouseEntered(e -> {
 				btn.setStyle(mapButtonStyle + "-fx-border-color: #ffffff; -fx-effect: dropshadow(gaussian, #4dfa9a, 15, 0.5, 0, 0);");
 			});
-
 			btn.setOnMouseExited(e -> {
 				btn.setStyle(mapButtonStyle);
 			});
 		}
 
 		Button returnMainMenuButton = new Button("Main Menu");
-		
 		returnMainMenuButton.setStyle(BUTTON_STYLE);
-
 		returnMainMenuButton.prefWidthProperty().bind(stage.widthProperty().divide(4));	
 		returnMainMenuButton.prefHeightProperty().bind(stage.heightProperty().divide(10));
 		
+		Label[] emptyLabels = {};
+		
 		applyButtonStyles(stage.getWidth(), returnMainMenuButton);
+		applyLabelStyles(stage.getWidth(), menuTitle, emptyLabels, emptyLabels);
+		
+		double initialFontSize = Math.max(20, stage.getWidth() / 50) * 2.5;
+		for (Label lbl : levelLabels) {
+			lbl.setTextFill(Color.WHITE);
+			lbl.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + initialFontSize + "px; "
+					   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
+		}
 		
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			applyButtonStyles(newVal.doubleValue(), returnMainMenuButton);
+			applyLabelStyles(newVal.doubleValue(), menuTitle, emptyLabels, emptyLabels); 
+			
+			double dynamicFontSize = Math.max(20, newVal.doubleValue() / 50) * 2.5;
+			for (Label lbl : levelLabels) {
+				lbl.setStyle("-fx-font-family: Creepster; -fx-font-weight: bold; -fx-font-size: " + dynamicFontSize + "px; "
+						   + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0.0, 0, 0);");
+			}
 		});
 	    
 	    mapsLayout.getChildren().addAll(levelEasyButton, levelMediumButton, levelHardButton);
-	    mainLayout.getChildren().add(mapsLayout);
+	    mainLayout.getChildren().addAll(menuTitle, mapsLayout);
 		
-	    mainPane.getChildren().addAll(selectMenuView, mainLayout, returnMainMenuButton, menuTitle);
+	    mainPane.getChildren().addAll(selectMenuView, mainLayout, returnMainMenuButton);
 	    
-		StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT); //Align the main menu button in the right (bottom) of border pane
-		StackPane.setMargin(returnMainMenuButton, new Insets(10)); //Add spacing from the edges
+		StackPane.setAlignment(returnMainMenuButton, Pos.BOTTOM_RIGHT); 
+		StackPane.setMargin(returnMainMenuButton, new Insets(10)); 
 		
 		StackPane.setAlignment(menuTitle, Pos.TOP_CENTER);
 		StackPane.setMargin(menuTitle, new Insets(130));
 		
-		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); //Return to main menu from Level Selection Menu
+		returnMainMenuButton.setOnAction(e -> switchScene(mainMenu())); 
 		levelEasyButton.setOnAction(e -> gameEngine.startGame(1, stage, this));
 		levelMediumButton.setOnAction(e -> gameEngine.startGame(2, stage, this));
 		levelHardButton.setOnAction(e -> gameEngine.startGame(3, stage, this));
