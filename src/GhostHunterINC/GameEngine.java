@@ -1,8 +1,9 @@
 package GhostHunterINC;
 
+//The class is implemented by 150124045_Mehmet_Burak_Mentese and 150124012_Eyup_Turhan.
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

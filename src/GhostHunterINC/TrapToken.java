@@ -1,11 +1,11 @@
 package GhostHunterINC;
 
-import javafx.scene.Node;
+//The whole class is implemented by 150124012_Eyup_Turhan.
 
+import javafx.scene.Node;
 import javafx.scene.shape.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.Node;
 
 // A token that adds a trap to hunters inventory
 public class TrapToken extends Token{

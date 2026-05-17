@@ -1,5 +1,7 @@
 package GhostHunterINC;
 
+//The whole class is implemented by 150124045_Mehmet_Burak_Mentese.
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -1,13 +1,13 @@
 package GhostHunterINC;
 
+//The whole class is implemented by 150124012_Eyup_Turhan.
+
 import javafx.scene.shape.*;
 import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.StackPane;
-import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
 import java.util.ArrayList;
 
 //A token that temporarily reveals all the paranormal entities

@@ -1,5 +1,7 @@
 package GhostHunterINC;
 
+//The class is implemented by 150124045_Mehmet_Burak_Mentese and 150124012_Eyup_Turhan.
+
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;

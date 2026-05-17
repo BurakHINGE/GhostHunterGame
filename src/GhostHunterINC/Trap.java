@@ -1,5 +1,7 @@
 package GhostHunterINC;
 
+//The whole class is implemented by 150124012_Eyup_Turhan.
+
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;

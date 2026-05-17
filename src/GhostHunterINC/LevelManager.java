@@ -1,6 +1,7 @@
 package GhostHunterINC;
 
-import javafx.scene.text.Text;
+//The whole class is implemented by 150124012_Eyup_Turhan.
+
 import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import javafx.animation.KeyFrame;
