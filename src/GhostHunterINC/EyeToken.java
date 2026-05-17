@@ -15,6 +15,9 @@ public class EyeToken extends Token {
 	//Main game object list that contains all the paranormal entities
 	private ArrayList<GameObject> allEntities;
 	
+	//A static timer so that every eye token uses the same timer
+	private static PauseTransition timer;
+	
 	public EyeToken(double x, double y, ArrayList<GameObject> allEntities) {
 		this.x = x;
 		this.y = y;
@@ -63,16 +66,16 @@ public class EyeToken extends Token {
 		}
 		
 		//Start a timer to revert the changes after the duration
-		PauseTransition duration = new PauseTransition(Duration.seconds(time));
+		timer = new PauseTransition(Duration.seconds(time));
 		
-		duration.setOnFinished(e -> {
+		timer.setOnFinished(e -> {
 			for(GameObject obj : allEntities) {
 				if(obj instanceof ParanormalEntity) {
 					((ParanormalEntity) obj).setRevealedByToken(false);
 				}
 			}
 		});
-		duration.play();
+		timer.play();
 	}
 
 	@Override
