@@ -27,30 +27,33 @@ public class Ripper extends ParanormalEntity {
     }
     //This method creates Ripper.
     private void createRipper() {
-    	
+        
+        double scale = 1.4;
+        double centerX = 35 * scale, centerY = 35 * scale;
+
     	Pane ripperShape = new Pane();
-    	ripperShape.setPrefSize(70, 70);
+    	ripperShape.setPrefSize(70 * scale, 70 * scale);
     	
         spikes = new Polygon();
         int numOfSpikes = 12;
-        double outerRadius = 30, innerRadius = 18, angle = 0, radius = 0;
+        double outerRadius = 30 * scale, innerRadius = 18 * scale, angle = 0, radius = 0;
 
         for (int i = 0; i < numOfSpikes * 2; i++) {
             angle = Math.PI / numOfSpikes * i - Math.PI / 2;
             radius = (i % 2 == 0) ? outerRadius : innerRadius;
-            spikes.getPoints().addAll(35 + Math.cos(angle) * radius, 35 + Math.sin(angle) * radius);
+            spikes.getPoints().addAll(centerX + Math.cos(angle) * radius, centerY + Math.sin(angle) * radius);
         }
         spikes.setFill(Color.PURPLE);
 
-        body = new Circle(35, 35, 15, Color.BLACK);
+        body = new Circle(centerX, centerY, 15 * scale, Color.BLACK);
         
-        leftEye = new Circle(28, 35, 4, Color.RED);
-        rightEye = new Circle(42, 35, 4, Color.RED);
+        leftEye = new Circle(centerX - 7 * scale, centerY, 4 * scale, Color.RED);
+        rightEye = new Circle(centerX + 7 * scale, centerY, 4 * scale, Color.RED);
         
         ripperShape.getChildren().addAll(spikes, body, leftEye, rightEye);
         
         sPane = new StackPane(ripperShape);
-        sPane.setPrefSize(70, 70);
+        sPane.setPrefSize(70 * scale, 70 * scale);
     	    
     }
     //This method update Ripper's position if it is not stunted.

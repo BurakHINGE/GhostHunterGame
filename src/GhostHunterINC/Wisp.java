@@ -30,7 +30,7 @@ public class Wisp extends ParanormalEntity {
     //This method creates Wisp.
     private void createWisp() {
     	
-    	double centerX = 50, centerY = 50, scale = 0.75;
+    	double centerX = 50, centerY = 50, scale = 1.4;
         centerX *= scale;
         centerY *= scale;
         
