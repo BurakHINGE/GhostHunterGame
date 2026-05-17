@@ -1,6 +1,8 @@
 package GhostHunterINC;
 
 import java.util.ArrayList;
+
+import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
@@ -383,7 +385,9 @@ public class GameEngine {
 					break;
 				}
 				case SPACE: {
-		            hunter.getScanner().activate();
+					if (gameLoop != null && gameLoop.getStatus() == Status.RUNNING) {
+				        hunter.getScanner().activate();
+				    }
 		            break;
 		        }
 				case ESCAPE: {
@@ -403,17 +407,19 @@ public class GameEngine {
 					break;
 				}
 				case R: {
-					Trap newTrap = hunter.placeTrap();
-					if(newTrap != null) {
-						allEntities.add(newTrap);
-						gameObjects.getChildren().add(newTrap.getShape());
-						
-						newTrap.getShape().toBack();
-						borderArea.toBack();
-						
-						hunter.getShape().toFront();
-						hunter.getScanner().getScanner().toFront();
-					}
+					if (gameLoop != null && gameLoop.getStatus() == Status.RUNNING) {
+				        Trap newTrap = hunter.placeTrap();
+				        if(newTrap != null) {
+				            allEntities.add(newTrap);
+				            gameObjects.getChildren().add(newTrap.getShape());
+				            
+				            newTrap.getShape().toBack();
+				            borderArea.toBack();
+				            
+				            hunter.getShape().toFront();
+				            hunter.getScanner().getScanner().toFront();
+				        }
+				    }
 					break;
 				}
 			}			
