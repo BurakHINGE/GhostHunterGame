@@ -1,5 +1,5 @@
 package GhostHunterINC;
-
+//150124014_Mehmet_Veli_Kayikli
 import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,14 +12,15 @@ public class Scanner {
 
 	private Polygon scanner;
     private Hunter hunter;
-    private double energy,maxEnergy,decreaseRate,increaseRate,range,spreadAngle;
+    private double energy,maxEnergy,decreaseRate,increaseRate,range,currentScannerAngle;
     private boolean active;
     private double aimAngle = 0;
-    public static final double RANGE = 90;
+    public static final double RANGE = 100;
     public static final double ANGLE = Math.toRadians(18);
-    public static final double MAX_ANGLE = Math.toRadians(38);
+    public static final double MAX_ANGLE = Math.toRadians(28);
     private Timeline rangeTime;
     
+    //Scanner Constructor. Takes Hunter as an argument.
     public Scanner(Hunter hunter) {
         this.hunter = hunter;
         this.maxEnergy = ConfigManager.getMaxVacuum();
@@ -28,10 +29,10 @@ public class Scanner {
         this.decreaseRate = ConfigManager.getVacuumDecrease();
         this.increaseRate = ConfigManager.getVacuumIncrease();
         this.range = RANGE;
-        this.spreadAngle = ANGLE;
+        this.currentScannerAngle = ANGLE;
         createScanner();
     }
-
+    //Creating scanner triangle.
     private void createScanner() {
         scanner = new Polygon();
         scanner.setFill(Color.RED);
@@ -40,19 +41,19 @@ public class Scanner {
         scanner.setOpacity(0.5);
         scanner.setVisible(false);
     }
-
+    //Activate scanner.
     public void activate() {
         if (energy > 0) {
             active = true;
             scanner.setVisible(true);
         }
     }
-
+    //Deactivate scanner.
     public void deactivate() {
         active = false;
         scanner.setVisible(false);
     }
-
+    //The reason why we implement this method is the position of scanner must be updated according to Hunter's position constantly. 
     public void updatePosition() {
     	
     	double firstPointX = hunter.getX() + 20;
@@ -61,8 +62,8 @@ public class Scanner {
         double secondPointX  = firstPointX + Math.cos(aimAngle) * range;
         double secondPointY  = firstPointY + Math.sin(aimAngle) * range;
 
-        double thirdPointX = -Math.sin(aimAngle) * range * Math.tan(spreadAngle);
-        double thirdPointY =  Math.cos(aimAngle) * range * Math.tan(spreadAngle);
+        double thirdPointX = -Math.sin(aimAngle) * range * Math.tan(currentScannerAngle);
+        double thirdPointY =  Math.cos(aimAngle) * range * Math.tan(currentScannerAngle);
         
         scanner.getPoints().setAll(firstPointX,firstPointY,secondPointX + thirdPointX, secondPointY + thirdPointY,secondPointX - thirdPointX, secondPointY - thirdPointY);      
     }
@@ -92,26 +93,29 @@ public class Scanner {
     	
     }
 
-    public void expandRange(double extraAngleDegrees) {
-        double newAngle = spreadAngle + Math.toRadians(extraAngleDegrees);
-        spreadAngle = Math.min(newAngle, MAX_ANGLE);
+    public void expandRange(int extraRange,double extraAngleDegrees) {
+    	range += extraRange;
+        double newAngle = currentScannerAngle + Math.toRadians(extraAngleDegrees);
+        currentScannerAngle = Math.min(newAngle, MAX_ANGLE);
         updatePosition();
     }
 
-    public void revertExpand(double extraAngleDegrees) {
-        double newAngle = spreadAngle - Math.toRadians(extraAngleDegrees);
-        spreadAngle = Math.max(newAngle, ANGLE);
+    public void revertExpand(int extraRange,double extraAngleDegrees) {
+    	range -= extraRange;
+        double newAngle = currentScannerAngle - Math.toRadians(extraAngleDegrees);
+        currentScannerAngle = Math.max(newAngle, ANGLE);
         updatePosition();
     }
+    //The aim of this method is handling rangeToken effect. Without this method, the effect of every taking of rangeToken becomes permanent.
     public void rangeTimer(double extraAngleDegrees, double durationSeconds) {
        
         if (rangeTime != null && rangeTime.getStatus() == Animation.Status.RUNNING) 
         	rangeTime.stop();
         else 
-        	expandRange(extraAngleDegrees);
-
+        	expandRange(ConfigManager.getRangeTokenIncrease(),extraAngleDegrees);
+        //In order to provide rangeToken's effect temporary, we implement a chronometer.
         rangeTime = new Timeline(new KeyFrame(Duration.seconds(durationSeconds), e -> {
-            revertExpand(extraAngleDegrees);
+            revertExpand(ConfigManager.getRangeTokenIncrease(),extraAngleDegrees);
         }));
         rangeTime.setCycleCount(1);
         rangeTime.play();

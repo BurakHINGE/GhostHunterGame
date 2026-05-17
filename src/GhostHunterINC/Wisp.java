@@ -1,5 +1,5 @@
 package GhostHunterINC;
-
+//150124014_Mehmet_Veli_Kayikli
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -14,7 +14,7 @@ public class Wisp extends ParanormalEntity {
     private Group rotatingRects;
     private Circle membrane,plazma,core,leftOuterEye,rightOuterEye,leftInnerEye,rightInnerEye;
     private Rectangle rect;
- 
+    //Wisp Constructor. Takes Wisp's and corners of the playable area's coordinates as parameter.
     public Wisp(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1));
         this.x = x;
@@ -26,7 +26,7 @@ public class Wisp extends ParanormalEntity {
         
         createWisp();
     }
- 
+    //Create Wisp.
     private void createWisp() {
     	
     	double centerX = 50, centerY = 50, scale = 0.75;
@@ -48,7 +48,7 @@ public class Wisp extends ParanormalEntity {
         leftInnerEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
         rightInnerEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
         
- 
+        //The following code block constructs spinning rectangles. Thinking rectangles as circle makes easier to implementation and placements. Otherwise, some slides can observable.  
         rotatingRects = new Group();
         int rectCount = 6;
         double angle = 0, radius = 0;
@@ -56,7 +56,7 @@ public class Wisp extends ParanormalEntity {
             rect = new Rectangle(8 * scale, 20 * scale, Color.RED);
             rect.setArcWidth(3 * scale);
             rect.setArcHeight(3 * scale);
-            angle = (2 * Math.PI / rectCount) * i;
+            angle = (Math.PI / 3) * i;
             radius = 35 * scale;
             rect.setX(centerX + Math.cos(angle) * radius - 4 * scale);
             rect.setY(centerY + Math.sin(angle) * radius - 10 * scale);
@@ -70,7 +70,7 @@ public class Wisp extends ParanormalEntity {
         sPane.setPrefSize(100 * scale, 100 * scale);
         
     }
- 
+    
     @Override
     public void update(double dt) {
     	if(this.isStunned()) {
