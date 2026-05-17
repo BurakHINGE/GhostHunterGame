@@ -84,19 +84,7 @@ public class Wisp extends ParanormalEntity {
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }
-    //This method renders Wisp if it is not visible.
-    @Override
-    public void render(Pane pane) {
-        this.currentPane = pane;
-        if (visible) {
-            if (!pane.getChildren().contains(sPane))
-                pane.getChildren().add(sPane);
-            sPane.setLayoutX(x);
-            sPane.setLayoutY(y);
-        } else {
-            pane.getChildren().remove(sPane);
-        }
-    }
+    
     //Withers Wisp's color.
     @Override
 	void applyWithering() {

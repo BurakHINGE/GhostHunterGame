@@ -1,6 +1,7 @@
 package GhostHunterINC;
 //The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -8,7 +9,7 @@ import javafx.util.Duration;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 
-public class Scanner {
+public class Scanner extends GameObject {
 
 	private Polygon scanner;
     private Hunter hunter;
@@ -186,6 +187,15 @@ public class Scanner {
 
 	public void setIncreaseRate(double increaseRate) {
 		this.increaseRate = increaseRate;
+	}
+	@Override
+	public void move(double dt) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Node getShape() {
+		return scanner;
 	}
 
     

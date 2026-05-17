@@ -75,14 +75,7 @@ public class Hunter extends GameObject {
     	}
     	return null;
     }
-    //If there is no Hunter in the game, this method adds A hunter and render the scanner.
-    @Override
-    public void render(Pane pane) {
-        this.currentPane = pane;
-        if (!pane.getChildren().contains(sPane))
-            pane.getChildren().add(sPane);
-        scanner.render(pane);
-    }
+    
     //Hunter's movement will be handled in the GameEngine. Thus, this method is empty.
     @Override
     public void move(double dt) {}
