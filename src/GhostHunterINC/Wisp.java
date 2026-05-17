@@ -14,6 +14,7 @@ public class Wisp extends ParanormalEntity {
     private Group rotatingRects;
     private Circle membrane,plazma,core,leftOuterEye,rightOuterEye,leftInnerEye,rightInnerEye;
     private Rectangle rect;
+    
     //Wisp Constructor. Takes Wisp's and corners of the playable area's coordinates as parameter.
     public Wisp(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1));
@@ -99,15 +100,10 @@ public class Wisp extends ParanormalEntity {
     //Withers Wisp's color.
     @Override
 	void applyWithering() {
-    	
         membrane.setFill(Color.LIGHTGRAY); 
         plazma.setFill(Color.LIGHTGRAY);
-//        core.setFill(Color.DARKRED);
-//        leftInnerEye.setFill(Color.LIGHTYELLOW);
-//        rightInnerEye.setFill(Color.LIGHTYELLOW);
-//        leftOuterEye.setFill(Color.DARKRED);
-//        rightOuterEye.setFill(Color.DARKRED);
         
+        //Since rotatingRects is a Group object, to reach rectangles and change their colors, we need to implement a forEach loop.
         for (Node node:rotatingRects.getChildren()) 
         	if (node instanceof Rectangle)
         		((Rectangle) node).setFill(Color.LIGHTGRAY);
@@ -118,12 +114,8 @@ public class Wisp extends ParanormalEntity {
 	void revertWithering() {
         membrane.setFill(Color.RED); 
         plazma.setFill(Color.RED);
-//        core.setFill(Color.RED);
-//        leftInnerEye.setFill(Color.YELLOW);
-//        rightInnerEye.setFill(Color.YELLOW);
-//        leftOuterEye.setFill(Color.YELLOW);
-//        rightOuterEye.setFill(Color.YELLOW);
         
+        //Since rotatingRects is a Group object, to reach rectangles and change their colors back, we need to implement a forEach loop.
         for (Node node:rotatingRects.getChildren()) 
         	if (node instanceof Rectangle)
         		((Rectangle) node).setFill(Color.RED);

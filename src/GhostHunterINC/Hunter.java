@@ -18,6 +18,7 @@ public class Hunter extends GameObject {
     private Circle hat;
     private Polygon badge;
     private Pane hunterPane;
+    
     //Hunter constructor. Takes Hunter's and corners of the playable area's coordinates as parameter.
     public Hunter(double x, double y, double areaX, double areaY, double areaW, double areaH) {
         this.x = x;
@@ -82,7 +83,7 @@ public class Hunter extends GameObject {
             pane.getChildren().add(sPane);
         scanner.render(pane);
     }
- 
+    //Hunter's movement will be handled in the GameEngine. Thus, this method is empty.
     @Override
     public void move(double dt) {}
     
