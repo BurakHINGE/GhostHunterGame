@@ -276,9 +276,9 @@ public class GameEngine {
 		                hunter.takeDamage(0.5); 
 		            }
 		            
-		            //Vacuum mechanics
+		            //150124014_Mehmet_Veli_Kayikli_ Vacuum mechanics
 		            boolean isInsideScanner = hunter.getScanner().isActive() && hunter.getScanner().intersects(obj);
-		            
+		           
 		            if(isInsideScanner) {
 		            	entity.setBeingVacuumed(true);
                         entity.vacuumEffect(0.016, hunter.getX() + 20, hunter.getY() + 20);
@@ -494,7 +494,7 @@ public class GameEngine {
 			}			
 		});
 		
-		//Mouse listener
+		//150124014_Mehmet_Veli_Kayikli_ Mouse listener
 		gameScene.setOnMouseMoved(e -> {
 			javafx.geometry.Point2D localMouse = gameObjects.sceneToLocal(e.getX(), e.getY());
 		    
@@ -505,7 +505,7 @@ public class GameEngine {
 		    }
 		});
 
-		//Scanner rotate to mouse even if user clicks and drags
+		//150124014_Mehmet_Veli_Kayikli_ Scanner rotate to mouse even if user clicks and drags
 		gameScene.setOnMouseDragged(e -> {
 			javafx.geometry.Point2D localMouse = gameObjects.sceneToLocal(e.getX(), e.getY());
 		    
