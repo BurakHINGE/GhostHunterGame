@@ -1,5 +1,7 @@
 package GhostHunterINC;
 
+//The whole class is implemented by 150124045_Mehmet_Burak_Mentese.
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -47,6 +49,13 @@ public class ConfigManager {
 	public static int healthTokenIncrease;
 	public static int rangeTokenIncrease;
 	public static int eyeTokenDuration;
+	public static int trapTokenDuration;
+	public static int rangeTokenDuration;
+	
+	//Point variables
+	public static int ghostPoints;
+	public static int ripperPoints;
+	public static int wispPoints;
 	
 	public static void loadConfig() { //Read configures from config.txt
 		try {
@@ -161,6 +170,23 @@ public class ConfigManager {
 				else if (configName.equals("eye_token_duration:")) {
 					eyeTokenDuration = output.nextInt();
 				}
+				else if(configName.equals("trap_token_duration:")) {
+					trapTokenDuration = output.nextInt();
+				}
+				else if(configName.equals("range_token_duration:")) {
+					rangeTokenDuration = output.nextInt();
+				}
+				
+				//Point values
+				else if (configName.equals("ghost_points:")) {
+					ghostPoints = output.nextInt();
+				}
+				else if (configName.equals("ripper_points:")) {
+					ripperPoints = output.nextInt();
+				}
+				else if (configName.equals("wisp_points:")) {
+					wispPoints = output.nextInt();
+				}
 			}
 			
 			output.close();
@@ -171,6 +197,7 @@ public class ConfigManager {
 		}
 	}
 
+	//Getter and setter methods
 	public static int getMaxHealth() {
 		return maxHealth;
 	}
@@ -297,6 +324,22 @@ public class ConfigManager {
 
 	public static int getEyeTokenDuration() {
 		return eyeTokenDuration;
+	}
+	
+	public static int getRangeTokenDuration() {
+		return rangeTokenDuration;
+	}
+	
+	public static int getGhostPoints() {
+		return ghostPoints;
+	}
+	
+	public static int getRipperPoints() {
+		return ripperPoints;
+	}
+	
+	public static int getWispPoints() {
+		return wispPoints;
 	}
 
 	public static void setMaxHealth(int maxHealth) {
@@ -426,4 +469,20 @@ public class ConfigManager {
 	public static void setEyeTokenDuration(int eyeTokenDuration) {
 		ConfigManager.eyeTokenDuration = eyeTokenDuration;
 	}
-}
+	
+	public static void setRangeTokenDuration(int rangeTokenDuration) {
+		ConfigManager.rangeTokenDuration = rangeTokenDuration;
+	}
+	
+	public static void setGhostPoints(int ghostPoints) {
+		ConfigManager.ghostPoints = ghostPoints;
+	}
+	
+	public static void setRipperPoints(int ripperPoints) {
+		ConfigManager.ripperPoints = ripperPoints;
+	}
+	
+	public static void setWispPoints(int wispPoints) {
+		ConfigManager.wispPoints = wispPoints;
+	}
+}	

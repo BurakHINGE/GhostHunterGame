@@ -1,5 +1,5 @@
 package GhostHunterINC;
-
+//The whole class is implemented by 150124014_Mehmet_Veli_Kayikli.
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -12,9 +12,12 @@ public class Wisp extends ParanormalEntity {
     
     private double areaX, areaY, areaW, areaH, rotationAngle;
     private Group rotatingRects;
- 
+    private Circle membrane,plazma,core,leftOuterEye,rightOuterEye,leftInnerEye,rightInnerEye;
+    private Rectangle rect;
+    
+    //Wisp Constructor. Takes Wisp's and corners of the playable area's coordinates as parameter.
     public Wisp(double x, double y, double areaX, double areaY, double areaW, double areaH) {
-        super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1), 30);
+        super((Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1),(Math.random() * 200 + 100) * (Math.random() < 0.5 ? 1 : -1));
         this.x = x;
         this.y = y;
         this.areaX = areaX;
@@ -24,37 +27,37 @@ public class Wisp extends ParanormalEntity {
         
         createWisp();
     }
- 
+    //This method creates Wisp.
     private void createWisp() {
     	
-    	double centerX = 50, centerY = 50, scale = 0.75;
+    	double centerX = 50, centerY = 50, scale = 1.4;
         centerX *= scale;
         centerY *= scale;
         
         Pane wispShape = new Pane();
         wispShape.setPrefSize(100 * scale, 100 * scale);
         
-        Circle membrane = new Circle(centerX, centerY, 26 * scale, Color.RED);
+        membrane = new Circle(centerX, centerY, 26 * scale, Color.RED);
         membrane.setOpacity(0.4);
-        Circle glow  = new Circle(centerX, centerY, 18 * scale, Color.RED);
-        glow.setOpacity(0.7);
-        Circle core = new Circle(centerX, centerY, 10 * scale, Color.RED);
-        Circle leftEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
-        leftEye.setOpacity(0.6);
-        Circle rightEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
-        rightEye.setOpacity(0.6);
-        Circle leftInnerEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
-        Circle rightInnerEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
+        plazma  = new Circle(centerX, centerY, 18 * scale, Color.RED);
+        plazma.setOpacity(0.7);
+        core = new Circle(centerX, centerY, 10 * scale, Color.RED);
+        leftOuterEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
+        leftOuterEye.setOpacity(0.6);
+        rightOuterEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 4 * scale, Color.YELLOW);
+        rightOuterEye.setOpacity(0.6);
+        leftInnerEye = new Circle(centerX - 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
+        rightInnerEye = new Circle(centerX + 4 * scale, centerY - 2 * scale, 2 * scale, Color.YELLOW);
         
- 
+        //The following code block constructs spinning rectangles. Thinking rectangles as circle makes easier to implementation and placements. Otherwise, some slides can observable.  
         rotatingRects = new Group();
         int rectCount = 6;
         double angle = 0, radius = 0;
         for (int i = 0; i < rectCount; i++) {
-            Rectangle rect = new Rectangle(8 * scale, 20 * scale, Color.RED);
+            rect = new Rectangle(8 * scale, 20 * scale, Color.RED);
             rect.setArcWidth(3 * scale);
             rect.setArcHeight(3 * scale);
-            angle = (2 * Math.PI / rectCount) * i;
+            angle = (Math.PI / 3) * i;
             radius = 35 * scale;
             rect.setX(centerX + Math.cos(angle) * radius - 4 * scale);
             rect.setY(centerY + Math.sin(angle) * radius - 10 * scale);
@@ -62,15 +65,17 @@ public class Wisp extends ParanormalEntity {
             rotatingRects.getChildren().add(rect);
         }
  
-        wispShape.getChildren().addAll(core, glow, membrane, leftEye, rightEye, leftInnerEye, rightInnerEye, rotatingRects);
+        wispShape.getChildren().addAll(core, plazma, membrane, leftOuterEye, rightOuterEye, leftInnerEye, rightInnerEye, rotatingRects);
         
         sPane = new StackPane(wispShape);
         sPane.setPrefSize(100 * scale, 100 * scale);
         
     }
- 
+    //This method update Wisp's position if it is not stunted.
     @Override
     public void update(double dt) {
+    	if(this.isStunned()) 
+    		return;    	
         move(dt);
         bounceOffWalls(areaX, areaY, areaW, areaH);
         rotationAngle += 100 * dt;
@@ -79,20 +84,31 @@ public class Wisp extends ParanormalEntity {
         sPane.setLayoutX(x);
         sPane.setLayoutY(y);
     }
- 
+    
+    //Withers Wisp's color.
     @Override
-    public void render(Pane pane) {
-        this.currentPane = pane;
-        if (visible) {
-            if (!pane.getChildren().contains(sPane))
-                pane.getChildren().add(sPane);
-            sPane.setLayoutX(x);
-            sPane.setLayoutY(y);
-        } else {
-            pane.getChildren().remove(sPane);
-        }
-    }
- 
+	void applyWithering() {
+        membrane.setFill(Color.LIGHTGRAY); 
+        plazma.setFill(Color.LIGHTGRAY);
+        
+        //Since rotatingRects is a Group object, to reach rectangles and change their colors, we need to implement a forEach loop.
+        for (Node node:rotatingRects.getChildren()) 
+        	if (node instanceof Rectangle)
+        		((Rectangle) node).setFill(Color.LIGHTGRAY);
+        
+	}
+    //Makes Wisp's color vivid again.
+	@Override
+	void revertWithering() {
+        membrane.setFill(Color.RED); 
+        plazma.setFill(Color.RED);
+        
+        //Since rotatingRects is a Group object, to reach rectangles and change their colors back, we need to implement a forEach loop.
+        for (Node node:rotatingRects.getChildren()) 
+        	if (node instanceof Rectangle)
+        		((Rectangle) node).setFill(Color.RED);
+	}
+    //Returns Wisp's Pane.
     @Override
     public Node getShape() { 
     	return sPane; 

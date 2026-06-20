@@ -1,8 +1,8 @@
 maximum_health: 100
 maximum_vacuum: 100
 entity_damage: 10
-vacuum_decrease: 2
-vacuum_increase: 5
+vacuum_decrease: 30
+vacuum_increase: 20
 
 level_1_playable_area_x: 200
 level_1_playable_area_y: 200
@@ -33,4 +33,10 @@ level_3_wisps: 2
 
 health_token_increase: 20
 range_token_increase: 20
+range_token_duration: 5
 eye_token_duration: 5
+trap_token_duration: 4
+
+ghost_points: 10
+ripper_points: 20
+wisp_points: 30
