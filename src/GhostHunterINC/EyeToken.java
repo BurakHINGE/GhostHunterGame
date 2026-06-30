@@ -1,25 +1,107 @@
 package GhostHunterINC;
 
-public class EyeToken extends Token {
-	@Override
-	public boolean checkCollision() {
-		//If collides with hunter call applyEffect method.
-		return false;
-	}
+//The whole class is implemented by 150124012_Eyup_Turhan.
 
+import javafx.scene.shape.*;
+import javafx.util.Duration;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.StackPane;
+import javafx.animation.PauseTransition;
+import java.util.ArrayList;
+
+//A token that temporarily reveals all the paranormal entities
+public class EyeToken extends Token {
+	//Main game object list that contains all the paranormal entities
+	private ArrayList<GameObject> allEntities;
+	
+	//A static timer so that every eye token uses the same timer
+	private static PauseTransition timer;
+	
+	public EyeToken(double x, double y, ArrayList<GameObject> allEntities) {
+		this.x = x;
+		this.y = y;
+		this.allEntities = allEntities;
+		
+		StackPane shape = new StackPane();
+		
+		//Visual components of the token
+		Circle background = new Circle(15);
+		background.setFill(Color.DARKGREEN);
+		background.setStroke(Color.BLACK);
+		background.setStrokeWidth(2);
+		
+		Ellipse eye = new Ellipse(10, 6);
+		eye.setFill(Color.WHITE);
+		eye.setStroke(Color.BLACK);
+		eye.setStrokeWidth(1);
+		
+		Circle iris = new Circle(4);
+		iris.setFill(Color.ALICEBLUE);
+		
+		Circle pupil = new Circle(2);
+		pupil.setFill(Color.BLACK);
+		
+		//Combine all the parts of the token in the pane
+		shape.getChildren().addAll(background, eye, iris, pupil);
+		
+		//Set the visual position of the shape pane
+		shape.setTranslateX(this.x);
+		shape.setTranslateY(this.y);
+		
+		this.sPane = shape;
+	}
+	
 	@Override
 	//Make all the entities visible for given time.
 	void applyEffect(Hunter hunter) {
+		//Get the effect duration of the token
 		int time = ConfigManager.getEyeTokenDuration();
 		
-		//Make all entities visible for given time
+		//Change the revealed by token value to true so that game engine can make the entities visible
+		for(GameObject obj : allEntities) {
+			if(obj instanceof ParanormalEntity) {
+				((ParanormalEntity) obj).setRevealedByToken(true);
+			}
+		}
 		
+		//Reset the timer if the player takes two eye tokens in a row
+		if(timer != null) {
+			timer.stop();
+		}
+		
+		//Start a timer to revert the changes after the duration
+		timer = new PauseTransition(Duration.seconds(time));
+		
+		timer.setOnFinished(e -> {
+			for(GameObject obj : allEntities) {
+				if(obj instanceof ParanormalEntity) {
+					((ParanormalEntity) obj).setRevealedByToken(false);
+				}
+			}
+		});
+		timer.play();
 	}
 
 	@Override
-	void update() {
-		// TODO Auto-generated method stub
+	//Smooth floating animation for the token
+	public void update(double dt) {
+		//Increase the time every frame
+		tick++;
 		
+		//We used sin function to get a smooth curve 
+		double changeY = Math.sin(tick * 0.05) * 5;
+		
+		this.getShape().setTranslateY(this.y + changeY);
 	}
+
+	
+	public Node getShape() {
+		return this.sPane;
+	}
+	
+	@Override
+	//Eye token is a static item so we didn't use this method in here.
+	public void move(double dt) {}
 
 }
