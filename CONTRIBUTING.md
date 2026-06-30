@@ -1,4 +1,4 @@
-Contributing to GhostHunter
+# Contributing to GhostHunter
 
 First of all, thank you for your interest in contributing to GhostHunter!
 
@@ -6,9 +6,9 @@ Whether you’re fixing a bug, improving performance, suggesting a new feature, 
 
 Please read these guidelines before contributing.
 
-⸻
+---
 
-Table of Contents
+## Table of Contents
 
 * Before You Start
 * Ways to Contribute
@@ -20,22 +20,22 @@ Table of Contents
 * Contributor Recognition
 * License Agreement
 
-⸻
+---
 
-Before You Start
+## Before You Start
 
-Please make sure you have:
+### Please make sure you have:
 
 * Read the project’s README.
 * Read the project’s LICENSE.
 * Checked existing Issues to avoid duplicate reports.
 * Searched existing Pull Requests before opening a new one.
 
-⸻
+---
 
-Ways to Contribute
+## Ways to Contribute
 
-You can contribute by:
+### You can contribute by:
 
 * Fixing bugs
 * Improving game performance
@@ -49,11 +49,11 @@ You can contribute by:
 
 Even small improvements are welcome.
 
-⸻
+---
 
-Reporting Bugs
+## Reporting Bugs
 
-When reporting a bug, please include:
+### When reporting a bug, please include:
 
 * A clear title.
 * Steps to reproduce the issue.
@@ -66,11 +66,11 @@ When reporting a bug, please include:
 
 The more information you provide, the easier it is to resolve the issue.
 
-⸻
+---
 
-Suggesting Features
+## Suggesting Features
 
-Before suggesting a feature:
+### Before suggesting a feature:
 
 * Check whether it has already been proposed.
 * Explain why the feature would improve GhostHunter.
@@ -79,9 +79,9 @@ Before suggesting a feature:
 
 Not every feature request can be accepted, but every suggestion will be considered.
 
-⸻
+---
 
-Development Workflow
+## Development Workflow
 
 1. Fork the repository.
 2. Create a new branch from the latest version of the project.
@@ -91,11 +91,11 @@ Development Workflow
 6. Push your branch.
 7. Open a Pull Request.
 
-⸻
+---
 
-Coding Standards
+## Coding Standards
 
-Please follow these general guidelines:
+### Please follow these general guidelines:
 
 * Write clean and readable code.
 * Use meaningful variable and method names.
@@ -107,11 +107,11 @@ Please follow these general guidelines:
 
 If your contribution introduces a new feature, update the documentation when appropriate.
 
-⸻
+---
 
-Pull Requests
+## Pull Requests
 
-A good Pull Request should:
+### A good Pull Request should:
 
 * Have a clear title.
 * Explain what was changed.
@@ -123,9 +123,9 @@ Please keep Pull Requests focused on a single topic whenever possible.
 
 Large changes may require discussion before implementation.
 
-⸻
+---
 
-Contributor Recognition
+## Contributor Recognition
 
 Community contributions are greatly appreciated.
 
@@ -133,13 +133,13 @@ Contributors may be recognized in the project’s CONTRIBUTORS.md file.
 
 Recognition does not imply ownership, partnership, employment, or membership in the GhostHunter Development Team.
 
-⸻
+---
 
-License Agreement
+## License Agreement
 
 By submitting a Pull Request or any other contribution, you agree to the terms described in the project’s LICENSE file.
 
-⸻
+---
 
 Thank you for helping improve GhostHunter!
 
