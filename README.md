@@ -31,9 +31,6 @@ Our goal is not only to build a fun horror game but also to create a collaborati
 
 ### Installation
 
-git clone https://github.com/<YOUR_ORGANIZATION>/GhostHunter.git
-cd GhostHunter
-
 Follow the project-specific build instructions once available.
 
 ---
