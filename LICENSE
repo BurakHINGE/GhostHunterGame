@@ -1,8 +1,8 @@
-# GhostHunter Community License v1.0
+GhostHunter Community License v1.0
 
 Copyright (c) 2026 GhostHunter Development Team
 
-## Core Developers:
+Core Developers:
 
 * Mehmet Burak Menteşe
 * Mehmet Veli Kayıklı
@@ -12,7 +12,7 @@ All Rights Reserved.
 
 ---
 
-## 1. Purpose
+1. Purpose
 
 The GhostHunter project is publicly available to encourage learning, collaboration, community contributions, and transparency in game development.
 
@@ -20,9 +20,9 @@ This license grants limited rights to use, study, modify, and contribute to the 
 
 ---
 
-## 2. Permissions
+2. Permissions
 
-### You are permitted to:
+You are permitted to:
 
 * View and study the source code.
 * Clone this repository.
@@ -34,9 +34,9 @@ This license grants limited rights to use, study, modify, and contribute to the 
 
 ---
 
-## 3. Restrictions
+3. Restrictions
 
-### Without prior written permission from the GhostHunter Development Team, you may NOT:
+Without prior written permission from the GhostHunter Development Team, you may NOT:
 
 * Sell this project.
 * Sell any modified version of this project.
@@ -51,11 +51,11 @@ This license grants limited rights to use, study, modify, and contribute to the 
 
 ---
 
-## 4. GitHub Forks
+4. GitHub Forks
 
 GitHub forks are explicitly permitted.
 
-### Forks may be used for:
+Forks may be used for:
 
 * Learning
 * Experimentation
@@ -65,7 +65,7 @@ GitHub forks are explicitly permitted.
 
 Public forks hosted on GitHub are allowed.
 
-### However, creating a fork does NOT grant:
+However, creating a fork does NOT grant:
 
 * Ownership of GhostHunter
 * Membership in the GhostHunter Development Team
@@ -77,17 +77,17 @@ Forks should clearly acknowledge the original GhostHunter repository.
 
 ---
 
-## 5. Contributions
+5. Contributions
 
 Contributions from the community are welcome.
 
-### By submitting a Pull Request, patch, or any other contribution, you confirm that:
+By submitting a Pull Request, patch, or any other contribution, you confirm that:
 
 * You are legally allowed to submit the contributed material.
 * The contribution is your own work or you have the right to contribute it.
 * You grant the GhostHunter Development Team a perpetual, worldwide, irrevocable, royalty-free license to use, modify, merge, publish, distribute, sublicense, and commercially use your contribution as part of the GhostHunter project.
 
-### Submitting a contribution does NOT:
+Submitting a contribution does NOT:
 
 * Make you a member of the GhostHunter Development Team.
 * Grant ownership of the project.
@@ -100,9 +100,9 @@ Community contributors may be acknowledged in the project’s CONTRIBUTORS.md fi
 
 ---
 
-## 6. Ownership
+6. Ownership
 
-### The GhostHunter project, including but not limited to:
+The GhostHunter project, including but not limited to:
 
 * Source code
 * Game mechanics
@@ -122,11 +122,11 @@ Nothing in this license transfers ownership to any third party.
 
 ---
 
-## 7. Commercial Licensing
+7. Commercial Licensing
 
 Commercial use of GhostHunter requires prior written permission from the GhostHunter Development Team.
 
-### Commercial use includes, but is not limited to:
+Commercial use includes, but is not limited to:
 
 * Selling the game.
 * Selling modified versions.
@@ -139,7 +139,7 @@ If you wish to discuss commercial licensing, please contact the GhostHunter Deve
 
 ---
 
-## 8. Disclaimer
+8. Disclaimer
 
 This project is provided “AS IS”, without warranty of any kind.
 
@@ -147,7 +147,7 @@ The GhostHunter Development Team shall not be liable for any damages arising fro
 
 ---
 
-## 9. Acceptance
+9. Acceptance
 
 By using, copying, modifying, or contributing to this repository, you acknowledge that you have read and agree to the terms of this license.
 
